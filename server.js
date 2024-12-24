@@ -13,7 +13,7 @@ app.use(express.json());
 app.post('/api', async (req, res) => {
     try {
         // Replace with your Google Apps Script web app URL
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3cV7W_amDlJ6rr-8QyEwkXjDCrHGd_tycgJctFoDtdqdQAngjnK1ni0WITkCvDMC7/exec';
 
         // Forward the request to Google Apps Script
         const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
