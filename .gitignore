@@ -59,3 +59,31 @@ Thumbs.db
 *.html
 *.css.map
 *.css
+
+# Frontend frameworks and libraries
+/.next/
+/out/
+/.nuxt/
+/dist/
+/build/
+/public/
+
+# Testing
+/coverage/
+/.nyc_output/
+/cypress/screenshots/
+/cypress/videos/
+/cypress/reports/
+
+/.parcel-cache/
+/.rollup.cache/
+/.sass-cache/
+/.cache/
+/.storybook/
+
+# Miscellaneous
+/.env.local
+/.env.development.local
+/.env.test.local
+/.env.production.local
+.env.*.local
