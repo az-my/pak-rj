@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const fetch = require('node-fetch'); // For forwarding requests
+const fetch = require('node-fetch');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,22 +12,14 @@ const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3cV7W_
 app.use(cors());
 app.use(express.json());
 
-// Root route for the server
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Welcome to the Overtime Management API Proxy!',
-        endpoints: {
-            get: '/api',
-            post: '/api',
-        },
-    });
-});
-
 // Proxy endpoint to handle GET requests
 app.get('/api', async (req, res) => {
     console.log(`Incoming GET request at ${new Date().toISOString()}`);
     try {
-        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, { method: 'GET' });
+        const action = req.query.action || 'fetch'; // Default action is 'fetch'
+        const urlWithParams = `${GOOGLE_APPS_SCRIPT_URL}?action=${action}`;
+        
+        const response = await fetch(urlWithParams, { method: 'GET' });
 
         if (!response.ok) {
             throw new Error(`Google Apps Script returned status ${response.status} - ${response.statusText}`);
@@ -50,7 +42,10 @@ app.post('/api', async (req, res) => {
     console.log(`Incoming POST request at ${new Date().toISOString()}`);
     console.log(`Request Body: ${JSON.stringify(req.body)}`);
     try {
-        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        const action = req.body.action || 'save'; // Default action is 'save'
+        const urlWithParams = `${GOOGLE_APPS_SCRIPT_URL}?action=${action}`;
+
+        const response = await fetch(urlWithParams, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(req.body),
