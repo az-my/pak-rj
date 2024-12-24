@@ -1,71 +1,62 @@
 const express = require('express');
+const { google } = require('googleapis');
+const bodyParser = require('body-parser');
 const cors = require('cors');
-const fetch = require('node-fetch');
+const fs = require('fs');
 
+// Initialize Express
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Enable CORS for all origins
+app.use(bodyParser.json());
 app.use(cors());
-app.use(express.json());
 
-// Google Apps Script URL
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqml9TDxoS6J-3v1_nt9K5ntbYsqw8qdsFICcyP0ON-GN0jENfuQJXnDNpg8eiwGTF/exec';
+// Load service account credentials
+const credentials = JSON.parse(fs.readFileSync('path/to/your-service-account.json'));
 
-// Proxy endpoint to handle GET requests
-app.get('/api', async (req, res) => {
+// Authorize Google Sheets API
+const auth = new google.auth.GoogleAuth({
+    credentials,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive'],
+});
+const sheets = google.sheets({ version: 'v4', auth });
+
+// Replace with your Google Sheet ID
+const SPREADSHEET_ID = 'your-google-sheet-id';
+
+// Endpoint: Get all data from Google Sheets
+app.get('/api/data', async (req, res) => {
     try {
-        console.log('Fetching data from Google Apps Script...');
-        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-            method: 'GET',
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId: SPREADSHEET_ID,
+            range: 'Sheet1', // Replace 'Sheet1' with your sheet name
         });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            console.log('Data fetched successfully:', data);
-            res.json(data);
-        } else {
-            console.error('Error fetching data from Google Apps Script:', data);
-            res.status(500).json(data);
-        }
+        res.json({ data: response.data.values });
     } catch (error) {
-        console.error('Error during GET operation:', error);
-        res.status(500).json({ error: 'Internal Server Error', details: error.message });
+        console.error('Error reading data:', error);
+        res.status(500).json({ error: 'Failed to fetch data', details: error.message });
     }
 });
 
-// Proxy endpoint to handle POST requests (Add Operation)
+// Endpoint: Add data to Google Sheets
 app.post('/api/add', async (req, res) => {
     try {
-        console.log('Received data for adding:', req.body);
-
-        // Forward the request to Google Apps Script
-        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: 'add', // Specify the action for the Apps Script
-                data: req.body,
-            }),
+        const { name, unit, description } = req.body; // Example input fields
+        await sheets.spreadsheets.values.append({
+            spreadsheetId: SPREADSHEET_ID,
+            range: 'Sheet1', // Replace 'Sheet1' with your sheet name
+            valueInputOption: 'USER_ENTERED',
+            resource: {
+                values: [[name, unit, description, new Date().toISOString()]], // Add data in the correct order
+            },
         });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            console.log('Add operation successful:', result);
-            res.json(result);
-        } else {
-            console.error('Error from Google Apps Script:', result);
-            res.status(500).json(result);
-        }
+        res.json({ message: 'Data added successfully' });
     } catch (error) {
-        console.error('Error during add operation:', error);
-        res.status(500).json({ error: 'Internal Server Error', details: error.message });
+        console.error('Error adding data:', error);
+        res.status(500).json({ error: 'Failed to add data', details: error.message });
     }
 });
 
 // Start the server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Proxy server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
