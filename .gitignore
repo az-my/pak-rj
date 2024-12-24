@@ -57,7 +57,7 @@ Thumbs.db
 *.sw?
 
 # HTML and CSS specific
-*.html
+
 *.css.map
 *.css
 
