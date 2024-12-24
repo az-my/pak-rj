@@ -1,7 +1,22 @@
 const { google } = require('googleapis');
-const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
-const spreadsheetId = process.env.SPREADSHEET_ID;
 
+const rawCredentials = process.env.GOOGLE_CREDENTIALS;
+
+if (!rawCredentials) {
+    throw new Error('GOOGLE_CREDENTIALS environment variable is not set.');
+}
+
+let credentials;
+try {
+    credentials = JSON.parse(rawCredentials);
+
+    // Replace escaped newlines in the private key
+    if (credentials.private_key) {
+        credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
+    }
+} catch (error) {
+    throw new Error('Failed to parse GOOGLE_CREDENTIALS. Ensure it is valid JSON.');
+}
 
 const auth = new google.auth.GoogleAuth({
     credentials,
