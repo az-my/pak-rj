@@ -6,9 +6,21 @@ const deleteGoogleSheetsEntry = require('./google_sheets_delete');
 
 const router = express.Router();
 
-router.post('/add', createGoogleSheetsEntry);       // Create
-router.get('/list', readGoogleSheetsEntries);       // Read
-router.put('/update', updateGoogleSheetsEntry);     // Update
-router.delete('/delete', deleteGoogleSheetsEntry);  // Delete
+// Wrapper function to handle async errors
+const asyncHandler = (fn) => (req, res, next) => {
+    Promise.resolve(fn(req, res, next)).catch((err) => {
+        console.error('Error:', err.message);
+        res.status(500).json({
+            error: 'An error occurred while processing your request.',
+            details: err.message,
+        });
+    });
+};
+
+// Define routes with error handling
+router.post('/add', asyncHandler(createGoogleSheetsEntry));      // Create
+router.get('/list', asyncHandler(readGoogleSheetsEntries));      // Read
+router.put('/update', asyncHandler(updateGoogleSheetsEntry));    // Update
+router.delete('/delete', asyncHandler(deleteGoogleSheetsEntry)); // Delete
 
 module.exports = router;
