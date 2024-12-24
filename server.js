@@ -1,7 +1,10 @@
-const app = require('./app');
+const express = require('express');
+const app = express();
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+// Root route
+app.get('/', (req, res) => {
+    res.send('Welcome to the Overtime Management App!');
 });
+
+// Export the app
+module.exports = app;
