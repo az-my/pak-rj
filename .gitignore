@@ -73,6 +73,9 @@ Thumbs.db
 /.nyc_output/
 /cypress/screenshots/
 /cypress/videos/
+/credentials.json
+/credential.json
+/google-api-*.json
 /cypress/reports/
 
 /.parcel-cache/
