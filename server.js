@@ -12,16 +12,16 @@ const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3cV7W_
 app.use(cors());
 app.use(express.json());
 
-// Utility function to log errors
-function logErrorDetails(endpoint, error, reqBody = null) {
-    console.error(`\n=== ERROR in ${endpoint} ===`);
-    console.error(`Message: ${error.message}`);
-    if (reqBody) {
-        console.error(`Request Body: ${JSON.stringify(reqBody)}`);
-    }
-    console.error(`Stack: ${error.stack}`);
-    console.error(`===========================\n`);
-}
+// Root route for the server
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Welcome to the Overtime Management API Proxy!',
+        endpoints: {
+            get: '/api',
+            post: '/api',
+        },
+    });
+});
 
 // Proxy endpoint to handle GET requests
 app.get('/api', async (req, res) => {
@@ -37,7 +37,7 @@ app.get('/api', async (req, res) => {
         console.log(`GET response: ${JSON.stringify(data)}`);
         res.json(data); // Send the response back to the client
     } catch (error) {
-        logErrorDetails('GET /api', error);
+        console.error(`Error in GET /api: ${error.message}`);
         res.status(500).json({
             error: 'Something went wrong in GET',
             details: error.message,
@@ -64,7 +64,7 @@ app.post('/api', async (req, res) => {
         console.log(`POST response: ${JSON.stringify(data)}`);
         res.json(data); // Send the response back to the client
     } catch (error) {
-        logErrorDetails('POST /api', error, req.body);
+        console.error(`Error in POST /api: ${error.message}`);
         res.status(500).json({
             error: 'Something went wrong in POST',
             details: error.message,
@@ -78,18 +78,6 @@ app.use((req, res) => {
     res.status(404).json({
         error: 'Route not found',
         details: `No route matching ${req.method} ${req.originalUrl}`,
-    });
-});
-
-// Global error handler
-app.use((err, req, res, next) => {
-    console.error(`\n=== GLOBAL ERROR HANDLER ===`);
-    console.error(`Message: ${err.message}`);
-    console.error(`Stack: ${err.stack}`);
-    console.error(`============================\n`);
-    res.status(500).json({
-        error: 'Internal Server Error',
-        details: err.message,
     });
 });
 
