@@ -1,65 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Apps Script Test</title>
-</head>
-<body>
-  <h1>Google Apps Script Connection Test</h1>
-
-  <h2>POST Data</h2>
-  <form id="testForm">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required><br><br>
-    
-    <label for="value">Value:</label>
-    <input type="text" id="value" name="value" required><br><br>
-    
-    <button type="button" onclick="submitData()">Submit</button>
-  </form>
-
-  <h2>GET Data</h2>
-  <button onclick="fetchData()">Fetch Data</button>
-  <div id="dataDisplay"></div>
-
-  <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyxp09C45mcH-NYuAqarEYucYg3wJs2LCo2XRWS7DUziO_iqfWi0e8joi_KkXD1qjRR/exec'; // Replace [YOUR_SCRIPT_ID] with your actual script ID
-
-    function submitData() {
-      const formData = {
-        name: document.getElementById('name').value,
-        value: document.getElementById('value').value
-      };
-
-      fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert('Data submitted successfully!');
-          } else {
-            alert('Error: ' + data.error);
-          }
-        })
-        .catch(error => console.error('Error:', error));
+<script>
+  async function fetchOvertimeRecords() {
+    try {
+      const response = await fetch(
+        'https://script.google.com/macros/s/AKfycbz4sQjwXKXc3FB_i_YT389N2LvKItzNrnmmXdM69Wh8aL0LlC-KVLcrC_Ca5Qw1ChXS/exec?action=fetch'
+      );
+      const data = await response.json();
+      console.log('Fetched Records:', data);
+    } catch (error) {
+      console.error('Error fetching records:', error);
     }
+  }
 
-    function fetchData() {
-      fetch(API_URL)
-      .then(response => response.json())
-      .then(data => {
-        const dataDisplay = document.getElementById('dataDisplay');
-        dataDisplay.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('dataDisplay').innerHTML = '<p>Error fetching data: ' + error.message + '</p>';
-      });
-    }
-  </script>
-</body>
-</html>
+  // Call the function when needed
+  fetchOvertimeRecords();
+</script>
