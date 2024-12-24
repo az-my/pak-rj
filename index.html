@@ -3,79 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Overtime Management 2</title>
+  <title>Google Apps Script Test</title>
 </head>
 <body>
-  <h1>Overtime Management</h1>
+  <h1>Google Apps Script Connection Test</h1>
 
-  <!-- Form for Creating a Record -->
-  <h2>Create Overtime Record</h2>
-  <form id="overtimeForm">
-    <label for="nama">Nama:</label>
-    <input type="text" id="nama" name="nama" required><br><br>
-
-    <label for="unit">Unit:</label>
-    <input type="text" id="unit" name="unit" required><br><br>
-
-    <label for="description">Description:</label>
-    <textarea id="description" name="description"></textarea><br><br>
-
-    <label for="tanggalLembur">Tanggal Lembur:</label>
-    <input type="date" id="tanggalLembur" name="tanggalLembur" required><br><br>
-
-    <label for="dayOfWeek">Day of Week:</label>
-    <input type="text" id="dayOfWeek" name="dayOfWeek"><br><br>
-
-    <label for="isLibur">Is Libur:</label>
-    <input type="text" id="isLibur" name="isLibur"><br><br>
-
-    <label for="jamMulai">Jam Mulai:</label>
-    <input type="time" id="jamMulai" name="jamMulai"><br><br>
-
-    <label for="jamSelesai">Jam Selesai:</label>
-    <input type="time" id="jamSelesai" name="jamSelesai"><br><br>
-
-    <label for="durasi">Durasi:</label>
-    <input type="text" id="durasi" name="durasi"><br><br>
-
-    <label for="overtimeRate">Overtime Rate:</label>
-    <input type="text" id="overtimeRate" name="overtimeRate"><br><br>
-
-    <label for="upahLembur">Upah Lembur:</label>
-    <input type="text" id="upahLembur" name="upahLembur"><br><br>
-
-    <label for="totalBiaya">Total Biaya:</label>
-    <input type="text" id="totalBiaya" name="totalBiaya"><br><br>
-
-    <button type="button" onclick="submitOvertime()">Submit</button>
+  <h2>POST Data</h2>
+  <form id="testForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+    
+    <label for="value">Value:</label>
+    <input type="text" id="value" name="value" required><br><br>
+    
+    <button type="button" onclick="submitData()">Submit</button>
   </form>
 
-  <hr>
-
-  <!-- Section for Displaying Records -->
-  <h2>Overtime Records</h2>
-  <button onclick="fetchOvertimeRecords()">Fetch Records</button>
-  <div id="records"></div>
+  <h2>GET Data</h2>
+  <button onclick="fetchData()">Fetch Data</button>
+  <div id="dataDisplay"></div>
 
   <script>
-    
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyFrl3I-IPCH3NNZGTkxCmKcB7HlxV0MPO8ejVN2IbItALf-8zWYKiutn0tuMGBelcK/exec'; // Replace with your script ID
+    const API_URL = 'https://script.google.com/macros/s/[YOUR_SCRIPT_ID]/exec'; // Replace [YOUR_SCRIPT_ID] with your actual script ID
 
-    // Function to submit a new overtime record
-    function submitOvertime() {
+    function submitData() {
       const formData = {
-        nama: document.getElementById('nama').value,
-        unit: document.getElementById('unit').value,
-        description: document.getElementById('description').value,
-        tanggalLembur: document.getElementById('tanggalLembur').value,
-        dayOfWeek: document.getElementById('dayOfWeek').value,
-        isLibur: document.getElementById('isLibur').value,
-        jamMulai: document.getElementById('jamMulai').value,
-        jamSelesai: document.getElementById('jamSelesai').value,
-        durasi: document.getElementById('durasi').value,
-        overtimeRate: document.getElementById('overtimeRate').value,
-        upahLembur: document.getElementById('upahLembur').value,
-        totalBiaya: document.getElementById('totalBiaya').value
+        name: document.getElementById('name').value,
+        value: document.getElementById('value').value
       };
 
       fetch(API_URL, {
@@ -86,7 +40,7 @@
         .then(response => response.json())
         .then(data => {
           if (data.success) {
-            alert('Record submitted successfully!');
+            alert('Data submitted successfully!');
           } else {
             alert('Error: ' + data.error);
           }
@@ -94,15 +48,17 @@
         .catch(error => console.error('Error:', error));
     }
 
-    // Function to fetch all overtime records
-    function fetchOvertimeRecords() {
+    function fetchData() {
       fetch(API_URL)
-        .then(response => response.json())
-        .then(data => {
-          const recordsDiv = document.getElementById('records');
-          recordsDiv.innerHTML = JSON.stringify(data, null, 2);
-        })
-        .catch(error => console.error('Error:', error));
+      .then(response => response.json())
+      .then(data => {
+        const dataDisplay = document.getElementById('dataDisplay');
+        dataDisplay.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('dataDisplay').innerHTML = '<p>Error fetching data: ' + error.message + '</p>';
+      });
     }
   </script>
 </body>
