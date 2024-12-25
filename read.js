@@ -24,6 +24,7 @@ const fetchData = async () => {
             // Initialize DataTables
             $('#data-table').DataTable({
                 destroy: true, // Allow re-initialization
+                responsive:true,
                 data: sanitizedDataRows, // Use sanitized data
                 columns: columns, // Use dynamically generated columns
                 order: [[1, 'desc']], // Sort by the second column (TANGGAL_INPUT)
@@ -31,7 +32,7 @@ const fetchData = async () => {
                 autoWidth: false, // Prevent DataTables from automatically adjusting width
                 createdRow: function (row, data, dataIndex) {
                     // Add Tailwind classes to each cell
-                    $(row).find('td').addClass('break-words whitespace-normal p-2');
+                    $(row).find('td').addClass('break-all');
                 },
             });
             

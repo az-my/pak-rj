@@ -1,8 +1,41 @@
 const API_ADD = "https://rj.up.railway.app/api/google-sheets/add";
 
 const form = document.getElementById("overtimeForm");
-const formMessage = document.getElementById("formMessage");
+const alertContainer = document.getElementById("alert-container");
+const alert = document.getElementById("alert");
+const alertTitle = document.getElementById("alert-title");
+const alertMessage = document.getElementById("alert-message");
+const closeAlert = document.getElementById("close-alert");
 
+// Function to show alert
+function showAlert(type, title, message) {
+    alertTitle.textContent = title;
+    alertMessage.textContent = message;
+
+    // Apply color scheme based on alert type
+    if (type === "success") {
+        alert.className =
+            "max-w-sm w-full bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative";
+    } else if (type === "error") {
+        alert.className =
+            "max-w-sm w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative";
+    }
+
+    // Show alert
+    alertContainer.classList.remove("hidden");
+
+    // Auto-hide alert after 3 seconds
+    setTimeout(() => {
+        alertContainer.classList.add("hidden");
+    }, 3000);
+}
+
+// Close alert manually
+closeAlert.addEventListener("click", () => {
+    alertContainer.classList.add("hidden");
+});
+
+// Form submission event
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -11,20 +44,19 @@ form.addEventListener("submit", async (e) => {
     // Retrieve form data
     const data = {
         name: formData.get("name"),
-        unit: document.getElementById("unit").value, // Manually retrieve disabled field
+        unit: document.getElementById("unit").value,
         description: formData.get("jobDescription"),
         date: formData.get("overtimeDate"),
-        day: document.getElementById("day").value, // Manually retrieve disabled field
-        day_status: document.getElementById("dayStatus").value, // Manually retrieve disabled field
+        day: document.getElementById("day").value,
+        day_status: document.getElementById("dayStatus").value,
         start_time: formData.get("startTime"),
         end_time: formData.get("endTime"),
-        duration_hours: document.getElementById("duration").value, // Already formatted
-        total_hours: document.getElementById("totalHours").value, // Already formatted
-        hourly_rate: document.getElementById("hourlyWage").value, // Already formatted
-        total_cost: document.getElementById("totalCost").value, // Already formatted
+        duration_hours: document.getElementById("duration").value,
+        total_hours: document.getElementById("totalHours").value,
+        hourly_rate: document.getElementById("hourlyWage").value,
+        total_cost: document.getElementById("totalCost").value,
     };
 
-    // Log the submitted data for debugging
     console.log("Submitted Data:", JSON.stringify(data, null, 2));
 
     try {
@@ -37,17 +69,20 @@ form.addEventListener("submit", async (e) => {
         if (!response.ok) throw new Error(await response.text());
 
         const responseData = await response.json();
-        console.log("Backend Response Data:", JSON.stringify(responseData, null, 2)); // Log backend response JSON
+        console.log("Backend Response Data:", JSON.stringify(responseData, null, 2));
 
+        // Clear form and show success alert
         form.reset();
-        formMessage.textContent = "Entry added successfully!";
-        formMessage.classList.remove("hidden", "text-red-600");
-        formMessage.classList.add("text-green-600");
-        fetchData(); // Refresh the data list
+        showAlert("success", "Success", "Entry added successfully!");
+
+        // Optional: Refresh data if fetchData is defined
+        if (typeof fetchData === "function") {
+            fetchData();
+        }
     } catch (error) {
         console.error("Submission Error:", error.message);
-        formMessage.textContent = `Error: ${error.message}`;
-        formMessage.classList.remove("hidden", "text-green-600");
-        formMessage.classList.add("text-red-600");
+
+        // Show error alert
+        showAlert("error", "Error", error.message);
     }
 });
