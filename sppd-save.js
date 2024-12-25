@@ -32,7 +32,24 @@ form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const data = {
+        namaDriver: formData.get("namaDriver"),
+        asalBerangkat: document.getElementById("asalBerangkat").value,
+        unit: document.getElementById("unit").value,
+        pemberiTugas: document.getElementById("pemberiTugas").value,
+        tujuan: formData.get("tujuan"),
+        tanggalMulai: formData.get("tanggalMulai"),
+        tanggalSampai: formData.get("tanggalSampai"),
+        durasi: document.getElementById("durasi").value,
+        budgetBiayaHarian: document.getElementById("budgetBiayaHarian").value,
+        budgetBiayaPenginapan: document.getElementById("budgetBiayaPenginapan").value,
+        totalBiayaHarian: document.getElementById("totalBiayaHarian").value,
+        totalBiayaPenginapan: document.getElementById("totalBiayaPenginapan").value,
+        totalBiayaSPPD: document.getElementById("totalBiayaSPPD").value,
+        hotel: document.getElementById("hotel").checked ? "Yes" : "No",
+    };
+
+    console.log("Submitted Data:", JSON.stringify(data, null, 2));
 
     try {
         const response = await fetch(API_SPPD_ADD, {
@@ -48,18 +65,21 @@ form.addEventListener("submit", async (event) => {
         if (response.ok) {
             alertTitle.textContent = "Success";
             alertMessage.textContent = result.message;
-            alert.classList.add("bg-green-100", "border", "border-green-400", "text-green-700", "px-4", "py-3", "rounded", "relative");
+            alert.className =
+                "bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative";
         } else {
             alertTitle.textContent = "Error";
             alertMessage.textContent = result.error;
-            alert.classList.add("bg-red-100", "border", "border-red-400", "text-red-700", "px-4", "py-3", "rounded", "relative");
+            alert.className =
+                "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative";
         }
 
         alertContainer.classList.remove("hidden");
     } catch (error) {
         alertTitle.textContent = "Error";
         alertMessage.textContent = "An error occurred while processing your request.";
-        alert.classList.add("bg-red-100", "border", "border-red-400", "text-red-700", "px-4", "py-3", "rounded", "relative");
+        alert.className =
+            "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative";
         alertContainer.classList.remove("hidden");
     }
 });
