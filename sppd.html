@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPPD Input Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-bold mb-4 text-gray-700">SPPD Data Input</h2>
+        <form id="sppdForm" class="space-y-4">
+            <!-- Nama Driver -->
+            <div>
+                <label for="namaDriver" class="block text-gray-700 font-bold mb-2">Nama Driver: <span class="text-red-500">*</span></label>
+                <select id="namaDriver" name="namaDriver" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Pilih Driver</option>
+                </select>
+            </div>
+
+            <!-- Asal Berangkat -->
+            <div>
+                <label for="asalBerangkat" class="block text-gray-700 font-bold mb-2">Asal Berangkat:</label>
+                <input id="asalBerangkat" name="asalBerangkat" type="text" value="" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            </div>
+
+            <!-- Unit -->
+            <div>
+                <label for="unit" class="block text-gray-700 font-bold mb-2">Unit:</label>
+                <input id="unit" name="unit" type="text" value="" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            </div>
+
+            <!-- Pemberi Tugas -->
+            <div>
+                <label for="pemberiTugas" class="block text-gray-700 font-bold mb-2">Pemberi Tugas:</label>
+                <input id="pemberiTugas" name="pemberiTugas" type="text" value="" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            </div>
+
+            <!-- Tujuan -->
+            <div>
+                <label for="tujuan" class="block text-gray-700 font-bold mb-2">Tujuan:</label>
+                <input id="tujuan" name="tujuan" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <!-- Tanggal Mulai -->
+            <div>
+                <label for="tanggalMulai" class="block text-gray-700 font-bold mb-2">Tanggal Mulai:</label>
+                <input id="tanggalMulai" name="tanggalMulai" type="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <!-- Tanggal Sampai -->
+            <div>
+                <label for="tanggalSampai" class="block text-gray-700 font-bold mb-2">Tanggal Sampai:</label>
+                <input id="tanggalSampai" name="tanggalSampai" type="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <!-- Durasi -->
+            <div>
+                <label for="durasi" class="block text-gray-700 font-bold mb-2">Durasi (hari):</label>
+                <input id="durasi" name="durasi" type="text" value="" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            </div>
+
+            <!-- Hotel Switch -->
+            <div class="flex items-center">
+                <label for="hotel" class="block text-gray-700 font-bold mr-2">Hotel:</label>
+                <input id="hotel" name="hotel" type="checkbox" class="hidden">
+                <div class="relative">
+                    <label for="hotel" class="block w-14 h-8 bg-gray-300 rounded-full cursor-pointer"></label>
+                    <div class="w-6 h-6 bg-white rounded-full shadow absolute top-1 left-1 transform transition-transform duration-200" id="hotelSwitch"></div>
+                </div>
+                <span class="ml-2 text-gray-700" id="hotelStatus">No</span>
+            </div>
+
+            <!-- Budget Biaya Harian -->
+            <div>
+                <label for="budgetBiayaHarian" class="block text-gray-700 font-bold mb-2">Budget Biaya Harian:</label>
+                <input id="budgetBiayaHarian" name="budgetBiayaHarian" type="text" value="150.000" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            </div>
+
+            <!-- Budget Biaya Penginapan -->
+            <div>
+                <label for="budgetBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Budget Biaya Penginapan:</label>
+                <input id="budgetBiayaPenginapan" name="budgetBiayaPenginapan" type="text" value="250.000" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            </div>
+
+            <!-- Total Biaya Harian -->
+            <div>
+                <label for="totalBiayaHarian" class="block text-gray-700 font-bold mb-2">Total Biaya Harian:</label>
+                <input id="totalBiayaHarian" name="totalBiayaHarian" type="text" value="" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            </div>
+
+            <!-- Total Biaya Penginapan -->
+            <div>
+                <label for="totalBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Total Biaya Penginapan:</label>
+                <input id="totalBiayaPenginapan" name="totalBiayaPenginapan" type="text" value="" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            </div>
+
+            <!-- Total Biaya SPPD -->
+            <div>
+                <label for="totalBiayaSPPD" class="block text-gray-700 font-bold mb-2">Total Biaya SPPD:</label>
+                <input id="totalBiayaSPPD" name="totalBiayaSPPD" type="text" value="" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+            </div>
+
+            <div class="flex justify-center">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="populate_driver_data.js"></script>
+    <script src="tanggal_validation.js"></script>
+    <script src="calculate-durasi.js"></script>
+    <script src="hotel_switch_handler.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const durasiInput = document.getElementById("durasi");
+            const budgetBiayaHarian = 150000;
+            const budgetBiayaPenginapan = 250000;
+
+            const totalBiayaHarianInput = document.getElementById("totalBiayaHarian");
+            const totalBiayaPenginapanInput = document.getElementById("totalBiayaPenginapan");
+            const totalBiayaSPPDInput = document.getElementById("totalBiayaSPPD");
+            const hotelCheckbox = document.getElementById("hotel");
+
+            const formatCurrency = (number) => {
+                return number.toLocaleString("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).replace("Rp", "").trim();
+            };
+
+            const calculateCosts = () => {
+                const durasi = parseInt(durasiInput.value) || 0;
+                const totalBiayaHarian = durasi * budgetBiayaHarian;
+                const totalBiayaPenginapan = hotelCheckbox.checked ? durasi * budgetBiayaPenginapan : 0;
+                const totalBiayaSPPD = totalBiayaHarian + totalBiayaPenginapan;
+
+                totalBiayaHarianInput.value = formatCurrency(totalBiayaHarian);
+                totalBiayaPenginapanInput.value = formatCurrency(totalBiayaPenginapan);
+                totalBiayaSPPDInput.value = formatCurrency(totalBiayaSPPD);
+            };
+
+            durasiInput.addEventListener("input", calculateCosts);
+            hotelCheckbox.addEventListener("change", calculateCosts);
+        });
+    </script>
+</body>
+</html>

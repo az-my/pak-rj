@@ -30,10 +30,10 @@ const fetchData = async () => {
                 order: [[1, 'desc']], // Sort by the second column (TANGGAL_INPUT)
                 scrollX: true, // Enable horizontal scrolling
                 autoWidth: false, // Prevent DataTables from automatically adjusting width
-                createdRow: function (row, data, dataIndex) {
-                    // Add Tailwind classes to each cell
-                    $(row).find('td').addClass('break-all');
-                },
+                // createdRow: function (row, data, dataIndex) {
+                //     // Add Tailwind classes to each cell
+                //     $(row).find('td').addClass('break-all');
+                // },
             });
             
         } else {
