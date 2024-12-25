@@ -113,6 +113,9 @@ const createSPPDEntry = async (req, res) => {
             totalBiayaSPPD,
         };
 
+        // Debugging: Log the new entry
+        console.log('New SPPD Entry:', newEntry);
+
         // Assuming you have a function to add data to Google Sheets
         await sheets.spreadsheets.values.append({
             spreadsheetId: process.env.SPREADSHEET_ID,
@@ -126,9 +129,14 @@ const createSPPDEntry = async (req, res) => {
         res.status(201).json({ message: 'SPPD entry created successfully' });
     } catch (err) {
         console.error('Error:', err.message);
+        console.error('Stack Trace:', err.stack);
+
+        // Detailed error response
         res.status(500).json({
             error: 'An error occurred while processing your request.',
             details: err.message,
+            stack: err.stack,
+            suggestion: 'Please check the server logs for more details and ensure that the Google Sheets API credentials and spreadsheet ID are correctly configured.',
         });
     }
 };
