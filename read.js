@@ -14,7 +14,7 @@ const fetchData = async () => {
         console.log("API Response:", result);
 
         // Flatten data and find max columns
-        allData = result.data;
+        allData = result.data.sort((a, b) => new Date(b[1]) - new Date(a[1])); // 1 = second column
         maxColumns = Math.max(...allData.map((row) => row.length));
 
         renderHeaders();

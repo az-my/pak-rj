@@ -21,8 +21,14 @@ const readGoogleSheetsEntries = async (req, res) => {
             return res.status(404).json({ error: 'No data found in the sheet' });
         }
 
-        // Return the data
-        res.json({ data: response.data.values });
+        // Sort data by the second column (descending order)
+        const sortedData = response.data.values.sort((a, b) => {
+            // Parse dates in the second column for comparison
+            return new Date(b[1]) - new Date(a[1]);
+        });
+
+        // Return the sorted data
+        res.json({ data: sortedData });
     } catch (error) {
         // Handle API errors
         res.status(500).json({
