@@ -21,11 +21,16 @@ const readGoogleSheetsEntries = async (req, res) => {
             return res.status(404).json({ error: 'No data found in the sheet' });
         }
 
-        // Sort data by the second column (descending order)
-        const sortedData = response.data.values.sort((a, b) => {
-            // Parse dates in the second column for comparison
+        // Separate header from the data
+        const [header, ...rows] = response.data.values;
+
+        // Sort rows by the second column (descending order)
+        const sortedRows = rows.sort((a, b) => {
             return new Date(b[1]) - new Date(a[1]);
         });
+
+        // Combine header and sorted rows
+        const sortedData = [header, ...sortedRows];
 
         // Return the sorted data
         res.json({ data: sortedData });

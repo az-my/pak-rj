@@ -1,98 +1,46 @@
-const API_LIST = "https://rj.up.railway.app/api/google-sheets/list";
-
-let allData = [];
-let maxColumns = 0;
-let currentPage = 1;
-const rowsPerPage = 5;
-
 const fetchData = async () => {
     try {
-        const response = await fetch(API_LIST);
-        if (!response.ok) throw new Error(await response.text());
+        const response = await fetch("https://rj.up.railway.app/api/google-sheets/list");
         const result = await response.json();
 
-        console.log("API Response:", result);
+        console.log("API Response:", result.data); // Log API response for debugging
 
-        // Flatten data and find max columns
-        allData = result.data.sort((a, b) => new Date(b[1]) - new Date(a[1])); // 1 = second column
-        maxColumns = Math.max(...allData.map((row) => row.length));
+        if (result.data && Array.isArray(result.data) && result.data.length > 0) {
+            // Extract the headers (first row of the response)
+            const headers = result.data[0];
+            const dataRows = result.data.slice(1); // Remove the header row from the data
 
-        renderHeaders();
-        renderTable();
-        renderPagination();
+            // Generate DataTable headers dynamically, replacing "_" with space
+            const columns = headers.map((header, index) => ({
+                title: header.replace(/_/g, ' '), // Replace underscores with spaces
+                data: index.toString(), // Use index as a string for data mapping
+            }));
+
+            // Map dataRows to ensure each row matches the number of columns
+            const sanitizedDataRows = dataRows.map(row =>
+                headers.map((_, index) => row[index] || "") // Fill missing cells with an empty string
+            );
+
+            // Initialize DataTables
+            $('#data-table').DataTable({
+                destroy: true, // Allow re-initialization
+                data: sanitizedDataRows, // Use sanitized data
+                columns: columns, // Use dynamically generated columns
+                order: [[1, 'desc']], // Sort by the second column (TANGGAL_INPUT)
+                scrollX: true, // Enable horizontal scrolling
+                autoWidth: false, // Prevent DataTables from automatically adjusting width
+                createdRow: function (row, data, dataIndex) {
+                    // Add Tailwind classes to each cell
+                    $(row).find('td').addClass('break-words whitespace-normal p-2');
+                },
+            });
+            
+        } else {
+            console.error("Invalid or empty data received from API.");
+        }
     } catch (error) {
         console.error("Error fetching data:", error.message);
-        const dataTable = document.getElementById("data-table");
-        dataTable.innerHTML = `<tr>
-            <td colspan="${maxColumns}" class="text-center text-red-600">
-                Error fetching data: ${error.message}
-            </td>
-        </tr>`;
     }
 };
 
-const renderHeaders = () => {
-    const dataTableHeader = document.getElementById("data-table-header");
-    dataTableHeader.innerHTML = ""; // Clear existing headers
-
-    for (let i = 0; i < maxColumns; i++) {
-        const headerCell = document.createElement("th");
-        headerCell.textContent = `Column ${i + 1}`; // Dynamic column names
-        headerCell.className = "px-4 py-2 border";
-        dataTableHeader.appendChild(headerCell);
-    }
-};
-
-const renderTable = () => {
-    const dataTable = document.getElementById("data-table");
-    dataTable.innerHTML = ""; // Clear existing table content
-
-    // Add table rows
-    const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const pageData = allData.slice(start, end);
-
-    pageData.forEach((row) => {
-        const tableRow = document.createElement("tr");
-        for (let i = 0; i < maxColumns; i++) {
-            const tableCell = document.createElement("td");
-            tableCell.textContent = row[i] || "N/A"; // Display "N/A" for empty fields
-            tableCell.className = "px-4 py-2 border";
-            tableRow.appendChild(tableCell);
-        }
-        dataTable.appendChild(tableRow);
-    });
-
-    if (pageData.length === 0) {
-        const emptyRow = document.createElement("tr");
-        const emptyCell = document.createElement("td");
-        emptyCell.textContent = "No data available";
-        emptyCell.className = "px-4 py-2 border text-center text-gray-500";
-        emptyCell.colSpan = maxColumns; // Use maxColumns for column span
-        emptyRow.appendChild(emptyCell);
-        dataTable.appendChild(emptyRow);
-    }
-};
-
-const renderPagination = () => {
-    const paginationContainer = document.getElementById("pagination");
-    paginationContainer.innerHTML = ""; // Clear existing pagination
-
-    const totalPages = Math.ceil(allData.length / rowsPerPage);
-    for (let i = 1; i <= totalPages; i++) {
-        const pageButton = document.createElement("button");
-        pageButton.textContent = i;
-        pageButton.className = `px-3 py-1 mx-1 border rounded ${
-            i === currentPage ? "bg-blue-500 text-white" : "bg-white text-blue-500"
-        }`;
-        pageButton.addEventListener("click", () => {
-            currentPage = i;
-            renderTable();
-            renderPagination();
-        });
-        paginationContainer.appendChild(pageButton);
-    }
-};
-
-// Fetch data on page load
 fetchData();
