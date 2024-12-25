@@ -24,5 +24,6 @@ router.put('/update', asyncHandler(updateGoogleSheetsEntry));    // Update
 router.delete('/delete', asyncHandler(deleteGoogleSheetsEntry)); // Delete
 
 // New route to handle sppd_add
-router.post('/sppd_add', asyncHandler(createSPPDEntry)); 
+router.post('/sppd_add', asyncHandler(createSPPDEntry));         // Create SPPD Entry
+
 module.exports = router;
