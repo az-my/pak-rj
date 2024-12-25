@@ -5,124 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sheets Management</title>
     <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="https://cdn.tailwindcss.com">
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <!-- Tailwind JavaScript -->
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
-    <!-- Full-Width Container -->
-    <div class="w-full mx-auto p-4 grid gap-8">
-        <!-- Input Form -->
+    <div class="w-full max-w-screen-sm mx-auto p-4 sm:p-6">
+        <!-- Form Section -->
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-xl font-bold mb-4 text-gray-700">Add New Entry</h2>
-            <form id="overtimeForm" class="bg-white shadow-md rounded px-4 sm:px-8 pt-6 pb-8">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <!-- Name Field -->
+            <form id="overtimeForm" class="grid gap-4">
+                <!-- Row 1: Name and Unit -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto">
                     <div>
-                        <label for="name" class="block text-gray-700 font-bold mb-2">Nama: <span class="text-red-500">*</span></label>
-                        <select id="name" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="name" class="block text-gray-700 font-bold mb-2">Nama <span class="text-red-500">*</span></label>
+                        <select id="name" name="name" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                             <option value="">Pilih Nama</option>
                         </select>
                     </div>
-                    <!-- Unit Field -->
                     <div>
-                        <label for="unit" class="block text-gray-700 font-bold mb-2">Unit:</label>
-                        <input id="unit" name="unit" type="text" value="UPT BANDA ACEH" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                        <label for="unit" class="block text-gray-700 font-bold mb-2">Unit</label>
+                        <input id="unit" name="unit" type="text" value="UPT BANDA ACEH" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                 </div>
-                <!-- Job Description Field -->
-                <div class="mb-4">
-                    <label for="jobDescription" class="block text-gray-700 font-bold mb-2">Uraian Pekerjaan:</label>
-                    <textarea id="jobDescription" name="jobDescription" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <!-- Row 2: Job Description -->
+                <div class="overflow-x-auto">
+                    <label for="jobDescription" class="block text-gray-700 font-bold mb-2">Uraian Pekerjaan</label>
+                    <textarea id="jobDescription" name="jobDescription" rows="3" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"></textarea>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                    <!-- Date Field -->
+                <!-- Row 3: Date, Day, and Day Status -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-x-auto">
                     <div>
-                        <label for="overtimeDate" class="block text-gray-700 font-bold mb-2">Tanggal Lembur:</label>
-                        <input id="overtimeDate" name="overtimeDate" type="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="overtimeDate" class="block text-gray-700 font-bold mb-2">Tanggal Lembur</label>
+                        <input id="overtimeDate" name="overtimeDate" type="date" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
-                    <!-- Day Field -->
                     <div>
-                        <label for="day" class="block text-gray-700 font-bold mb-2">Hari:</label>
-                        <input id="day" name="day" type="text" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                        <label for="day" class="block text-gray-700 font-bold mb-2">Hari</label>
+                        <input id="day" name="day" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
-                    <!-- Day Status Field -->
                     <div>
-                        <label for="dayStatus" class="block text-gray-700 font-bold mb-2">Status Hari:</label>
-                        <input id="dayStatus" name="dayStatus" type="text" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                        <label for="dayStatus" class="block text-gray-700 font-bold mb-2">Status Hari</label>
+                        <input id="dayStatus" name="dayStatus" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                    <!-- Start Time Field -->
+                <!-- Row 4: Start Time, End Time, Duration, and Total Hours -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto">
                     <div>
-                        <label for="startTime" class="block text-gray-700 font-bold mb-2">Jam Mulai:</label>
-                        <select id="startTime" name="startTime" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="startTime" class="block text-gray-700 font-bold mb-2">Jam Mulai</label>
+                        <select id="startTime" name="startTime" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                             <option value="">Pilih Jam</option>
                         </select>
                     </div>
-                    <!-- End Time Field -->
                     <div>
-                        <label for="endTime" class="block text-gray-700 font-bold mb-2">Jam Selesai:</label>
-                        <select id="endTime" name="endTime" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="endTime" class="block text-gray-700 font-bold mb-2">Jam Selesai</label>
+                        <select id="endTime" name="endTime" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                             <option value="">Pilih Jam</option>
                         </select>
                     </div>
-                    <!-- Duration Field -->
                     <div>
-                        <label for="duration" class="block text-gray-700 font-bold mb-2">Durasi (Jam):</label>
-                        <input id="duration" name="duration" type="text" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                        <label for="duration" class="block text-gray-700 font-bold mb-2">Durasi (Jam)</label>
+                        <input id="duration" name="duration" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
-                    <!-- Total Hours Field -->
                     <div>
-                        <label for="totalHours" class="block text-gray-700 font-bold mb-2">Total Jam:</label>
-                        <input id="totalHours" name="totalHours" type="text" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                        <label for="totalHours" class="block text-gray-700 font-bold mb-2">Total Jam</label>
+                        <input id="totalHours" name="totalHours" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                    <!-- Hourly Wage Field -->
+                <!-- Row 5: Hourly Wage and Total Cost -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto">
                     <div>
-                        <label for="hourlyWage" class="block text-gray-700 font-bold mb-2">Upah Lembur Per Jam:</label>
-                        <input id="hourlyWage" name="hourlyWage" type="text" value="22.156,00" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                        <label for="hourlyWage" class="block text-gray-700 font-bold mb-2">Upah Lembur Per Jam</label>
+                        <input id="hourlyWage" name="hourlyWage" type="text" value="22.156,00" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
-                    <!-- Total Cost Field -->
                     <div>
-                        <label for="totalCost" class="block text-gray-700 font-bold mb-2">Total Biaya:</label>
-                        <input id="totalCost" name="totalCost" type="text" disabled class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                        <label for="totalCost" class="block text-gray-700 font-bold mb-2">Total Biaya</label>
+                        <input id="totalCost" name="totalCost" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                 </div>
+                <!-- Row 6: Submit Button -->
                 <div class="flex justify-center">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Submit
-                    </button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none">Submit</button>
                 </div>
             </form>
-            <p id="formMessage" class="mt-4 text-sm text-red-600 hidden"></p>
         </div>
-<!-- Table with Pagination -->
-<!-- Table with Pagination -->
+        <!-- Row 7: Table with Pagination -->
+<!-- Row 7: Table with Pagination -->
 <div class="bg-white shadow-md rounded-lg p-6">
     <h2 class="text-xl font-bold mb-4 text-gray-700">Existing Data</h2>
     <div class="overflow-x-auto">
-        <table class="table-auto table-fixed w-full text-left border-collapse border border-gray-300" id="data-table">
-            <thead class="bg-gray-200 text-gray-700 whitespace-normal break-words" id="data-table-header">
-                <!-- Headers populated dynamically -->
+        <table class="table-auto w-full border-collapse border border-gray-300 text-sm" id="data-table">
+            <thead class="bg-gray-200 text-gray-700">
+                <tr>
+                    <!-- Dynamically generated headers -->
+                    <th class="border border-gray-300 px-2 py-1">UUID</th>
+                    <th class="border border-gray-300 px-2 py-1">TANGGAL INPUT</th>
+                    <th class="border border-gray-300 px-2 py-1">NAMA DRIVER</th>
+                    <th class="border border-gray-300 px-2 py-1">UNIT</th>
+                    <th class="border border-gray-300 px-2 py-1">URAIAN PEKERJAAN</th>
+                    <th class="border border-gray-300 px-2 py-1">TANGGAL LEMBUR</th>
+                    <th class="border border-gray-300 px-2 py-1">HARI</th>
+                    <th class="border border-gray-300 px-2 py-1">STATUS HARI</th>
+                    <th class="border border-gray-300 px-2 py-1">JAM MULAI</th>
+                    <th class="border border-gray-300 px-2 py-1">JAM SELESAI</th>
+                    <th class="border border-gray-300 px-2 py-1">TOTAL JAM LEMBUR</th>
+                    <th class="border border-gray-300 px-2 py-1">TOTAL BIAYA</th>
+                </tr>
             </thead>
             <tbody id="data-table-body">
-                <!-- Data populated dynamically -->
+                <!-- Dynamically populated rows -->
             </tbody>
         </table>
     </div>
     <div id="pagination" class="flex justify-center mt-4"></div>
 </div>
-
-
     </div>
+    <!-- Scripts -->
     <script src="./populate-names.js"></script>
     <script src="./update-day-from-date.js"></script>
     <script src="./update-day-status-with-public-api.js"></script>
