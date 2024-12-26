@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 </head>
+
 <body class="bg-gray-100 font-sans">
     <div class="w-full mx-auto p-4 sm:p-6">
         <!-- Form Section -->
@@ -22,118 +24,132 @@
                 <!-- Row 1: Name and Unit -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto">
                     <div>
-                        <label for="name" class="block text-gray-700 font-bold mb-2">Nama <span class="text-red-500">*</span></label>
-                        <select id="name" name="name" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <label for="name" class="block text-gray-700 font-bold mb-2">Nama <span
+                                class="text-red-500">*</span></label>
+                        <select id="name" name="name"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                             <option value="">Pilih Nama</option>
                         </select>
                     </div>
                     <div>
                         <label for="unit" class="block text-gray-700 font-bold mb-2">Unit</label>
-                        <input id="unit" name="unit" type="text" value="UPT BANDA ACEH" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <input id="unit" name="unit" type="text" value="UPT BANDA ACEH" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                 </div>
                 <!-- Row 2: Job Description -->
                 <div class="overflow-x-auto">
                     <label for="jobDescription" class="block text-gray-700 font-bold mb-2">Uraian Pekerjaan</label>
-                    <textarea id="jobDescription" name="jobDescription" rows="3" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"></textarea>
+                    <textarea id="jobDescription" name="jobDescription" rows="3"
+                        class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"></textarea>
                 </div>
                 <!-- Row 3: Date, Day, and Day Status -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-x-auto">
                     <div>
                         <label for="overtimeDate" class="block text-gray-700 font-bold mb-2">Tanggal Lembur</label>
-                        <input id="overtimeDate" name="overtimeDate" type="date" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <input id="overtimeDate" name="overtimeDate" type="date"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                     <div>
                         <label for="day" class="block text-gray-700 font-bold mb-2">Hari</label>
-                        <input id="day" name="day" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <input id="day" name="day" type="text" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                     <div>
                         <label for="dayStatus" class="block text-gray-700 font-bold mb-2">Status Hari</label>
-                        <input id="dayStatus" name="dayStatus" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <input id="dayStatus" name="dayStatus" type="text" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                 </div>
                 <!-- Row 4: Start Time, End Time, Duration, and Total Hours -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto">
                     <div>
                         <label for="startTime" class="block text-gray-700 font-bold mb-2">Jam Mulai</label>
-                        <select id="startTime" name="startTime" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <select id="startTime" name="startTime"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                             <option value="">Pilih Jam</option>
                         </select>
                     </div>
                     <div>
                         <label for="endTime" class="block text-gray-700 font-bold mb-2">Jam Selesai</label>
-                        <select id="endTime" name="endTime" class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <select id="endTime" name="endTime"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                             <option value="">Pilih Jam</option>
                         </select>
                     </div>
                     <div>
                         <label for="duration" class="block text-gray-700 font-bold mb-2">Durasi (Jam)</label>
-                        <input id="duration" name="duration" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <input id="duration" name="duration" type="text" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                     <div>
                         <label for="totalHours" class="block text-gray-700 font-bold mb-2">Total Jam</label>
-                        <input id="totalHours" name="totalHours" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <input id="totalHours" name="totalHours" type="text" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                 </div>
                 <!-- Row 5: Hourly Wage and Total Cost -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto">
                     <div>
                         <label for="hourlyWage" class="block text-gray-700 font-bold mb-2">Upah Lembur Per Jam</label>
-                        <input id="hourlyWage" name="hourlyWage" type="text" value="22.156,00" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <input id="hourlyWage" name="hourlyWage" type="text" value="22.156,00" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                     <div>
                         <label for="totalCost" class="block text-gray-700 font-bold mb-2">Total Biaya</label>
-                        <input id="totalCost" name="totalCost" type="text" disabled class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                        <input id="totalCost" name="totalCost" type="text" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                 </div>
                 <!-- Row 6: Submit Button -->
                 <div class="flex justify-center">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none">Submit</button>
+                    <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none">Submit</button>
                     <div id="alert-container" class="hidden fixed top-4 inset-x-0 flex justify-center items-center">
-                        <div id="alert" class="max-w-sm w-full bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <div id="alert"
+                            class="max-w-sm w-full bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                            role="alert">
                             <strong id="alert-title" class="font-bold">Success</strong>
                             <span id="alert-message" class="block sm:inline"></span>
                             <span id="close-alert" class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                                <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path d="M14.348 14.849a1 1 0 01-1.414 0L10 11.414 6.066 15.35a1 1 0 01-1.414-1.415l3.935-3.935-3.935-3.936a1 1 0 011.414-1.414L10 8.586l3.936-3.935a1 1 0 111.414 1.414l-3.935 3.936 3.935 3.935a1 1 0 010 1.414z"/>
+                                <svg class="fill-current h-6 w-6 text-green-500" role="button"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path
+                                        d="M14.348 14.849a1 1 0 01-1.414 0L10 11.414 6.066 15.35a1 1 0 01-1.414-1.415l3.935-3.935-3.935-3.936a1 1 0 011.414-1.414L10 8.586l3.936-3.935a1 1 0 111.414 1.414l-3.935 3.936 3.935 3.935a1 1 0 010 1.414z" />
                                 </svg>
                             </span>
                         </div>
                     </div>
-                    
+
                 </div>
             </form>
         </div>
         <!-- Row 7: Table with Pagination -->
-<!-- Row 7: Table with Pagination -->
-<div class="bg-white shadow-md rounded-lg p-6">
-    <h2 class="text-xl font-bold mb-4 text-gray-700">Existing Data</h2>
-    <div class="overflow-x-auto">
-        <table class="table-auto w-full text-sm text-left border border-gray-300 break-words" id="data-table">
-            <thead class="bg-gray-200 text-gray-700">
-              
-            </thead>
-            <tbody id="data-table-body break-all">
-                <!-- Dynamically populated rows -->
-            </tbody>
-        </table>
-    </div>
-    <div id="pagination" class="flex justify-center mt-4"></div>
-</div>
+        <!-- Row 7: Table with Pagination -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Existing Data</h2>
+            <div class="overflow-x-auto">
+                <table class="table-auto w-full text-sm text-left border border-gray-300 break-words" id="data-table">
+                    <thead class="bg-gray-200 text-gray-700">
 
+                    </thead>
+                    <tbody id="data-table-body break-all">
+                        <!-- Dynamically populated rows -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="pagination" class="flex justify-center mt-4"></div>
+        </div>
+        <div id="bottom-tab-nav"></div>
     </div>
-    <!-- Placeholder for Bottom Tab -->
-    <div id="bottom-tab-container"></div>
-    <!-- Scripts -->
-    <!-- Scripts -->
+    
+
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("bottom-tab.html")
-        .then((response) => response.text())
-        .then((data) => {
-            document.body.insertAdjacentHTML("beforeend", data);
+      fetch('bottom-tab.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('bottom-tab-nav').innerHTML = data;
         });
-});
     </script>
     <script src="./lembur-frontend-utils-driver.js"></script>
     <script src="./lembur-frontend-utils-extract-day.js"></script>
@@ -145,4 +161,5 @@
     <script src="./lembur-frontend-add.js"></script>
     <script src="./lembur-frontend-read.js"></script>
 </body>
+
 </html>

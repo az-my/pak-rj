@@ -38,6 +38,7 @@ form.addEventListener("submit", async (event) => {
         unit: document.getElementById("unit").value,
         pemberiTugas: document.getElementById("pemberiTugas").value,
         tujuan: formData.get("tujuan"),
+        maksud_perjalanan: formData.get("maksud_perjalanan"),
         tanggalMulai: formData.get("tanggalMulai"),
         tanggalSampai: formData.get("tanggalSampai"),
         durasi: document.getElementById("durasi").value,

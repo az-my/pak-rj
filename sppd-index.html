@@ -14,125 +14,136 @@
 
 <body class="bg-gray-100 font-sans">
     <div class="w-full mx-auto p-4 sm:p-6">
-        <h2 class="text-xl font-bold mb-4 text-gray-700">SPPD Data Input</h2>
-        <form id="sppdForm" class="grid gap-4">
-            <!-- Row 1: Nama Driver, Unit, Pemberi Tugas -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto">
-                <div>
-                    <label for="namaDriver" class="block text-gray-700 font-bold mb-2">Nama Driver: <span
-                            class="text-red-500">*</span></label>
-                    <select id="namaDriver" name="namaDriver"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        <option value="">Pilih Driver</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="unit" class="block text-gray-700 font-bold mb-2">Unit:</label>
-                    <input id="unit" name="unit" type="text" value="" disabled
-                        class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                </div>
-
-                <div>
-                    <label for="pemberiTugas" class="block text-gray-700 font-bold mb-2">Pemberi Tugas:</label>
-                    <input id="pemberiTugas" name="pemberiTugas" type="text" value="" disabled
-                        class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                </div>
-            </div>
-
-            <!-- Row 2: Asal Berangkat, Tujuan, Durasi -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto4">
-                <div>
-                    <label for="asalBerangkat" class="block text-gray-700 font-bold mb-2">Asal Berangkat:</label>
-                    <input id="asalBerangkat" name="asalBerangkat" type="text" value="" disabled
-                        class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                </div>
-
-                <div>
-                    <label for="tujuan" class="block text-gray-700 font-bold mb-2">Tujuan:</label>
-                    <input id="tujuan" name="tujuan" type="text"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-
-
-            </div>
-
-            <!-- Row 3: Tanggal Mulai, Tanggal Sampai, Hotel -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-x-auto">
-                <div>
-                    <label for="tanggalMulai" class="block text-gray-700 font-bold mb-2">Tanggal Mulai:</label>
-                    <input id="tanggalMulai" name="tanggalMulai" type="date"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-
-                <div>
-                    <label for="tanggalSampai" class="block text-gray-700 font-bold mb-2">Tanggal Sampai:</label>
-                    <input id="tanggalSampai" name="tanggalSampai" type="date"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div>
-                    <label for="durasi" class="block text-gray-700 font-bold mb-2">Durasi (hari):</label>
-                    <input id="durasi" name="durasi" type="text" value="" disabled
-                        class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                </div>
-                <div class="flex items-center">
-                    <label for="hotel" class="block text-gray-700 font-bold mr-2">Hotel:</label>
-                    <input id="hotel" name="hotel" type="checkbox" class="hidden">
-                    <div class="relative cursor-pointer" id="hotelSwitchContainer">
-                        <div id="hotelSwitchBg"
-                            class="block w-14 h-8 bg-gray-300 rounded-full transition-colors duration-200">
-                            <div class="w-6 h-6 bg-white rounded-full shadow absolute top-1 left-1 transform transition-transform duration-200"
-                                id="hotelSwitch"></div>
-                        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">SPPD Data Input</h2>
+            <form id="sppdForm" class="grid gap-4">
+                <!-- Row 1: Nama Driver, Unit, Pemberi Tugas -->
+                <div class="grid gap-6 mb-6 md:grid-cols-6">
+                    <div>
+                        <label for="namaDriver" class="block text-gray-700 font-bold mb-2">Nama Driver: <span
+                                class="text-red-500">*</span></label>
+                        <select id="namaDriver" name="namaDriver"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Pilih Driver</option>
+                        </select>
                     </div>
-                    <span class="ml-2 text-gray-700" id="hotelStatus">No</span>
-                </div>
-            </div>
+                    <div>
+                        <label for="tujuan" class="block text-gray-700 font-bold mb-2">Tujuan:</label>
+                        <input id="tujuan" name="tujuan" type="text"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div>
+                        <label for="maksud_perjalanan" class="block text-gray-700 font-bold mb-2">Maksud Perjalanan:</label>
+                        <input id="maksud_perjalanan" name="maksud_perjalanan" type="text"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div>
+                        <label for="tanggalMulai" class="block text-gray-700 font-bold mb-2">Tanggal Mulai:</label>
+                        <input id="tanggalMulai" name="tanggalMulai" type="date"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
 
-            <!-- Row 4: Budget Biaya Harian, Budget Biaya Penginapan, Total Biaya Harian, Total Biaya Penginapan, Total Biaya SPPD -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto">
-                <div>
-                    <label for="budgetBiayaHarian" class="block text-gray-700 font-bold mb-2">Budget Biaya
-                        Harian:</label>
-                    <input id="budgetBiayaHarian" name="budgetBiayaHarian" type="text" value="150.000" disabled
-                        class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    <div>
+                        <label for="tanggalSampai" class="block text-gray-700 font-bold mb-2">Tanggal Sampai:</label>
+                        <input id="tanggalSampai" name="tanggalSampai" type="date"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="flex items-center">
+                        <label for="hotel" class="block text-gray-700 font-bold mr-2">Hotel:</label>
+                        <input id="hotel" name="hotel" type="checkbox" class="hidden">
+                        <div class="relative cursor-pointer" id="hotelSwitchContainer">
+                            <div id="hotelSwitchBg"
+                                class="block w-14 h-8 bg-gray-300 rounded-full transition-colors duration-200">
+                                <div class="w-6 h-6 bg-white rounded-full shadow absolute top-1 left-1 transform transition-transform duration-200"
+                                    id="hotelSwitch"></div>
+                            </div>
+                        </div>
+                        <span class="ml-2 text-gray-700" id="hotelStatus">No</span>
+                    </div>
                 </div>
 
-                <div>
-                    <label for="budgetBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Budget Biaya
-                        Penginapan:</label>
-                    <input id="budgetBiayaPenginapan" name="budgetBiayaPenginapan" type="text" value="250.000" disabled
-                        class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                <!-- Row 2: Asal Berangkat, Tujuan, Durasi -->
+                <div class="grid gap-6 mb-6 md:grid-cols-3">
+                    <div class="hidden">
+                        <label for="asalBerangkat" class="block text-gray-700 font-bold mb-2">Asal Berangkat:</label>
+                        <input id="asalBerangkat" name="asalBerangkat" type="text" value="" disabled
+                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    </div>
+
+                    <div class="hidden">
+                        <label for="unit" class="block text-gray-700 font-bold mb-2">Unit:</label>
+                        <input id="unit" name="unit" type="text" value="" disabled
+                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    </div>
+                    <div class="hidden">
+                        <label for="pemberiTugas" class="block text-gray-700 font-bold mb-2">Pemberi Tugas:</label>
+                        <input id="pemberiTugas" name="pemberiTugas" type="text" value="" disabled
+                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    </div>
+
+
                 </div>
 
-                <div>
-                    <label for="totalBiayaHarian" class="block text-gray-700 font-bold mb-2">Total Biaya Harian:</label>
-                    <input id="totalBiayaHarian" name="totalBiayaHarian" type="text" value="" disabled
-                        class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                <!-- Row 3: Tanggal Mulai, Tanggal Sampai, Hotel -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-x-auto">
+
+                    <div class="hidden">
+                        <label for="durasi" class="block text-gray-700 font-bold mb-2">Durasi (hari):</label>
+                        <input id="durasi" name="durasi" type="text" value="" disabled
+                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    </div>
+ 
                 </div>
 
-                <div>
-                    <label for="totalBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Total Biaya
-                        Penginapan:</label>
-                    <input id="totalBiayaPenginapan" name="totalBiayaPenginapan" type="text" value="" disabled
-                        class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                <!-- Row 4: Budget Biaya Harian, Budget Biaya Penginapan, Total Biaya Harian, Total Biaya Penginapan, Total Biaya SPPD -->
+                <div class="grid gap-6 mb-6 md:grid-cols-5 hidden">
+                    <div>
+                        <label for="budgetBiayaHarian" class="block text-gray-700 font-bold mb-2">Budget Biaya
+                            Harian:</label>
+                        <input id="budgetBiayaHarian" name="budgetBiayaHarian" type="text" value="150.000" disabled
+                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="budgetBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Budget Biaya
+                            Penginapan:</label>
+                        <input id="budgetBiayaPenginapan" name="budgetBiayaPenginapan" type="text" value="250.000"
+                            disabled
+                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="totalBiayaHarian" class="block text-gray-700 font-bold mb-2">Total Biaya
+                            Harian:</label>
+                        <input id="totalBiayaHarian" name="totalBiayaHarian" type="text" value="" disabled
+                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="totalBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Total Biaya
+                            Penginapan:</label>
+                        <input id="totalBiayaPenginapan" name="totalBiayaPenginapan" type="text" value="" disabled
+                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="totalBiayaSPPD" class="block text-gray-700 font-bold mb-2">Total Biaya SPPD:</label>
+                        <input id="totalBiayaSPPD" name="totalBiayaSPPD" type="text" value="" disabled
+                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    </div>
                 </div>
 
-                <div>
-                    <label for="totalBiayaSPPD" class="block text-gray-700 font-bold mb-2">Total Biaya SPPD:</label>
-                    <input id="totalBiayaSPPD" name="totalBiayaSPPD" type="text" value="" disabled
-                        class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                <!-- Submit Button -->
+                <div class="flex justify-center">
+                    <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Submit
+                    </button>
                 </div>
-            </div>
+            </form>
+        </div>
 
-            <!-- Submit Button -->
-            <div class="flex justify-center">
-                <button type="submit"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Submit
-                </button>
-            </div>
-        </form>
+
         <!-- Row 7: Table with Pagination -->
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-xl font-bold mb-4 text-gray-700">Existing Data</h2>
@@ -149,19 +160,18 @@
             <div id="pagination" class="flex justify-center mt-4"></div>
         </div>
 
-
+        <div id="bottom-tab-nav"></div>
     </div>
 
     <!-- Placeholder for Bottom Tab -->
-    <div id="bottom-tab-container"></div>
+
+
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("bottom-tab.html")
-                .then((response) => response.text())
-                .then((data) => {
-                    document.body.insertAdjacentHTML("beforeend", data);
-                });
-        });
+        fetch('bottom-tab.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('bottom-tab-nav').innerHTML = data;
+            });
     </script>
     <script src="sppd-frontend-utils-driver.js"></script>
     <script src="sppd-frontend-utils-tanggal.js"></script>
