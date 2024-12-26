@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPPD Input Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
 </head>
 <body class="bg-gray-100 font-sans">
     <div class="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
@@ -107,6 +111,21 @@
                 </button>
             </div>
         </form>
+        <!-- Row 7: Table with Pagination -->
+<div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-bold mb-4 text-gray-700">Existing Data</h2>
+    <div class="overflow-x-auto">
+        <table class="table-auto w-full text-sm text-left border border-gray-300 break-words" id="data-table">
+            <thead class="bg-gray-200 text-gray-700">
+              
+            </thead>
+            <tbody id="data-table-body break-all">
+                <!-- Dynamically populated rows -->
+            </tbody>
+        </table>
+    </div>
+    <div id="pagination" class="flex justify-center mt-4"></div>
+</div>
     </div>
 
     
