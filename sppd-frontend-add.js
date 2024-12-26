@@ -67,14 +67,24 @@ form.addEventListener("submit", async (event) => {
             alertMessage.textContent = result.message;
             alert.className =
                 "bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative";
+            alertContainer.classList.remove("hidden");
+            // Optional: Refresh data if fetchData is defined
+        if (typeof fetchData === "function") {
+            fetchData();
+        }
+            // Clear form and reload page after 3 seconds
+            setTimeout(() => {
+                form.reset();
+                alertContainer.classList.add("hidden");
+                // location.reload(); // Reload the page
+            }, 3000); // 3 seconds delay
         } else {
             alertTitle.textContent = "Error";
-            alertMessage.textContent = result.error;
+            alertMessage.textContent = result.error || "An error occurred.";
             alert.className =
                 "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative";
+            alertContainer.classList.remove("hidden");
         }
-
-        alertContainer.classList.remove("hidden");
     } catch (error) {
         alertTitle.textContent = "Error";
         alertMessage.textContent = "An error occurred while processing your request.";
