@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-const { getFormattedTimestamp } = require('./utility_timestamp');
+const { getFormattedTimestamp } = require('./utils-timestamp');
 const { sheets } = require('./google_sheets_service');
 
 const createSPPDEntry = async (req, res) => {

@@ -1,8 +1,8 @@
 const express = require('express');
-const createGoogleSheetsEntry = require('./google_sheets_create');
-const readGoogleSheetsEntries = require('./google_sheets_read');
-const updateGoogleSheetsEntry = require('./google_sheets_update');
-const deleteGoogleSheetsEntry = require('./google_sheets_delete');
+const createGoogleSheetsEntry = require('./lembur-backend-add');
+const readGoogleSheetsEntries = require('./lembur-backend-read');
+const updateGoogleSheetsEntry = require('./lembur-backend-update');
+const deleteGoogleSheetsEntry = require('./lembur-backend-delete');
 const createSPPDEntry = require('./sppd-backend-add');
 const router = express.Router();
 
