@@ -120,8 +120,21 @@
     </div>
     <div id="pagination" class="flex justify-center mt-4"></div>
 </div>
+
     </div>
+    <!-- Placeholder for Bottom Tab -->
+    <div id="bottom-tab-container"></div>
     <!-- Scripts -->
+    <!-- Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("bottom-tab.html")
+        .then((response) => response.text())
+        .then((data) => {
+            document.body.insertAdjacentHTML("beforeend", data);
+        });
+});
+    </script>
     <script src="./lembur-frontend-utils-driver.js"></script>
     <script src="./lembur-frontend-utils-extract-day.js"></script>
     <script src="./lembur-frontend-utils-daystatus.js"></script>
