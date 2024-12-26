@@ -1,4 +1,4 @@
-const API_SPPD_ADD = "https://rj.up.railway.app/api/google-sheets/sppd_add";
+const API_SPPD_ADD = "https://rj.up.railway.app/api/google-sheets/sppd-add";
 
 const form = document.getElementById("sppdForm");
 

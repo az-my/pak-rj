@@ -3,48 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>HTMX SPA Example</title>
+    <script src="https://cdn.tailwindcss.com"></script
+    <script src="https://unpkg.com/htmx.org"></script>
 </head>
-<body class="bg-gray-100">
-    <div class="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
-        <div class="flex flex-col space-y-4">
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <a href="lembur/index.html" class="block p-4 hover:bg-blue-100">
-                    <h2 class="text-lg font-bold text-blue-500">Isi Data Mentah Lembur</h2>
-                </a>
-            </div>
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <a href="sppd/index.html" class="block p-4 hover:bg-blue-100">
-                    <h2 class="text-lg font-bold text-blue-500">Isi Data Mentah SPPD</h2>
-                </a>
-            </div>
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <a href="cetak/rekap-lembur-pln.html" class="block p-4 hover:bg-red-100">
-                    <h2 class="text-lg font-bold text-blue-500">Cetak Rekap Lembur untuk PLN</h2>
-                </a>
-            </div>
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <a href="cetak/rekap-lembur-kantor.html" class="block p-4 hover:bg-red-100">
-                    <h2 class="text-lg font-bold text-blue-500">Cetak Rekap Lembur untuk Kantor</h2>
-                </a>
-            </div>
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <a href="cetak/rekap-sppd-pln.html" class="block p-4 hover:bg-red-100">
-                    <h2 class="text-lg font-bold text-blue-500">Cetak Rekap SPPD untuk PLN</h2>
-                </a>
-            </div>
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <a href="cetak/rekap-sppd-kantor.html" class="block p-4 hover:bg-red-100">
-                    <h2 class="text-lg font-bold text-blue-500">Cetak Rekap SPPD untuk Kantor</h2>
-                </a>
-            </div>
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <a href="cetak/lampiran-sppd-vendor.html" class="block p-4 hover:bg-green-100">
-                    <h2 class="text-lg font-bold text-blue-500">Cetak Lampiran SPPD Vendor</h2>
-                </a>
-            </div>
-        </div>
-    </div>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <div hx-get="header.html" hx-target="#header" hx-swap="outerHTML"></div>
+
+    <!-- Navigation -->
+    <nav class="bg-blue-600 text-white p-4 shadow-lg">
+        <ul class="flex justify-center space-x-6">
+            <li><a href="page1.html" hx-get="page1.html" hx-target="#content" class="hover:underline hover:text-yellow-300">Page 1</a></li>
+            <li><a href="page2.html" hx-get="page2.html" hx-target="#content" class="hover:underline hover:text-yellow-300">Page 2</a></li>
+            <li><a href="page3.html" hx-get="page3.html" hx-target="#content" class="hover:underline hover:text-yellow-300">Page 3</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="content" class="max-w-5xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-8">
+        <h2 class="text-3xl font-extrabold text-blue-600">Welcome!</h2>
+        <p class="mt-4 text-gray-600">Please select a page from the navigation menu above.</p>
+    </main>
+
+    <!-- Footer -->
+    <div hx-get="footer.html" hx-target="#footer" hx-swap="outerHTML"></div>
 </body>
 </html>
