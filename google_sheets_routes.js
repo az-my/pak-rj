@@ -3,7 +3,7 @@ const createGoogleSheetsEntry = require('./google_sheets_create');
 const readGoogleSheetsEntries = require('./google_sheets_read');
 const updateGoogleSheetsEntry = require('./google_sheets_update');
 const deleteGoogleSheetsEntry = require('./google_sheets_delete');
-const createSPPDEntry = require('./google_sheets_sppd_create');
+const createSPPDEntry = require('./sppd-backend-add');
 const router = express.Router();
 
 // Wrapper function to handle async errors
@@ -24,6 +24,6 @@ router.put('/update', asyncHandler(updateGoogleSheetsEntry));    // Update
 router.delete('/delete', asyncHandler(deleteGoogleSheetsEntry)); // Delete
 
 // New route to handle sppd_add
-router.post('/sppd_add', asyncHandler(createSPPDEntry));         // Create SPPD Entry
+router.post('/sppd-add', asyncHandler(createSPPDEntry));         // Create SPPD Entry
 
 module.exports = router;

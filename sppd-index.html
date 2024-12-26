@@ -109,41 +109,11 @@
         </form>
     </div>
 
-    <script src="populate_driver_data.js"></script>
-    <script src="tanggal_validation.js"></script>
-    <script src="calculate-durasi.js"></script>
-    <script src="hotel_switch_handler.js"></script>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const durasiInput = document.getElementById("durasi");
-            const budgetBiayaHarian = 150000;
-            const budgetBiayaPenginapan = 250000;
-
-            const totalBiayaHarianInput = document.getElementById("totalBiayaHarian");
-            const totalBiayaPenginapanInput = document.getElementById("totalBiayaPenginapan");
-            const totalBiayaSPPDInput = document.getElementById("totalBiayaSPPD");
-            const hotelCheckbox = document.getElementById("hotel");
-
-            const formatCurrency = (number) => {
-                return number.toLocaleString("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).replace("Rp", "").trim();
-            };
-
-            const calculateCosts = () => {
-                const durasi = parseInt(durasiInput.value) || 0;
-                const totalBiayaHarian = durasi * budgetBiayaHarian;
-                const totalBiayaPenginapan = hotelCheckbox.checked ? durasi * budgetBiayaPenginapan : 0;
-                const totalBiayaSPPD = totalBiayaHarian + totalBiayaPenginapan;
-
-                totalBiayaHarianInput.value = formatCurrency(totalBiayaHarian);
-                totalBiayaPenginapanInput.value = formatCurrency(totalBiayaPenginapan);
-                totalBiayaSPPDInput.value = formatCurrency(totalBiayaSPPD);
-            };
-
-            durasiInput.addEventListener("input", calculateCosts);
-            hotelCheckbox.addEventListener("change", calculateCosts);
-        });
-    </script>
-    <script src="sppd-save.js"></script>
+    <script src="sppd-frontend-utils-driver.js"></script>
+    <script src="sppd-frontend-utils-tanggal.js"></script>
+    <script src="sppd-frontend-utils-durasi.js"></script>
+    <script src="sppd-frontend-utils-hotel.js"></script>
+    <script src="sppd-frontend-add.js"></script>
+    <script src="sppd-frontend-read.js"></script>
 </body>
 </html>
