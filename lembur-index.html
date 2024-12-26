@@ -22,7 +22,7 @@
             <h2 class="text-xl font-bold mb-4 text-gray-700">Isi Data Mentah Lembur</h2>
             <form id="overtimeForm" class="grid gap-4">
                 <!-- Row 1: Name and Unit -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto">
+                <div class="grid gap-6 mb-6 md:grid-cols-5">
                     <div>
                         <label for="name" class="block text-gray-700 font-bold mb-2">Nama <span
                                 class="text-red-500">*</span></label>
@@ -31,38 +31,16 @@
                             <option value="">Pilih Nama</option>
                         </select>
                     </div>
-                    <div>
-                        <label for="unit" class="block text-gray-700 font-bold mb-2">Unit</label>
-                        <input id="unit" name="unit" type="text" value="UPT BANDA ACEH" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                    <div class="overflow-x-auto">
+                        <label for="jobDescription" class="block text-gray-700 font-bold mb-2">Uraian Pekerjaan</label>
+                        <textarea id="jobDescription" name="jobDescription" rows="3"
+                            class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"></textarea>
                     </div>
-                </div>
-                <!-- Row 2: Job Description -->
-                <div class="overflow-x-auto">
-                    <label for="jobDescription" class="block text-gray-700 font-bold mb-2">Uraian Pekerjaan</label>
-                    <textarea id="jobDescription" name="jobDescription" rows="3"
-                        class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"></textarea>
-                </div>
-                <!-- Row 3: Date, Day, and Day Status -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-x-auto">
                     <div>
                         <label for="overtimeDate" class="block text-gray-700 font-bold mb-2">Tanggal Lembur</label>
                         <input id="overtimeDate" name="overtimeDate" type="date"
                             class="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
-                    <div>
-                        <label for="day" class="block text-gray-700 font-bold mb-2">Hari</label>
-                        <input id="day" name="day" type="text" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
-                    </div>
-                    <div>
-                        <label for="dayStatus" class="block text-gray-700 font-bold mb-2">Status Hari</label>
-                        <input id="dayStatus" name="dayStatus" type="text" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
-                    </div>
-                </div>
-                <!-- Row 4: Start Time, End Time, Duration, and Total Hours -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto">
                     <div>
                         <label for="startTime" class="block text-gray-700 font-bold mb-2">Jam Mulai</label>
                         <select id="startTime" name="startTime"
@@ -77,20 +55,46 @@
                             <option value="">Pilih Jam</option>
                         </select>
                     </div>
+                    <div class="hidden">
+                        <label for="unit" class="block text-gray-700 font-bold mb-2">Unit</label>
+                        <input id="unit" name="unit" type="text" value="UPT BANDA ACEH" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                    </div>
+                </div>
+                <!-- Row 2: Job Description -->
+                
+                <!-- Row 3: Date, Day, and Day Status -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-x-auto hidden">
+
+                    <div class="hidden">
+                        <label for="day" class="block text-gray-700 font-bold mb-2">Hari</label>
+                        <input id="day" name="day" type="text" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                    </div>
                     <div>
+                        <label for="dayStatus" class="block text-gray-700 font-bold mb-2">Status Hari</label>
+                        <input id="dayStatus" name="dayStatus" type="text" disabled
+                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                    </div>
+                </div>
+                <!-- Row 4: Start Time, End Time, Duration, and Total Hours -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto hidden">
+
+
+                    <div class="hidden">
                         <label for="duration" class="block text-gray-700 font-bold mb-2">Durasi (Jam)</label>
                         <input id="duration" name="duration" type="text" disabled
                             class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
-                    <div>
+                    <div class="hidden">
                         <label for="totalHours" class="block text-gray-700 font-bold mb-2">Total Jam</label>
                         <input id="totalHours" name="totalHours" type="text" disabled
                             class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                     </div>
                 </div>
                 <!-- Row 5: Hourly Wage and Total Cost -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto">
-                    <div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto hidden">
+                    <div class="hidden">
                         <label for="hourlyWage" class="block text-gray-700 font-bold mb-2">Upah Lembur Per Jam</label>
                         <input id="hourlyWage" name="hourlyWage" type="text" value="22.156,00" disabled
                             class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
@@ -142,14 +146,14 @@
         </div>
         <div id="bottom-tab-nav"></div>
     </div>
-    
+
 
     <script>
-      fetch('bottom-tab.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('bottom-tab-nav').innerHTML = data;
-        });
+        fetch('bottom-tab.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('bottom-tab-nav').innerHTML = data;
+            });
     </script>
     <script src="./lembur-frontend-utils-driver.js"></script>
     <script src="./lembur-frontend-utils-extract-day.js"></script>
