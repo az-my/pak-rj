@@ -8,25 +8,18 @@
     <script src="https://unpkg.com/htmx.org"></script>
 </head>
 <body class="bg-gray-50 text-gray-800">
-    <!-- Header -->
-    <div hx-get="header.html" hx-target="#header" hx-swap="outerHTML"></div>
+    <div id="bottom-tab-nav"></div>
+</div>
 
-    <!-- Navigation -->
-    <nav class="bg-blue-600 text-white p-4 shadow-lg">
-        <ul class="flex justify-center space-x-6">
-            <li><a href="page1.html" hx-get="page1.html" hx-target="#content" class="hover:underline hover:text-yellow-300">Page 1</a></li>
-            <li><a href="page2.html" hx-get="page2.html" hx-target="#content" class="hover:underline hover:text-yellow-300">Page 2</a></li>
-            <li><a href="page3.html" hx-get="page3.html" hx-target="#content" class="hover:underline hover:text-yellow-300">Page 3</a></li>
-        </ul>
-    </nav>
+<!-- Placeholder for Bottom Tab -->
 
-    <!-- Main Content -->
-    <main id="content" class="max-w-5xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-8">
-        <h2 class="text-3xl font-extrabold text-blue-600">Welcome!</h2>
-        <p class="mt-4 text-gray-600">Please select a page from the navigation menu above.</p>
-    </main>
 
-    <!-- Footer -->
-    <div hx-get="footer.html" hx-target="#footer" hx-swap="outerHTML"></div>
+<script>
+    fetch('bottom-tab.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('bottom-tab-nav').innerHTML = data;
+        });
+</script>
 </body>
 </html>
