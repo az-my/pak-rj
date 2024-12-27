@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lembur Report Kantor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <style>
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 20mm;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        }
+        .no-print {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-white-100 p-4">
+    <div class="container mx-auto mt-8">
+        <h1 class="text-center font-bold text-lg mb-4">JUMLAH LEMBUR <span id="transaction-month">MONTH</span> DRIVER UPT</h1>
+        <table class="table-auto border-collapse w-auto text-sm mx-auto">
+            <thead>
+                <tr class="bg-gray-100 text-center">
+                    <th class="border border-gray-500 px-2 py-1 w-auto">NO</th>
+                    <th class="border border-gray-500 px-2 py-1 w-auto">NAMA DRIVER</th>
+                    <th class="border border-gray-500 px-2 py-1 w-auto">JUMLAH SPPD</th>
+                    <th class="border border-gray-500 px-2 py-1 w-auto">HARI</th>
+                    <th class="border border-gray-500 px-2 py-1 w-auto">KETERANGAN</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <!-- Dynamic content -->
+            </tbody>
+            <tfoot>
+                <tr class="border border-gray-500 px-2 py-1 w-auto">
+                    <td colspan="2" class="border border-gray-500 px-2 py-1 font-bold text-right">JUMLAH</td>
+                    <td class="border border-gray-500 px-2 py-1 font-bold text-right" id="total-amount"></td>
+                    <td colspan="2" class="border border-gray-500 px-2 py-1"></td>
+                </tr>
+                <tr class="italic border border-gray-500 px-2 py-1 w-auto"><td colspan="5" class="border-gray-500 px-2 py-1" id="terbilang"><span>terbilang:</span></td></tr>
+                <tr class="text-center">
+                    <td colspan="5" class="px-4 py-4"><br><br>Banda Aceh, 15 <span id="transaction-month">MONTH</span> 2024</td>
+                </tr>
+                <tr class="text-center">
+                    <td colspan="2" class=" px-4 py-1 font-bold text-left">Dibuat Oleh</td>
+                    <td class=" px-4 py-1 font-bold">Mengetahui</td>
+                    <td colspan="2" class=" px-4 py-1 font-bold text-right">Disetujui</td>
+                </tr>
+                <tr class="text-center">
+                    <td colspan="2" class=" px-4 py-1 text-left"><br><br>Rahmat</td>
+                    <td class=" px-4 py-1"><br><br>Sulistia</td>
+                    <td colspan="2" class="px-4 py-1 text-right"><br><br>Herlina</td>
+                </tr>
+                </tr>
+            </tfoot>
+        </table>
+        
+
+
+        <button onclick="window.print()" class="mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded no-print">Print to PDF</button>
+        <div id="bottom-tab-nav"></div>
+</div>
+
+<!-- Placeholder for Bottom Tab -->
+
+
+<script>
+    fetch('bottom-tab.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('bottom-tab-nav').innerHTML = data;
+        });
+</script>
+
+    <script src="lembur-frontend-report-kantor.js".js"></script>
+</body>
+</html>
