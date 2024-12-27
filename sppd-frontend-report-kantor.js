@@ -7,6 +7,15 @@ const fetchData = async () => {
 
         if (result.data && Array.isArray(result.data) && result.data.length > 1) {
             const dataRows = result.data.slice(1); // Remove the header row from the data
+            // Extract the month from the first data row's TANGGAL_MULAI
+
+            // Function to extract month name from date
+            const getMonthName = (dateStr) => {
+                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Desember"];
+                const dateParts = dateStr.split('/');
+                const monthIndex = parseInt(dateParts[1], 10) - 1;
+                return months[monthIndex];
+            };
 
             // Process the data as needed
             const processedData = dataRows.map((row, index) => ({
@@ -14,7 +23,8 @@ const fetchData = async () => {
                 NamaDriver: row[2], // Corrected index for NamaDriver
                 JumlahSPPD: row[16],
                 JumlahHari: row[2],
-                Ket: row[20] || '' // Ensure Ket is not undefined
+                Ket: '', // Set Ket to an empty string
+                BulanTransaksi: getMonthName(row[8]) // Extract month name from date
             }));
 
             // Example: Log the processed data
@@ -31,7 +41,8 @@ const fetchData = async () => {
                         NamaDriver: row.NamaDriver,
                         JumlahSPPD: parseInt(row.JumlahSPPD.replace(/\./g, ''), 10) || 0,
                         JumlahHari: 1,
-                        Ket: row.Ket // Ensure Ket is carried over to summary data
+                        BulanTransaksi: row.BulanTransaksi, // Include BulanTransaksi in summary data
+                        Ket: '', // Set Ket to an empty string
                     });
                 }
                 return acc;
@@ -45,7 +56,11 @@ const fetchData = async () => {
 
             // Log total amount
             console.log("Total Amount:", totalAmount);
-
+                // Render BulanTransaksi in both elements with id="transaction-month"
+            const transactionMonthElements = document.querySelectorAll('#transaction-month');
+            transactionMonthElements.forEach(element => {
+                element.textContent = summaryData[0].BulanTransaksi; // Assuming you want to use the first month's transaction
+            });
             // Render summary data in the table
             renderTable(summaryData, totalAmount);
         } else {
@@ -74,7 +89,7 @@ function renderTable(data, totalAmount) {
 
     // Update total amount
     document.getElementById('total-amount').textContent = totalAmount.toLocaleString('id-ID');
-    document.getElementById('terbilang').textContent += ' ' + convertToWords(totalAmount);
+    document.getElementById('terbilang').textContent += ' ' + terbilang(totalAmount) + ' Rupiah';
 }
 
 // Function to convert number to words in Indonesian
@@ -131,8 +146,133 @@ function convertHundreds(number) {
     return words.trim();
 }
 
-// Call fetchData function when the script is loaded
-fetchData();
+/*! Copyright (c) 2016 Naufal Rabbani (https://github.com/BosNaufal/terbilang-js)
+* Licensed Under MIT (http://opensource.org/licenses/MIT)
+*
+* Version 0.0.1
+*
+* Inspired By: http://notes.rioastamal.net/2012/03/membuat-fungsi-terbilang-pada-php.html
+*/
+
+function terbilang(a){
+	var bilangan = ['','Satu','Dua','Tiga','Empat','Lima','Enam','Tujuh','Delapan','Sembilan','Sepuluh','Sebelas'];
+
+	// 1 - 11
+	if(a < 12){
+		var kalimat = bilangan[a];
+	}
+	// 12 - 19
+	else if(a < 20){
+		var kalimat = bilangan[a-10]+' Belas';
+	}
+	// 20 - 99
+	else if(a < 100){
+		var utama = a/10;
+		var depan = parseInt(String(utama).substr(0,1));
+		var belakang = a%10;
+		var kalimat = bilangan[depan]+' Puluh '+bilangan[belakang];
+	}
+	// 100 - 199
+	else if(a < 200){
+		var kalimat = 'Seratus '+ terbilang(a - 100);
+	}
+	// 200 - 999
+	else if(a < 1000){
+		var utama = a/100;
+		var depan = parseInt(String(utama).substr(0,1));
+		var belakang = a%100;
+		var kalimat = bilangan[depan] + ' Ratus '+ terbilang(belakang);
+	}
+	// 1,000 - 1,999
+	else if(a < 2000){
+		var kalimat = 'Seribu '+ terbilang(a - 1000);
+	}
+	// 2,000 - 9,999
+	else if(a < 10000){
+		var utama = a/1000;
+		var depan = parseInt(String(utama).substr(0,1));
+		var belakang = a%1000;
+		var kalimat = bilangan[depan] + ' Ribu '+ terbilang(belakang);
+	}
+	// 10,000 - 99,999
+	else if(a < 100000){
+		var utama = a/100;
+		var depan = parseInt(String(utama).substr(0,2));
+		var belakang = a%1000;
+		var kalimat = terbilang(depan) + ' Ribu '+ terbilang(belakang);
+	}
+	// 100,000 - 999,999
+	else if(a < 1000000){
+		var utama = a/1000;
+		var depan = parseInt(String(utama).substr(0,3));
+		var belakang = a%1000;
+		var kalimat = terbilang(depan) + ' Ribu '+ terbilang(belakang);
+	}
+	// 1,000,000 - 	99,999,999
+	else if(a < 100000000){
+		var utama = a/1000000;
+		var depan = parseInt(String(utama).substr(0,4));
+		var belakang = a%1000000;
+		var kalimat = terbilang(depan) + ' Juta '+ terbilang(belakang);
+	}
+	else if(a < 1000000000){
+		var utama = a/1000000;
+		var depan = parseInt(String(utama).substr(0,4));
+		var belakang = a%1000000;
+		var kalimat = terbilang(depan) + ' Juta '+ terbilang(belakang);
+	}
+	else if(a < 10000000000){
+		var utama = a/1000000000;
+		var depan = parseInt(String(utama).substr(0,1));
+		var belakang = a%1000000000;
+		var kalimat = terbilang(depan) + ' Milyar '+ terbilang(belakang);
+	}
+	else if(a < 100000000000){
+		var utama = a/1000000000;
+		var depan = parseInt(String(utama).substr(0,2));
+		var belakang = a%1000000000;
+		var kalimat = terbilang(depan) + ' Milyar '+ terbilang(belakang);
+	}
+	else if(a < 1000000000000){
+		var utama = a/1000000000;
+		var depan = parseInt(String(utama).substr(0,3));
+		var belakang = a%1000000000;
+		var kalimat = terbilang(depan) + ' Milyar '+ terbilang(belakang);
+	}
+	else if(a < 10000000000000){
+		var utama = a/10000000000;
+		var depan = parseInt(String(utama).substr(0,1));
+		var belakang = a%10000000000;
+		var kalimat = terbilang(depan) + ' Triliun '+ terbilang(belakang);
+	}
+	else if(a < 100000000000000){
+		var utama = a/1000000000000;
+		var depan = parseInt(String(utama).substr(0,2));
+		var belakang = a%1000000000000;
+		var kalimat = terbilang(depan) + ' Triliun '+ terbilang(belakang);
+	}
+
+	else if(a < 1000000000000000){
+		var utama = a/1000000000000;
+		var depan = parseInt(String(utama).substr(0,3));
+		var belakang = a%1000000000000;
+		var kalimat = terbilang(depan) + ' Triliun '+ terbilang(belakang);
+	}
+
+  else if(a < 10000000000000000){
+		var utama = a/1000000000000000;
+		var depan = parseInt(String(utama).substr(0,1));
+		var belakang = a%1000000000000000;
+		var kalimat = terbilang(depan) + ' Kuadriliun '+ terbilang(belakang);
+	}
+
+	var pisah = kalimat.split(' ');
+	var full = [];
+	for(var i=0;i<pisah.length;i++){
+	 if(pisah[i] != ""){full.push(pisah[i]);}
+	}
+	return full.join(' ');
+}
 
 // Call fetchData function when the script is loaded
 fetchData();
