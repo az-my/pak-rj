@@ -22,10 +22,30 @@ const createSPPDEntry = async (req, res) => {
             totalBiayaSPPD,
         } = req.body;
 
-        // Check for missing required fields
-        if (!namaDriver || !asalBerangkat || !unit || !pemberiTugas || !tujuan || !tanggalMulai || !tanggalSampai || !durasi || !budgetBiayaHarian || !budgetBiayaPenginapan || !totalBiayaHarian || !totalBiayaPenginapan || !totalBiayaSPPD) {
-            return res.status(400).json({ error: 'Missing required fields. Please ensure all fields are filled out.' });
-        }
+            // Check for missing required fields
+            const requiredFields = {
+                hotel,
+                namaDriver,
+                asalBerangkat,
+                unit,
+                pemberiTugas,
+                tujuan,
+                tanggalMulai,
+                tanggalSampai,
+                durasi,
+                budgetBiayaHarian,
+                budgetBiayaPenginapan,
+                totalBiayaHarian,
+                totalBiayaPenginapan,
+                totalBiayaSPPD
+            };
+
+            const missingFields = Object.keys(requiredFields).filter(field => !requiredFields[field]);
+
+            if (missingFields.length > 0) {
+                console.log("Missing required fields:", missingFields);
+                return res.status(400).json({ error: 'Missing required fields. Please ensure all fields are filled out.', missingFields });
+            }
 
         // Generate UUID and timestamp
         const uuid = uuidv4();
