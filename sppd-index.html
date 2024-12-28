@@ -54,7 +54,7 @@
                     <div class="flex items-center">
                         <label for="hotel" class="block text-gray-700 font-bold mr-2">Hotel:</label>
                         <input id="hotel" name="hotel" type="checkbox" class="hidden">
-                        <div class="relative cursor-pointer" id="hotelSwitchContainer">
+                        <div class="relative cursor-pointer" id="hotelSwitchContainer" onclick="toggleHotel()">
                             <div id="hotelSwitchBg"
                                 class="block w-14 h-8 bg-gray-300 rounded-full transition-colors duration-200">
                                 <div class="w-6 h-6 bg-white rounded-full shadow absolute top-1 left-1 transform transition-transform duration-200"
@@ -63,6 +63,7 @@
                         </div>
                         <span class="ml-2 text-gray-700" id="hotelStatus">No</span>
                     </div>
+                    
                 </div>
 
                 <!-- Row 2: Asal Berangkat, Tujuan, Durasi -->
@@ -90,7 +91,7 @@
                 <!-- Row 3: Tanggal Mulai, Tanggal Sampai, Hotel -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-x-auto">
 
-                    <div class="hidden">
+                    <div class="">
                         <label for="durasi" class="block text-gray-700 font-bold mb-2">Durasi (hari):</label>
                         <input id="durasi" name="durasi" type="text" value="" disabled
                             class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
@@ -99,7 +100,7 @@
                 </div>
 
                 <!-- Row 4: Budget Biaya Harian, Budget Biaya Penginapan, Total Biaya Harian, Total Biaya Penginapan, Total Biaya SPPD -->
-                <div class="grid gap-6 mb-6 md:grid-cols-5 hidden">
+                <div class="grid gap-6 mb-6 md:grid-cols-5">
                     <div>
                         <label for="budgetBiayaHarian" class="block text-gray-700 font-bold mb-2">Budget Biaya
                             Harian:</label>
@@ -178,8 +179,10 @@
     </script>
     <script src="sppd-frontend-utils-driver.js"></script>
     <script src="sppd-frontend-utils-tanggal.js"></script>
-    <script src="sppd-frontend-utils-durasi.js"></script>
+    <!-- <script src="sppd-frontend-utils-durasi.js"></script> -->
+    
     <script src="sppd-frontend-utils-biaya.js"></script>
+    <!-- <script src="sppd-frontend-utils-hotel.js"></script> -->
     <script src="sppd-frontend-add.js"></script>
     <script src="sppd-frontend-read.js"></script>
 </body>

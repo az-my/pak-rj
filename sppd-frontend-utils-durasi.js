@@ -12,17 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const startDate = moment(tanggalMulaiInput.value, "YYYY-MM-DD");
             const endDate = moment(tanggalSampaiInput.value, "YYYY-MM-DD");
 
-            console.log("Input Received:");
-            console.log("Start Date:", tanggalMulaiInput.value);
-            console.log("End Date:", tanggalSampaiInput.value);
+            // console.log("Input Received:");
+            // console.log("Start Date:", tanggalMulaiInput.value);
+            // console.log("End Date:", tanggalSampaiInput.value);
 
             if (endDate.isSameOrAfter(startDate)) {
                 const diffDays = endDate.diff(startDate, "days") + 1; // Include both start and end dates
 
-                console.log("Calculation Details:");
-                console.log("Start Date (Moment):", startDate.format("YYYY-MM-DD"));
-                console.log("End Date (Moment):", endDate.format("YYYY-MM-DD"));
-                console.log("Final Duration (days):", diffDays);
+                // console.log("Calculation Details:");
+                // console.log("Start Date (Moment):", startDate.format("YYYY-MM-DD"));
+                // console.log("End Date (Moment):", endDate.format("YYYY-MM-DD"));
+                // console.log("Final Duration (days):", diffDays);
 
                 // Set the calculated duration into the element's innerHTML
                 durasiDisplay.value = diffDays;
@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
             durasiDisplay.innerHTML = "";
         }
 
-        console.log("Final Output:");
-        console.log("Durasi Display Value:", durasiDisplay.innerHTML);
+        // console.log("Final Output:");
+        // console.log("Durasi Display Value:", durasiDisplay.innerHTML);
     };
 
     tanggalMulaiInput.addEventListener("change", calculateDurasi);
