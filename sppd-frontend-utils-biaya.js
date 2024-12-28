@@ -16,17 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return number.toLocaleString("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).replace("Rp", "").trim();
     };
 
-    const calculateDurasi = () => {
-        const tanggalMulai = new Date(tanggalMulaiInput.value);
-        const tanggalSelesai = new Date(tanggalSelesaiInput.value);
-
-        if (!isNaN(tanggalMulai) && !isNaN(tanggalSelesai)) {
-            const diffTime = tanggalSelesai - tanggalMulai;
-            const durasi = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-            durasiInput.value = durasi;
-            calculateCosts();
-        }
-    };
 
     const calculateCosts = () => {
         const durasi = parseInt(durasiInput.value) || 0;

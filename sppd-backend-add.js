@@ -43,7 +43,7 @@ const createSPPDEntry = async (req, res) => {
             tanggalMulai,
             tanggalSampai,
             durasi,
-            hotel: hotel ? 'Yes' : 'No',
+            hotel: hotel ==="Yes" ? 'Yes' : 'No',
             budgetBiayaHarian,
             budgetBiayaPenginapan,
             totalBiayaHarian,

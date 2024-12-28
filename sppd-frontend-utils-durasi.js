@@ -1,27 +1,47 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const tanggalMulaiInput = document.getElementById("tanggalMulai");
     const tanggalSampaiInput = document.getElementById("tanggalSampai");
-    const durasiInput = document.getElementById("durasi");
+    const durasiDisplay = document.getElementById("durasi");
 
     const calculateDurasi = () => {
-        if (tanggalMulaiInput.value && tanggalSampaiInput.value) {
-            const startDate = new Date(tanggalMulaiInput.value);
-            const endDate = new Date(tanggalSampaiInput.value);
+        console.clear(); // Clear console for cleaner logs
+        console.log("=== Durasi Calculation Process ===");
 
-            if (endDate >= startDate) {
-                const diffTime = Math.abs(endDate - startDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Include the start date
-                durasiInput.value = diffDays;
+        if (tanggalMulaiInput.value && tanggalSampaiInput.value) {
+            const startDate = moment(tanggalMulaiInput.value, "YYYY-MM-DD");
+            const endDate = moment(tanggalSampaiInput.value, "YYYY-MM-DD");
+
+            console.log("Input Received:");
+            console.log("Start Date:", tanggalMulaiInput.value);
+            console.log("End Date:", tanggalSampaiInput.value);
+
+            if (endDate.isSameOrAfter(startDate)) {
+                const diffDays = endDate.diff(startDate, "days") + 1; // Include both start and end dates
+
+                console.log("Calculation Details:");
+                console.log("Start Date (Moment):", startDate.format("YYYY-MM-DD"));
+                console.log("End Date (Moment):", endDate.format("YYYY-MM-DD"));
+                console.log("Final Duration (days):", diffDays);
+
+                // Set the calculated duration into the element's innerHTML
+                durasiDisplay.value = diffDays;
             } else {
+                console.log("Error: End Date is earlier than Start Date.");
                 alert("Tanggal Sampai harus lebih besar atau sama dengan Tanggal Mulai.");
                 tanggalSampaiInput.value = "";
-                durasiInput.value = "";
+                durasiDisplay.innerHTML = "";
             }
         } else {
-            durasiInput.value = "";
+            console.log("One or both date inputs are empty.");
+            durasiDisplay.innerHTML = "";
         }
+
+        console.log("Final Output:");
+        console.log("Durasi Display Value:", durasiDisplay.innerHTML);
     };
 
     tanggalMulaiInput.addEventListener("change", calculateDurasi);
     tanggalSampaiInput.addEventListener("change", calculateDurasi);
 });
+

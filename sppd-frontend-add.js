@@ -32,6 +32,7 @@ form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
+    const hotelCheckbox = document.getElementById("hotel");
     const data = {
         namaDriver: formData.get("namaDriver"),
         asalBerangkat: document.getElementById("asalBerangkat").value,
@@ -47,7 +48,7 @@ form.addEventListener("submit", async (event) => {
         totalBiayaHarian: document.getElementById("totalBiayaHarian").value,
         totalBiayaPenginapan: document.getElementById("totalBiayaPenginapan").value,
         totalBiayaSPPD: document.getElementById("totalBiayaSPPD").value,
-        hotel: document.getElementById("hotel").checked ? "Yes" : "No",
+        hotel: hotelCheckbox.checked ? "Yes" : "No",
     };
 
     console.log("Submitted Data:", JSON.stringify(data, null, 2));
