@@ -204,15 +204,51 @@
 
     </script>
     <script>
-        flatpickr("#tanggalMulai", {
-            dateFormat: "d/m/Y", // Display as DD/MM/YYYY
-        });
+        
+// Initialize Flatpickr for Tanggal Mulai
+flatpickr("#tanggalMulai", {
+    dateFormat: "d/m/Y", // Use DD/MM/YYYY format
+    onChange: function(selectedDates, dateStr) {
+        const tanggalSampai = document.getElementById("tanggalSampai")._flatpickr;
+        if (tanggalSampai && selectedDates[0]) {
+            const minDate = new Date(selectedDates[0]);
+            minDate.setDate(minDate.getDate() + 1); // Add 1 day to the selected date
+            tanggalSampai.set("minDate", minDate); // Set minDate for tanggalSampai
+        }
+    },
+});
+
+// Initialize Flatpickr for Tanggal Sampai
+flatpickr("#tanggalSampai", {
+    dateFormat: "d/m/Y", // Use DD/MM/YYYY format
+    minDate: "today",    // Default to today for minimum date
+});
+
+// Form Submission
+const form = document.getElementById("sppdForm");
+
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const tanggalMulai = document.getElementById("tanggalMulai").value;
+    const tanggalSampai = document.getElementById("tanggalSampai").value;
+
+    const data = {
+        tanggalMulai,
+        tanggalSampai,
+    };
+
+    console.log("Submitted Data:", JSON.stringify(data, null, 2));
+
+    // Add API submission logic here
+});
+
     </script>
-        <script>
+        <!-- <script>
             flatpickr("#tanggalSampai", {
                 dateFormat: "d/m/Y", // Display as DD/MM/YYYY
             });
-        </script>
+        </script> -->
     <script src="sppd-frontend-utils-driver.js"></script>
     <script src="sppd-frontend-utils-tanggal.js"></script>
     <!-- <script src="sppd-frontend-utils-durasi.js"></script> -->
