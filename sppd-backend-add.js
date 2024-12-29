@@ -15,12 +15,10 @@ const formatDate = (date) => {
   return `${day}/${month}/${year}`;
 };
 
-// Check required fields 🕵️‍♀️
 const validateRequiredFields = (fields) => {
   return Object.keys(fields).filter((field) => !fields[field]);
 };
 
-// Get existing data from Sheets 📄
 const fetchExistingData = async (spreadsheetId, range) => {
   try {
     const response = await sheets.spreadsheets.values.get({
@@ -33,7 +31,6 @@ const fetchExistingData = async (spreadsheetId, range) => {
   }
 };
 
-// Filter rows for a specific driver 🚗
 const findDriverEntries = (dataRows, headerRow, driverName) => {
   const namaDriverIndex = headerRow.indexOf("namaDriver");
   if (namaDriverIndex === -1) {
@@ -42,14 +39,12 @@ const findDriverEntries = (dataRows, headerRow, driverName) => {
   return dataRows.filter((row) => row[namaDriverIndex] === driverName);
 };
 
-// Handle date conflicts like a boss 🗓️
 const resolveDateConflict = (driverEntries, headerRow, newTanggalMulai) => {
   const tanggalSelesaiIndex = headerRow.indexOf("tanggalSampai");
   if (tanggalSelesaiIndex === -1) {
     throw new Error("❌ 'tanggalSampai' column not found!");
   }
 
-  // Keep adjusting newTanggalMulai until there's no overlap ⏩
   while (
     driverEntries.some(
       (row) =>
@@ -57,7 +52,7 @@ const resolveDateConflict = (driverEntries, headerRow, newTanggalMulai) => {
     )
   ) {
     const parsedDate = parseDate(newTanggalMulai);
-    parsedDate.setDate(parsedDate.getDate() + 1); // ⏩ +1 day
+    parsedDate.setDate(parsedDate.getDate() + 1);
     newTanggalMulai = formatDate(parsedDate);
   }
   return newTanggalMulai;
@@ -84,7 +79,6 @@ const createSPPDEntry = async (req, res) => {
       totalBiayaSPPD,
     } = req.body;
 
-    // 🛑 Missing fields? Not today!
     const requiredFields = {
       namaDriver,
       asalBerangkat,
@@ -110,7 +104,6 @@ const createSPPDEntry = async (req, res) => {
       });
     }
 
-    // 📡 Fetch existing data
     const spreadsheetId = process.env.SPREADSHEET_ID;
     const range = "SPPD!A1:Z";
     const existingData = await fetchExistingData(spreadsheetId, range);
@@ -121,14 +114,12 @@ const createSPPDEntry = async (req, res) => {
     const dataRows = existingData.slice(1);
     const driverEntries = findDriverEntries(dataRows, headerRow, namaDriver);
 
-    // 🗓️ Adjust tanggalMulai if there's a conflict
     const adjustedTanggalMulai = resolveDateConflict(
       driverEntries,
       headerRow,
       tanggalMulai
     );
 
-    // 🎉 All good, let’s create the entry!
     const uuid = uuidv4();
     const timestamp = getFormattedTimestamp();
 
@@ -152,7 +143,8 @@ const createSPPDEntry = async (req, res) => {
       totalBiayaSPPD,
     ];
 
-    // 🚀 Push to Google Sheets
+    console.log("📝 New Entry Payload:", newEntry);
+
     await sheets.spreadsheets.values.append({
       spreadsheetId,
       range: "SPPD!A1",
@@ -162,7 +154,6 @@ const createSPPDEntry = async (req, res) => {
 
     res.status(201).json({ message: "🎉 SPPD entry created successfully!" });
   } catch (err) {
-    // 🚨 Uh-oh! Log all the things!
     console.error("🔥 Error Details:", {
       message: err.message,
       stack: err.stack,
