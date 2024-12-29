@@ -28,11 +28,21 @@ closeAlert.addEventListener("click", () => {
     alertContainer.classList.add("hidden");
 });
 
+// Helper function to format a date as DD/MM/YYYY
+const formatDateToDDMMYYYY = (dateStr) => {
+    const [year, month, day] = dateStr.split("-").map(Number); // Assuming the input is in YYYY-MM-DD format
+    return `${String(day).padStart(2, "0")}/${String(month).padStart(2, "0")}/${year}`;
+};
+
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
     const hotelCheckbox = document.getElementById("hotel");
+
+    const tanggalMulai = formatDateToDDMMYYYY(formData.get("tanggalMulai"));
+    const tanggalSampai = formatDateToDDMMYYYY(formData.get("tanggalSampai"));
+
     const data = {
         namaDriver: formData.get("namaDriver"),
         asalBerangkat: document.getElementById("asalBerangkat").value,
@@ -40,8 +50,8 @@ form.addEventListener("submit", async (event) => {
         pemberiTugas: document.getElementById("pemberiTugas").value,
         tujuan: formData.get("tujuan"),
         maksud_perjalanan: formData.get("maksud_perjalanan"),
-        tanggalMulai: formData.get("tanggalMulai"),
-        tanggalSampai: formData.get("tanggalSampai"),
+        tanggalMulai,
+        tanggalSampai,
         durasi: document.getElementById("durasi").value,
         budgetBiayaHarian: document.getElementById("budgetBiayaHarian").value,
         budgetBiayaPenginapan: document.getElementById("budgetBiayaPenginapan").value,
@@ -71,9 +81,9 @@ form.addEventListener("submit", async (event) => {
                 "bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative";
             alertContainer.classList.remove("hidden");
             // Optional: Refresh data if fetchData is defined
-        if (typeof fetchData === "function") {
-            fetchData();
-        }
+            if (typeof fetchData === "function") {
+                fetchData();
+            }
             // Clear form and reload page after 3 seconds
             setTimeout(() => {
                 form.reset();
