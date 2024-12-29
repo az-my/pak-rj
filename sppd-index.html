@@ -10,6 +10,8 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </head>
 
@@ -42,13 +44,13 @@
                     </div>
                     <div>
                         <label for="tanggalMulai" class="block text-gray-700 font-bold mb-2">Tanggal Mulai:</label>
-                        <input id="tanggalMulai" name="tanggalMulai" type="date"
+                        <input id="tanggalMulai" name="tanggalMulai" placeholder="DD/MM/YYYY" type="date"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div>
                         <label for="tanggalSampai" class="block text-gray-700 font-bold mb-2">Tanggal Sampai:</label>
-                        <input id="tanggalSampai" name="tanggalSampai" type="date"
+                        <input id="tanggalSampai" name="tanggalSampai" placeholder="DD/MM/YYYY" type="date"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
                     <div class="">
@@ -201,6 +203,16 @@
 }
 
     </script>
+    <script>
+        flatpickr("#tanggalMulai", {
+            dateFormat: "d/m/Y", // Display as DD/MM/YYYY
+        });
+    </script>
+        <script>
+            flatpickr("#tanggalSampai", {
+                dateFormat: "d/m/Y", // Display as DD/MM/YYYY
+            });
+        </script>
     <script src="sppd-frontend-utils-driver.js"></script>
     <script src="sppd-frontend-utils-tanggal.js"></script>
     <!-- <script src="sppd-frontend-utils-durasi.js"></script> -->
