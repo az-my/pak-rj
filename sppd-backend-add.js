@@ -25,13 +25,19 @@ const fetchExistingData = async (spreadsheetId, range) => {
       spreadsheetId,
       range,
     });
-    return response.data.values || [];
+    if (!response.data.values) {
+      return [];
+    }
+    return response.data.values;
   } catch (error) {
     throw new Error(`📉 Failed to fetch data: ${error.message}`);
   }
 };
 
 const findDriverEntries = (dataRows, headerRow, driverName) => {
+  if (!headerRow || headerRow.length === 0) {
+    throw new Error("❌ Header row is missing or empty!");
+  }
   const namaDriverIndex = headerRow.indexOf("namaDriver");
   if (namaDriverIndex === -1) {
     throw new Error("❌ 'namaDriver' column not found!");
@@ -40,25 +46,45 @@ const findDriverEntries = (dataRows, headerRow, driverName) => {
 };
 
 const resolveDateConflict = (driverEntries, headerRow, newTanggalMulai) => {
+  if (!headerRow) {
+    throw new Error("❌ Header row is not defined!");
+  }
   const tanggalSelesaiIndex = headerRow.indexOf("tanggalSampai");
   if (tanggalSelesaiIndex === -1) {
     throw new Error("❌ 'tanggalSampai' column not found!");
   }
 
-  while (
-    driverEntries.some(
-      (row) =>
-        formatDate(parseDate(row[tanggalSelesaiIndex])) === newTanggalMulai
-    )
-  ) {
-    const parsedDate = parseDate(newTanggalMulai);
-    parsedDate.setDate(parsedDate.getDate() + 1);
-    newTanggalMulai = formatDate(parsedDate);
+  if (driverEntries.length === 0) {
+    return newTanggalMulai;
   }
+
+  let isConflict;
+  do {
+    isConflict = driverEntries.some((row) => {
+      const existingTanggalSelesai = row[tanggalSelesaiIndex];
+      if (!existingTanggalSelesai) return false;
+
+      return formatDate(parseDate(existingTanggalSelesai)) === newTanggalMulai;
+    });
+
+    if (isConflict) {
+      const parsedDate = parseDate(newTanggalMulai);
+      parsedDate.setDate(parsedDate.getDate() + 1);
+      newTanggalMulai = formatDate(parsedDate);
+    }
+  } while (isConflict);
+
   return newTanggalMulai;
 };
 
 // 🚀 MAIN FUNCTION
+/**
+ * Creates a new SPPD entry in the Google Sheets.
+ * 
+ * @param {Object} req - The request object containing the SPPD entry details.
+ * @param {Object} res - The response object to send the result.
+ * @returns {Promise<void>} - A promise that resolves when the entry is created.
+ */
 const createSPPDEntry = async (req, res) => {
   try {
     const {
@@ -92,12 +118,17 @@ const createSPPDEntry = async (req, res) => {
       budgetBiayaHarian,
       budgetBiayaPenginapan,
       totalBiayaHarian,
-      totalBiayaPenginapan,
-      totalBiayaSPPD,
     };
+
+    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (!dateRegex.test(tanggalMulai) || !dateRegex.test(tanggalSampai)) {
+      return res.status(400).json({
+        error: "🛑 Invalid date format! Use DD/MM/YYYY.",
+      });
+    }
+
     const missingFields = validateRequiredFields(requiredFields);
     if (missingFields.length > 0) {
-      console.log("🚨 Missing Fields:", missingFields);
       return res.status(400).json({
         error: "🛑 Missing required fields!",
         missingFields,
@@ -105,11 +136,19 @@ const createSPPDEntry = async (req, res) => {
     }
 
     const spreadsheetId = process.env.SPREADSHEET_ID;
-    const range = "SPPD!A1:Z";
-    const existingData = await fetchExistingData(spreadsheetId, range);
+    if (!spreadsheetId) {
+      return res.status(500).json({
+        error: "💥 Spreadsheet ID is not defined in environment variables!",
+      });
+    }
 
+    const existingData = await fetchExistingData(spreadsheetId, "SPPD!A1:Z1000");
     const headerRow = existingData[0];
-    if (!headerRow) throw new Error("⚠️ No header row found!");
+    if (!headerRow) {
+      return res.status(500).json({
+        error: "⚠️ No header row found!",
+      });
+    }
 
     const dataRows = existingData.slice(1);
     const driverEntries = findDriverEntries(dataRows, headerRow, namaDriver);
@@ -143,16 +182,27 @@ const createSPPDEntry = async (req, res) => {
       totalBiayaSPPD,
     ];
 
-    console.log("📝 New Entry Payload:", newEntry);
+    try {
+      await sheets.spreadsheets.values.append({
+        spreadsheetId,
+        range: "SPPD!A1",
+        valueInputOption: "USER_ENTERED",
+        resource: { values: [newEntry] },
+      });
 
-    await sheets.spreadsheets.values.append({
-      spreadsheetId,
-      range: "SPPD!A1",
-      valueInputOption: "USER_ENTERED",
-      resource: { values: [newEntry] },
-    });
+      res.status(201).json({ message: "🎉 SPPD entry created successfully!" });
+    } catch (appendError) {
+      console.error("🔥 Error appending data to Google Sheets:", {
+        message: appendError.message,
+        stack: appendError.stack,
+      });
 
-    res.status(201).json({ message: "🎉 SPPD entry created successfully!" });
+      res.status(500).json({
+        error: "💥 Failed to append data to Google Sheets!",
+        details: appendError.message,
+        stack: appendError.stack,
+      });
+    }
   } catch (err) {
     console.error("🔥 Error Details:", {
       message: err.message,
