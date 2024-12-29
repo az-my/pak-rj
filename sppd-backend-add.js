@@ -49,7 +49,7 @@ const resolveDateConflict = (driverEntries, headerRow, newTanggalMulai) => {
   if (!headerRow) {
     throw new Error("❌ Header row is not defined!");
   }
-  const tanggalSelesaiIndex = headerRow.indexOf("tanggalSampai");
+  const tanggalSelesaiIndex = headerRow.indexOf("TANGGAL_SELESAI");
   if (tanggalSelesaiIndex === -1) {
     throw new Error("❌ 'tanggalSampai' column not found!");
   }
