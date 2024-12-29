@@ -19,7 +19,19 @@
     </div>
 
     <div id="reports-container" class="hidden"></div>
+    <div id="bottom-tab-nav"></div>
 
+
+<!-- Placeholder for Bottom Tab -->
+
+
+<script>
+    fetch('bottom-tab.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('bottom-tab-nav').innerHTML = data;
+        });
+</script>
     <script>
         window.onload = () => {
             const fetchData = async () => {
