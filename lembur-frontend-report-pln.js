@@ -14,7 +14,6 @@ const fetchData = async () => {
 
         console.log("API Response:", result.data); // Debugging
 
-        // Function to validate and get current and next month
         const getMonthNames = (dateStr) => {
             console.log("Date String:", dateStr); // Debug log
 
@@ -50,25 +49,29 @@ const fetchData = async () => {
                 "Januari", "Februari", "Maret", "April", "Mei", "Juni",
                 "Juli", "Agustus", "September", "Oktober", "November", "Desember"
             ];
-            const currentMonth = months[month - 1];
-            const nextMonth = months[month % 12]; // Wrap around to January if month is December
-            return { currentMonth, nextMonth };
+
+            const bulanTransaksi = `${months[month - 1]} ${year}`; // Current month
+            const bulanMasukTagihan = `${months[month % 12]} ${month === 12 ? year + 1 : year}`; // Next month with year increment
+
+            return { bulanTransaksi, bulanMasukTagihan };
         };
-                // Helper function to clean and convert to float
-                const cleanAndConvert = (value) => {
-                    if (typeof value === "string") {
-                        // Replace Indonesian thousand separator (.) and decimal marker (,)
-                        value = value.replace(/\./g, "").replace(",", ".");
-                    }
-                    return parseFloat(value) || 0; // Default to 0 if value is invalid
-                };
+
+        const cleanAndConvert = (value) => {
+            if (typeof value === "string") {
+                // Replace Indonesian thousand separator (.) and decimal marker (,)
+                value = value.replace(/\./g, "").replace(",", ".");
+            }
+            return parseFloat(value) || 0; // Default to 0 if value is invalid
+        };
+
         if (result.data && Array.isArray(result.data) && result.data.length > 1) {
             const dataRows = result.data.slice(1); // Skip the header row
             let currentMonth, nextMonth;
 
             try {
                 // Extract current and next month using the first date in the data
-                ({ currentMonth, nextMonth } = getMonthNames(dataRows[0][5]));
+                const firstDate = dataRows[0][5]; // Use first record's date
+                ({ bulanTransaksi: currentMonth, bulanMasukTagihan: nextMonth } = getMonthNames(firstDate));
                 console.log("Current Month:", currentMonth, "Next Month:", nextMonth);
             } catch (error) {
                 console.error("Date validation error:", error.message);
@@ -76,25 +79,22 @@ const fetchData = async () => {
             }
 
             // Process the data
-            const processedData = dataRows.map((row, index) => {
-                return {
-                    No: index + 1,
-                    NamaHari: row[6],
-                    TanggalLembur: row[5],
-                    NamaDriver: row[2],
-                    Unit: row[3],
-                    UraianPekerjaan: row[4],
-                    JamMulai: row[8],
-                    JamSelesei: row[9],
-                    TotalJamLembur: cleanAndConvert(row[11]),
-                    TotalJamBayar: cleanAndConvert(row[10]),
-                    UpahPerJam: cleanAndConvert(row[12]),
-                    TotalBiayaBayar: cleanAndConvert(row[13]),
-
-                    BulanTransaksi: currentMonth, // Use extracted month
-                    BulanMasukTagihan: nextMonth // Use extracted month
-                };
-            });
+            const processedData = dataRows.map((row, index) => ({
+                No: index + 1,
+                NamaHari: row[6],
+                TanggalLembur: row[5],
+                NamaDriver: row[2],
+                Unit: row[3],
+                UraianPekerjaan: row[4],
+                JamMulai: row[8],
+                JamSelesei: row[9],
+                TotalJamLembur: cleanAndConvert(row[11]),
+                TotalJamBayar: cleanAndConvert(row[10]),
+                UpahPerJam: cleanAndConvert(row[12]),
+                TotalBiayaBayar: cleanAndConvert(row[13]),
+                BulanTransaksi: currentMonth, // Use extracted month
+                BulanMasukTagihan: nextMonth // Use extracted month
+            }));
 
             // Calculate the required values
             const totalAmount = Math.ceil(processedData.reduce((sum, row) => sum + (parseFloat(row.TotalBiayaBayar) || 0), 0));
@@ -103,27 +103,18 @@ const fetchData = async () => {
             const totalPPN = Math.ceil(totalInvoiceWithoutTax * 0.11);
             const totalFinalInvoice = Math.ceil(totalInvoiceWithoutTax + totalPPN);
 
-        // Log raw calculated values
-        console.log("Raw Total Amount:", totalAmount);
-        console.log("Raw Total Biaya Admin (5%):", totalBiayaAdmin);
-        console.log("Raw Total Invoice Without Tax:", totalInvoiceWithoutTax);
-        console.log("Raw Total PPN (11%):", totalPPN);
-        console.log("Raw Total Final Invoice:", totalFinalInvoice);
-
             // Format and render the calculated values
             document.getElementById('total-amount').textContent = formatIDR(totalAmount);
             document.getElementById('total-biaya-admin').textContent = formatIDR(totalBiayaAdmin);
             document.getElementById('total-invoice-without-tax').textContent = formatIDR(totalInvoiceWithoutTax);
             document.getElementById('total-ppn').textContent = formatIDR(totalPPN);
             document.getElementById('total-final-invoice').textContent = formatIDR(totalFinalInvoice);
+
             // Round up the totalFinalInvoice to the nearest whole number
             const roundedFinalInvoice = Math.ceil(totalFinalInvoice);
 
             // Call terbilang with the rounded value
             document.getElementById('terbilang').textContent += ' ' + terbilang(roundedFinalInvoice) + ' Rupiah';
-            // document.getElementById('terbilang').textContent += ' ' + terbilang(totalFinalInvoice) + ' Rupiah';
-            // Example: Log the processed data
-            console.log("Processed Data:", processedData);
 
             // Render BulanTransaksi and BulanMasukTagihan
             const transactionMonthElements = document.querySelectorAll('#transaction-month');
@@ -145,6 +136,7 @@ const fetchData = async () => {
         console.error("Error fetching data:", error.message);
     }
 };
+
 
 
 function renderTable(data, totalAmount) {

@@ -7,15 +7,52 @@ const fetchData = async () => {
 
         if (result.data && Array.isArray(result.data) && result.data.length > 1) {
             const dataRows = result.data.slice(1); // Remove the header row from the data
-            // Extract the month from the first data row's TANGGAL_MULAI
 
-            // Function to extract month name from date
-            const getMonthName = (dateStr) => {
-                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Desember"];
-                const dateParts = dateStr.split('/');
-                const monthIndex = parseInt(dateParts[1], 10) - 1;
-                return months[monthIndex];
+            // Extract the month from the first data row's TANGGAL_MULAI
+            const getMonthNames = (dateStr) => {
+                console.log("Date String:", dateStr); // Debug log
+
+                // Regular expression for DD/MM/YYYY format
+                const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+                if (!dateRegex.test(dateStr)) {
+                    console.error("Date format is invalid:", dateStr);
+                    throw new Error("Invalid date format");
+                }
+
+                // Split date string
+                const [day, month, year] = dateStr.split('/').map(Number);
+
+                // Validate day, month, and year
+                if (month < 1 || month > 12 || day < 1 || day > 31) {
+                    console.error("Invalid day or month values:", { day, month, year });
+                    throw new Error("Invalid date values");
+                }
+
+                // Check if the date is valid using JavaScript's Date object
+                const date = new Date(year, month - 1, day); // Months are 0-indexed in JS
+                if (
+                    date.getFullYear() !== year ||
+                    date.getMonth() + 1 !== month || // Add 1 since JS months are 0-indexed
+                    date.getDate() !== day
+                ) {
+                    console.error("Invalid date:", dateStr);
+                    throw new Error("Invalid date");
+                }
+
+                // Extract month names
+                const months = [
+                    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                ];
+
+                const bulanTransaksi = `${months[month - 1]} ${year}`; // Current month
+                const bulanMasukTagihan = `${months[month % 12]} ${month === 12 ? year + 1 : year}`; // Next month with year increment
+
+                return { bulanTransaksi, bulanMasukTagihan };
             };
+
+            // Extract month names from the first row
+            const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(dataRows[0][5]);
 
             // Process the data as needed
             const processedData = dataRows.map((row, index) => ({
@@ -24,10 +61,9 @@ const fetchData = async () => {
                 JumlahSPPD: row[13],
                 JumlahHari: row[2],
                 Ket: '', // Set Ket to an empty string
-                BulanTransaksi: getMonthName(row[5]) // Extract month name from date
             }));
 
-            // Example: Log the processed data
+            // Log the processed data
             console.log("Processed Data:", processedData);
 
             // Create summary data
@@ -41,7 +77,7 @@ const fetchData = async () => {
                         NamaDriver: row.NamaDriver,
                         JumlahSPPD: parseInt(row.JumlahSPPD.replace(/\./g, ''), 10) || 0,
                         JumlahHari: 1,
-                        BulanTransaksi: row.BulanTransaksi, // Include BulanTransaksi in summary data
+                        BulanTransaksi: bulanTransaksi, // Include BulanTransaksi in summary data
                         Ket: '', // Set Ket to an empty string
                     });
                 }
@@ -56,11 +92,19 @@ const fetchData = async () => {
 
             // Log total amount
             console.log("Total Amount:", totalAmount);
-                // Render BulanTransaksi in both elements with id="transaction-month"
+
+            // Render BulanTransaksi in elements with id="transaction-month"
             const transactionMonthElements = document.querySelectorAll('#transaction-month');
             transactionMonthElements.forEach(element => {
-                element.textContent = summaryData[0].BulanTransaksi; // Assuming you want to use the first month's transaction
+                element.textContent = bulanTransaksi; // Use the first month's transaction
             });
+
+            // Render BulanMasukTagihan in element with id="bulan-masuk-tagihan"
+            const bulanMasukTagihanElement = document.getElementById('bulan-masuk-tagihan');
+            if (bulanMasukTagihanElement) {
+                bulanMasukTagihanElement.textContent = bulanMasukTagihan;
+            }
+
             // Render summary data in the table
             renderTable(summaryData, totalAmount);
         } else {
@@ -70,6 +114,7 @@ const fetchData = async () => {
         console.error("Error fetching data:", error.message);
     }
 };
+
 
 function renderTable(data, totalAmount) {
     const tableBody = document.getElementById('data-table-body');
