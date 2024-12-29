@@ -12,7 +12,7 @@
   referrerpolicy="no-referrer"
 ></script>
 </head>
-<body class="bg-gray-100 p-6">
+<body class="bg-white-100 p-6">
   <div class="w-full p-4 bg-white">
     <button
     id="download"
@@ -129,7 +129,7 @@
   <script>
     document.getElementById('download').addEventListener('click', () => {
       const element = document.getElementById('laporan');
-      html2pdf().from(element).save('output.pdf');
+      html2pdf().from(element).save('Rekap Lembur Untuk PLN.pdf');
     });
   </script>
 </body>
