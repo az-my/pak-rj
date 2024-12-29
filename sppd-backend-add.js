@@ -38,7 +38,7 @@ const findDriverEntries = (dataRows, headerRow, driverName) => {
   if (!headerRow || headerRow.length === 0) {
     throw new Error("❌ Header row is missing or empty!");
   }
-  const namaDriverIndex = headerRow.indexOf("namaDriver");
+  const namaDriverIndex = headerRow.indexOf("NAMA_DRIVER");
   if (namaDriverIndex === -1) {
     throw new Error("❌ 'namaDriver' column not found!");
   }
