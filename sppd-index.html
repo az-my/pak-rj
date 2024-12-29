@@ -16,7 +16,7 @@
 <body class="bg-gray-100 font-sans">
     <div class="w-full mx-auto p-4 sm:p-6">
         <div class="bg-white shadow-md rounded-lg p-6">
-            <h2 class="text-xl font-bold mb-4 text-gray-700">SPPD Data Input</h2>
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Isi Data Mentah SPPD</h2>
             <form id="sppdForm" class="grid gap-4">
                 <!-- Row 1: Nama Driver, Unit, Pemberi Tugas -->
                 <div class="grid gap-6 mb-6 md:grid-cols-6">
@@ -51,7 +51,7 @@
                         <input id="tanggalSampai" name="tanggalSampai" type="date"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
-                    <div class="flex items-center">
+                    <div class="">
                         <label for="hotel" class="block text-gray-700 font-bold mr-2">Hotel:</label>
                         <input id="hotel" name="hotel" type="checkbox" class="hidden">
                         <div class="relative cursor-pointer" id="hotelSwitchContainer" onclick="toggleHotel()">
@@ -61,84 +61,93 @@
                                     id="hotelSwitch"></div>
                             </div>
                         </div>
-                        <span class="ml-2 text-gray-700" id="hotelStatus">No</span>
+                        <span class="text-gray-700" id="hotelStatus">No</span>
                     </div>
                     
                 </div>
 
-                <!-- Row 2: Asal Berangkat, Tujuan, Durasi -->
-                <div class="grid gap-6 mb-6 md:grid-cols-3">
-                    <div class="hidden">
-                        <label for="asalBerangkat" class="block text-gray-700 font-bold mb-2">Asal Berangkat:</label>
-                        <input id="asalBerangkat" name="asalBerangkat" type="text" value="" disabled
-                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                    </div>
-
-                    <div class="hidden">
-                        <label for="unit" class="block text-gray-700 font-bold mb-2">Unit:</label>
-                        <input id="unit" name="unit" type="text" value="" disabled
-                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                    </div>
-                    <div class="hidden">
-                        <label for="pemberiTugas" class="block text-gray-700 font-bold mb-2">Pemberi Tugas:</label>
-                        <input id="pemberiTugas" name="pemberiTugas" type="text" value="" disabled
-                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                    </div>
 
 
-                </div>
 
-                <!-- Row 3: Tanggal Mulai, Tanggal Sampai, Hotel -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-x-auto">
 
-                    <div class="">
-                        <label for="durasi" class="block text-gray-700 font-bold mb-2">Durasi (hari):</label>
-                        <input id="durasi" name="durasi" type="text" value="" disabled
-                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                    </div>
+
  
                 </div>
 
-                <!-- Row 4: Budget Biaya Harian, Budget Biaya Penginapan, Total Biaya Harian, Total Biaya Penginapan, Total Biaya SPPD -->
-                <div class="grid gap-6 mb-6 md:grid-cols-5">
-                    <div>
-                        <label for="budgetBiayaHarian" class="block text-gray-700 font-bold mb-2">Budget Biaya
-                            Harian:</label>
-                        <input id="budgetBiayaHarian" name="budgetBiayaHarian" type="text" value="150.000" disabled
-                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                <div class="bg-white shadow-md rounded-lg mt-6">
+                    <div class="border-b border-gray-300">
+                        <button type="button" class="w-full bg-yellow-200 text-left py-4 px-6 text-white-300 font-bold focus:outline-none hover:bg-yellow-300" onclick="toggleAccordion('accordionContent')">
+                            Data Terisi Otomatis
+                            <span class="float-right">
+                                <i class="fas fa-chevron-down" id="accordionIcon"></i>
+                            </span>
+                        </button>
                     </div>
-
-                    <div>
-                        <label for="budgetBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Budget Biaya
-                            Penginapan:</label>
-                        <input id="budgetBiayaPenginapan" name="budgetBiayaPenginapan" type="text" value="250.000"
-                            disabled
-                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                    </div>
-
-                    <div>
-                        <label for="totalBiayaHarian" class="block text-gray-700 font-bold mb-2">Total Biaya
-                            Harian:</label>
-                        <input id="totalBiayaHarian" name="totalBiayaHarian" type="text" value="" disabled
-                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                    </div>
-
-                    <div>
-                        <label for="totalBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Total Biaya
-                            Penginapan:</label>
-                        <input id="totalBiayaPenginapan" name="totalBiayaPenginapan" type="text" value="" disabled
-                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                    </div>
-
-                    <div>
-                        <label for="totalBiayaSPPD" class="block text-gray-700 font-bold mb-2">Total Biaya SPPD:</label>
-                        <input id="totalBiayaSPPD" name="totalBiayaSPPD" type="text" value="" disabled
-                            class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                    <div id="accordionContent" class="hidden p-6">
+                        <!-- Read-Only Elements -->
+                        <div class="grid gap-6 mb-6 md:grid-cols-3">
+                            <div class="">
+                                <label for="asalBerangkat" class="block text-gray-700 font-bold mb-2">Asal Berangkat:</label>
+                                <input id="asalBerangkat" name="asalBerangkat" type="text" value="" disabled
+                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                            </div>
+        
+                            <div class="">
+                                <label for="unit" class="block text-gray-700 font-bold mb-2">Unit:</label>
+                                <input id="unit" name="unit" type="text" value="" disabled
+                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                            </div>
+                            <div class="">
+                                <label for="pemberiTugas" class="block text-gray-700 font-bold mb-2">Pemberi Tugas:</label>
+                                <input id="pemberiTugas" name="pemberiTugas" type="text" value="" disabled
+                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="grid gap-6 mb-6 md:grid-cols-6">
+                            <div class="">
+                                <label for="durasi" class="block text-gray-700 font-bold mb-2">Durasi (hari):</label>
+                                <input id="durasi" name="durasi" type="text" value="" disabled
+                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                            </div>
+         
+                            <div>
+                                <label for="budgetBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Budget Biaya
+                                    Penginapan:</label>
+                                <input id="budgetBiayaPenginapan" name="budgetBiayaPenginapan" type="text" value="250.000"
+                                    disabled
+                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="totalBiayaPenginapan" class="block text-gray-700 font-bold mb-2">Total Biaya
+                                    Penginapan:</label>
+                                <input id="totalBiayaPenginapan" name="totalBiayaPenginapan" type="text" value="" disabled
+                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                            </div>
+        
+                            <div>
+                                <label for="budgetBiayaHarian" class="block text-gray-700 font-bold mb-2">Budget Biaya
+                                    Harian:</label>
+                                <input id="budgetBiayaHarian" name="budgetBiayaHarian" type="text" value="150.000" disabled
+                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="totalBiayaHarian" class="block text-gray-700 font-bold mb-2">Total Biaya
+                                    Harian:</label>
+                                <input id="totalBiayaHarian" name="totalBiayaHarian" type="text" value="" disabled
+                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="totalBiayaSPPD" class="block text-gray-700 font-bold mb-2">Total Biaya SPPD:</label>
+                                <input id="totalBiayaSPPD" name="totalBiayaSPPD" type="text" value="" disabled
+                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
 
                 <!-- Submit Button -->
-                <div class="flex justify-center">
+                <div class="grid justify-center">
                     <button type="submit"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Submit
@@ -176,6 +185,21 @@
             .then(data => {
                 document.getElementById('bottom-tab-nav').innerHTML = data;
             });
+    </script>
+    <script>
+        function toggleAccordion(contentId) {
+    const content = document.getElementById(contentId);
+    const icon = document.getElementById('accordionIcon');
+
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+    } else {
+        content.classList.add('hidden');
+        icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+    }
+}
+
     </script>
     <script src="sppd-frontend-utils-driver.js"></script>
     <script src="sppd-frontend-utils-tanggal.js"></script>

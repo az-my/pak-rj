@@ -55,56 +55,61 @@
                             <option value="">Pilih Jam</option>
                         </select>
                     </div>
-                    <div class="hidden">
-                        <label for="unit" class="block text-gray-700 font-bold mb-2">Unit</label>
-                        <input id="unit" name="unit" type="text" value="UPT BANDA ACEH" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+
+                </div>
+
+                <div class="bg-white shadow-md rounded-lg mt-6">
+                    <div class="border-b border-gray-300">
+                        <button type="button" class="w-full bg-green-100 text-left py-4 px-6 text-gray-700 font-bold focus:outline-none hover:bg-green-300" onclick="toggleAccordion('accordionContent')">
+                            Data Terisi Otomatis
+                            <span class="float-right">
+                                <i class="fas fa-chevron-down" id="accordionIcon"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div id="accordionContent" class="hidden p-6">
+                        <!-- Read-Only Elements -->
+                        <div class="grid gap-6 mb-6 md:grid-cols-7">
+                            <div class="">
+                                <label for="unit" class="block text-gray-700 font-bold mb-2">Unit</label>
+                                <input id="unit" name="unit" type="text" value="UPT BANDA ACEH" disabled
+                                    class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                            </div>
+                            <div class="">
+                                <label for="day" class="block text-gray-700 font-bold mb-2">Hari</label>
+                                <input id="day" name="day" type="text" disabled
+                                    class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="dayStatus" class="block text-gray-700 font-bold mb-2">Status Hari</label>
+                                <input id="dayStatus" name="dayStatus" type="text" disabled
+                                    class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                            </div>
+                            <div class="">
+                                <label for="duration" class="block text-gray-700 font-bold mb-2">Durasi (Jam)</label>
+                                <input id="duration" name="duration" type="text" disabled
+                                    class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                            </div>
+                            <div class="">
+                                <label for="totalHours" class="block text-gray-700 font-bold mb-2">Total Jam</label>
+                                <input id="totalHours" name="totalHours" type="text" disabled
+                                    class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                            </div>
+                            <div class="">
+                                <label for="hourlyWage" class="block text-gray-700 font-bold mb-2">Upah Lembur Per Jam</label>
+                                <input id="hourlyWage" name="hourlyWage" type="text" value="22.156,00" disabled
+                                    class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="totalCost" class="block text-gray-700 font-bold mb-2">Total Biaya</label>
+                                <input id="totalCost" name="totalCost" type="text" disabled
+                                    class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- Row 2: Job Description -->
+
                 
-                <!-- Row 3: Date, Day, and Day Status -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-x-auto hidden">
-
-                    <div class="hidden">
-                        <label for="day" class="block text-gray-700 font-bold mb-2">Hari</label>
-                        <input id="day" name="day" type="text" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
-                    </div>
-                    <div>
-                        <label for="dayStatus" class="block text-gray-700 font-bold mb-2">Status Hari</label>
-                        <input id="dayStatus" name="dayStatus" type="text" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
-                    </div>
-                </div>
-                <!-- Row 4: Start Time, End Time, Duration, and Total Hours -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto hidden">
-
-
-                    <div class="hidden">
-                        <label for="duration" class="block text-gray-700 font-bold mb-2">Durasi (Jam)</label>
-                        <input id="duration" name="duration" type="text" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
-                    </div>
-                    <div class="hidden">
-                        <label for="totalHours" class="block text-gray-700 font-bold mb-2">Total Jam</label>
-                        <input id="totalHours" name="totalHours" type="text" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
-                    </div>
-                </div>
-                <!-- Row 5: Hourly Wage and Total Cost -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-x-auto hidden">
-                    <div class="hidden">
-                        <label for="hourlyWage" class="block text-gray-700 font-bold mb-2">Upah Lembur Per Jam</label>
-                        <input id="hourlyWage" name="hourlyWage" type="text" value="22.156,00" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
-                    </div>
-                    <div>
-                        <label for="totalCost" class="block text-gray-700 font-bold mb-2">Total Biaya</label>
-                        <input id="totalCost" name="totalCost" type="text" disabled
-                            class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
-                    </div>
-                </div>
                 <!-- Row 6: Submit Button -->
                 <div class="flex justify-center">
                     <button type="submit"
@@ -155,6 +160,21 @@
                 document.getElementById('bottom-tab-nav').innerHTML = data;
             });
     </script>
+        <script>
+            function toggleAccordion(contentId) {
+        const content = document.getElementById(contentId);
+        const icon = document.getElementById('accordionIcon');
+    
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+        } else {
+            content.classList.add('hidden');
+            icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+        }
+    }
+    
+        </script>
     <script src="./lembur-frontend-utils-driver.js"></script>
     <script src="./lembur-frontend-utils-extract-day.js"></script>
     <script src="./lembur-frontend-utils-daystatus.js"></script>
