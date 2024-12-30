@@ -62,7 +62,9 @@
 
                 <div class="bg-white shadow-md rounded-lg mt-6">
                     <div class="border-b border-gray-300">
-                        <button type="button" class="w-full bg-green-100 text-left py-4 px-6 text-gray-700 font-bold focus:outline-none hover:bg-green-300" onclick="toggleAccordion('accordionContent')">
+                        <button type="button"
+                            class="w-full bg-green-100 text-left py-4 px-6 text-gray-700 font-bold focus:outline-none hover:bg-green-300"
+                            onclick="toggleAccordion('accordionContent')">
                             Data Terisi Otomatis
                             <span class="float-right">
                                 <i class="fas fa-chevron-down" id="accordionIcon"></i>
@@ -98,7 +100,8 @@
                                     class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                             </div>
                             <div class="">
-                                <label for="hourlyWage" class="block text-gray-700 font-bold mb-2">Upah Lembur Per Jam</label>
+                                <label for="hourlyWage" class="block text-gray-700 font-bold mb-2">Upah Lembur Per
+                                    Jam</label>
                                 <input id="hourlyWage" name="hourlyWage" type="text" value="22.156,00" disabled
                                     class="bg-gray-200 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none">
                             </div>
@@ -111,7 +114,7 @@
                     </div>
                 </div>
 
-                
+
                 <!-- Row 6: Submit Button -->
                 <div class="flex justify-center">
                     <button type="submit"
@@ -162,26 +165,26 @@
                 document.getElementById('bottom-tab-nav').innerHTML = data;
             });
     </script>
-        <script>
-            function toggleAccordion(contentId) {
-        const content = document.getElementById(contentId);
-        const icon = document.getElementById('accordionIcon');
-    
-        if (content.classList.contains('hidden')) {
-            content.classList.remove('hidden');
-            icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
-        } else {
-            content.classList.add('hidden');
-            icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+    <script>
+        function toggleAccordion(contentId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById('accordionIcon');
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
         }
-    }
-    
-        </script>
-            <script>
-                flatpickr("#overtimeDate", {
-                    dateFormat: "d/m/Y", // Display as DD/MM/YYYY
-                });
-            </script>
+
+    </script>
+    <script>
+        flatpickr("#overtimeDate", {
+            dateFormat: "d/m/Y", // Display as DD/MM/YYYY
+        });
+    </script>
 
     <script src="./lembur-frontend-utils-driver.js"></script>
     <script src="./lembur-frontend-utils-extract-day.js"></script>

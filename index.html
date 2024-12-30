@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,88 +12,23 @@
     }
   </style>
 </head>
+
 <body class="bg-gray-100">
   <!-- Swipe Container -->
-  <div id="swipe-container" class="relative w-full h-screen overflow-hidden">
-    <div class="swipe-item absolute inset-0 bg-red-500 flex justify-center items-center text-white text-2xl font-bold">
-      Page 1
-    </div>
-    <div class="swipe-item absolute inset-0 bg-blue-500 flex justify-center items-center text-white text-2xl font-bold translate-x-full">
-      Page 2
-    </div>
-    <div class="swipe-item absolute inset-0 bg-green-500 flex justify-center items-center text-white text-2xl font-bold translate-x-[200%]">
-      Page 3
-    </div>
+  <div class="w-full mx-auto p-4 sm:p-6">
+
+    <div id="bottom-tab-nav"></div>
   </div>
 
-  <!-- Bottom Tab Navbar -->
-  <nav class="fixed bottom-0 left-0 w-full bg-white shadow-md">
-    <ul class="flex justify-around items-center text-gray-600">
-      <li class="flex flex-col items-center py-2" data-index="0">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M3 12l2-2m0 0l7-7 7 7m-9-7v18" />
-        </svg>
-        <span class="text-sm">Home</span>
-      </li>
-      <li class="flex flex-col items-center py-2" data-index="1">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M21 21l-6-6m-4 1a7 7 0 100-14 7 7 0 000 14z" />
-        </svg>
-        <span class="text-sm">Search</span>
-      </li>
-      <li class="flex flex-col items-center py-2" data-index="2">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M3 10h11M9 21V3m8 10h2a2 2 0 012 2v4a2 2 0 01-2 2h-2m-4-4h6" />
-        </svg>
-        <span class="text-sm">Profile</span>
-      </li>
-    </ul>
-  </nav>
 
   <script>
-    const container = document.getElementById('swipe-container');
-    const items = document.querySelectorAll('.swipe-item');
-    const tabs = document.querySelectorAll('nav ul li');
-    let currentIndex = 0;
-    let startX = 0;
-
-    // Swipe logic
-    container.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-    });
-
-    container.addEventListener('touchend', (e) => {
-      const endX = e.changedTouches[0].clientX;
-      const diff = endX - startX;
-
-      if (diff > 50 && currentIndex > 0) {
-        currentIndex--;
-      } else if (diff < -50 && currentIndex < items.length - 1) {
-        currentIndex++;
-      }
-
-      updateView();
-    });
-
-    // Navbar tab logic
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        currentIndex = parseInt(tab.getAttribute('data-index'), 10);
-        updateView();
+    fetch('bottom-tab.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('bottom-tab-nav').innerHTML = data;
       });
-    });
-
-    // Update swipe and navbar
-    function updateView() {
-      items.forEach((item, index) => {
-        item.style.transform = `translateX(${(index - currentIndex) * 100}%)`;
-      });
-
-      tabs.forEach((tab, index) => {
-        tab.classList.toggle('text-blue-500', index === currentIndex);
-        tab.classList.toggle('text-gray-600', index !== currentIndex);
-      });
-    }
   </script>
+
 </body>
+
 </html>
