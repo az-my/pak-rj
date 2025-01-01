@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iOS Style Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+  <!-- Navbar -->
+  <nav class="bg-white shadow p-4 fixed top-0 w-full z-10">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <button class="bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
+          <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12h18M3 6h18M3 18h18"></path>
+          </svg>
+        </button>
+        <a href="#" class="text-xl font-semibold">Dashboard</a>
+      </div>
+      <div class="flex space-x-6">
+        <a href="#" class="text-gray-600 hover:text-gray-900">Home</a>
+        <a href="#" class="text-gray-600 hover:text-gray-900">Analytics</a>
+        <a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+      </div>
+      <button class="bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
+        <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s4-2 4-5H8c0 3 4 5 4 5z"></path>
+          <path d="M21 18v-5a9 9 0 1 0-18 0v5"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="pt-20 min-h-screen flex flex-col">
+    <main class="flex-1 p-6 container mx-auto">
+      <!-- Overview Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div
+          class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center space-y-2">
+          <p class="text-sm text-gray-500">Earnings</p>
+          <p class="text-2xl font-semibold">$12,500</p>
+        </div>
+        <div
+          class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center space-y-2">
+          <p class="text-sm text-gray-500">Tasks</p>
+          <p class="text-2xl font-semibold">45</p>
+        </div>
+        <div
+          class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center space-y-2">
+          <p class="text-sm text-gray-500">Messages</p>
+          <p class="text-2xl font-semibold">9</p>
+        </div>
+        <div
+          class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center space-y-2">
+          <p class="text-sm text-gray-500">Visits</p>
+          <p class="text-2xl font-semibold">3.2K</p>
+        </div>
+      </div>
+
+      <!-- Forms Section -->
+      <div class="mt-6 bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-lg font-semibold mb-4">Add New Task</h2>
+        <form class="space-y-4">
+          <div>
+            <label for="task-name" class="block text-sm font-medium text-gray-700">Task Name</label>
+            <input type="text" id="task-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              placeholder="Enter task name">
+          </div>
+
+          <div>
+            <label for="task-deadline" class="block text-sm font-medium text-gray-700">Deadline</label>
+            <input type="date" id="task-deadline" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          </div>
+
+          <div>
+            <label for="task-priority" class="block text-sm font-medium text-gray-700">Priority</label>
+            <select id="task-priority" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit"
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300">Add
+              Task</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Graph Section -->
+      <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
+          <h2 class="text-lg font-semibold mb-4">Performance Overview</h2>
+          <div class="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+            <p class="text-gray-400">Graph goes here</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h2 class="text-lg font-semibold mb-4">Tasks</h2>
+          <ul class="space-y-2">
+            <li class="flex items-center justify-between">
+              <span>Update Dashboard</span>
+              <span class="text-sm text-gray-500">Complete</span>
+            </li>
+            <li class="flex items-center justify-between">
+              <span>Design Review</span>
+              <span class="text-sm text-gray-500">In Progress</span>
+            </li>
+            <li class="flex items-center justify-between">
+              <span>Team Meeting</span>
+              <span class="text-sm text-gray-500">Upcoming</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+
+</html>

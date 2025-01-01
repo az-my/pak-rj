@@ -1,34 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Swipe Effect with Bottom Navbar</title>
+  <title>Index</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .swipe-item {
-      transition: transform 0.3s ease-in-out;
-    }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" type="text/css" />
 </head>
-
-<body class="bg-gray-100">
-  <!-- Swipe Container -->
-  <div class="w-full mx-auto p-4 sm:p-6">
-
-    <div id="bottom-tab-nav"></div>
+<body class="">
+  <div class="container mx-auto py-8 grid gap-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4">
+    <a href="sppd-index.html" class="card shadow-lg hover:bg-base-300">
+      <div class="card-body items-center text-center">
+        <span class="text-3xl">🏠</span>
+        <h2 class="card-title">SPPD MENTAH</h2>
+      </div>
+    </a>
+    <a href="lembur-index.html" class="card shadow-lg hover:bg-base-300">
+      <div class="card-body items-center text-center">
+        <span class="text-3xl">🔍</span>
+        <h2 class="card-title">LEMBUR MENTAH</h2>
+      </div>
+    </a>
+    <a href="sppd-report-kantor.html" class="card shadow-lg hover:bg-base-300">
+      <div class="card-body items-center text-center">
+        <span class="text-3xl">🔔</span>
+        <h2 class="card-title">SPPD KANTOR</h2>
+      </div>
+    </a>
+    <a href="lembur-report-kantor.html" class="card shadow-lg hover:bg-base-300">
+      <div class="card-body items-center text-center">
+        <span class="text-3xl">👤</span>
+        <h2 class="card-title">LEMBUR KANTOR</h2>
+      </div>
+    </a>
+    <a href="sppd-report-PLN.html" class="card shadow-lg hover:bg-base-300">
+      <div class="card-body items-center text-center">
+        <span class="text-3xl">👤</span>
+        <h2 class="card-title">SPPD PLN</h2>
+      </div>
+    </a>
+    <a href="lembur-report-PLN.html" class="card shadow-lg hover:bg-base-300">
+      <div class="card-body items-center text-center">
+        <span class="text-3xl">👤</span>
+        <h2 class="card-title">LEMBUR PLN</h2>
+      </div>
+    </a>
+    <a href="sppd-lembar.html" class="card shadow-lg hover:bg-base-300">
+      <div class="card-body items-center text-center">
+        <span class="text-3xl">👤</span>
+        <h2 class="card-title">LEMBAR SPPD</h2>
+      </div>
+    </a>
   </div>
-
-
-  <script>
-    fetch('bottom-tab.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('bottom-tab-nav').innerHTML = data;
-      });
-  </script>
-
+  <nav class="fixed bottom-0 left-0 w-full bg-base-100 shadow-md border-t">
+    <ul class="menu menu-horizontal w-full justify-around">
+      <li>
+        <a href="sppd-index.html" class="flex flex-col items-center">
+          <span class="text-xl">🏠</span>
+          <span>SPPD MENTAH</span>
+        </a>
+      </li>
+      <li>
+        <a href="lembur-index.html" class="flex flex-col items-center">
+          <span class="text-xl">🔍</span>
+          <span>LEMBUR MENTAH</span>
+        </a>
+      </li>
+      <li>
+        <a href="sppd-report-kantor.html" class="flex flex-col items-center">
+          <span class="text-xl">🔔</span>
+          <span>SPPD KANTOR</span>
+        </a>
+      </li>
+      <li>
+        <a href="lembur-report-kantor.html" class="flex flex-col items-center">
+          <span class="text-xl">👤</span>
+          <span>LEMBUR KANTOR</span>
+        </a>
+      </li>
+      <li>
+        <a href="sppd-report-PLN.html" class="flex flex-col items-center">
+          <span class="text-xl">👤</span>
+          <span>SPPD PLN</span>
+        </a>
+      </li>
+      <li>
+        <a href="lembur-report-PLN.html" class="flex flex-col items-center">
+          <span class="text-xl">👤</span>
+          <span>LEMBUR PLN</span>
+        </a>
+      </li>
+      <li>
+        <a href="sppd-lembar.html" class="flex flex-col items-center">
+          <span class="text-xl">👤</span>
+          <span>LEMBAR SPPD</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </body>
-
 </html>
