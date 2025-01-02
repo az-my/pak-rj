@@ -1,9 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
     const startTimeField = document.getElementById("startTime");
     const endTimeField = document.getElementById("endTime");
+    const overtimeDateField = document.getElementById("overtimeDate");
+    const dayStatusField = document.getElementById("dayStatus");
 
-    // Helper function to generate time intervals in 30-minute steps
-    const generateTimeOptions = (start = 0, end = 1440) => {
+    const apiUrl = "https://dayoffapi.vercel.app/api";
+
+    let publicHolidays = [];
+    const fetchPublicHolidays = async () => {
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            publicHolidays = data.map((holiday) => holiday.tanggal);
+        } catch (error) {
+            console.error("Failed to fetch public holidays:", error);
+        }
+    };
+
+    const isWeekend = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDay();
+        return day === 0 || day === 6;
+    };
+
+    const isPublicHoliday = (dateString) => {
+        return publicHolidays.includes(dateString);
+    };
+
+    const generateTimeOptions = (start, end) => {
         const options = [];
         for (let minutes = start; minutes <= end; minutes += 30) {
             const hours = Math.floor(minutes / 60);
@@ -13,9 +37,17 @@ document.addEventListener("DOMContentLoaded", () => {
         return options;
     };
 
-    // Populate Start Time with 30-minute intervals from 00:00 to 24:00
-    const populateStartTime = () => {
-        const startOptions = generateTimeOptions();
+    const populateStartTime = (dayStatus) => {
+        startTimeField.innerHTML = "";
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Please Select";
+        startTimeField.appendChild(defaultOption);
+
+        const minStartTime = dayStatus === "HK" ? 17 * 60 : 0;
+        const maxStartTime = 24 * 60;
+
+        const startOptions = generateTimeOptions(minStartTime, maxStartTime);
         startOptions.forEach((time) => {
             const option = document.createElement("option");
             option.value = time;
@@ -24,17 +56,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // Populate End Time based on selected Start Time
-    const populateEndTime = (startTime) => {
-        // Clear existing options in End Time
+    const populateEndTime = (startTime, dayStatus) => {
         endTimeField.innerHTML = "";
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Please Select";
+        endTimeField.appendChild(defaultOption);
 
-        // Calculate start time in minutes
         const [startHour, startMinute] = startTime.split(":").map(Number);
         const startMinutes = startHour * 60 + startMinute;
 
-        // Generate options starting 30 minutes after Start Time, up to 24:00
-        const endOptions = generateTimeOptions(startMinutes + 30, 1440);
+        const maxRange = dayStatus === "HK" ? 4 * 60 : 12 * 60;
+        const maxEndTime = Math.min(startMinutes + maxRange, 24 * 60);
+
+        const endOptions = generateTimeOptions(startMinutes + 30, maxEndTime);
         endOptions.forEach((time) => {
             const option = document.createElement("option");
             option.value = time;
@@ -43,16 +78,50 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // Event listener for Start Time field
-    if (startTimeField && endTimeField) {
-        startTimeField.addEventListener("change", (event) => {
-            const selectedStartTime = event.target.value;
-            if (selectedStartTime) {
-                populateEndTime(selectedStartTime);
+    if (overtimeDateField && dayStatusField) {
+        overtimeDateField.addEventListener("change", async (event) => {
+            const selectedDate = event.target.value;
+
+            if (selectedDate) {
+                if (publicHolidays.length === 0) {
+                    await fetchPublicHolidays();
+                }
+
+                const status = isWeekend(selectedDate) || isPublicHoliday(selectedDate) ? "HL" : "HK";
+                dayStatusField.value = status;
+
+                populateStartTime(status);
+                endTimeField.innerHTML = "";
+                const defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.textContent = "Please Select";
+                endTimeField.appendChild(defaultOption);
+            } else {
+                dayStatusField.value = "";
+                startTimeField.innerHTML = "";
+                endTimeField.innerHTML = "";
+                const defaultStartOption = document.createElement("option");
+                defaultStartOption.value = "";
+                defaultStartOption.textContent = "Please Select";
+                startTimeField.appendChild(defaultStartOption);
+                const defaultEndOption = document.createElement("option");
+                defaultEndOption.value = "";
+                defaultEndOption.textContent = "Please Select";
+                endTimeField.appendChild(defaultEndOption);
             }
         });
     }
 
-    // Initial population of Start Time options
-    populateStartTime();
+    if (startTimeField && endTimeField) {
+        startTimeField.addEventListener("change", (event) => {
+            const selectedStartTime = event.target.value;
+            const dayStatus = dayStatusField.value;
+
+            if (selectedStartTime && dayStatus) {
+                populateEndTime(selectedStartTime, dayStatus);
+            }
+        });
+    }
+
+    fetchPublicHolidays();
 });
