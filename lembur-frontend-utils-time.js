@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const overtimeDateField = document.getElementById("overtimeDate");
     const dayStatusField = document.getElementById("dayStatus");
 
-    const apiUrl = "https://dayoffapi.vercel.app/api";
+    const apiUrl = "https://dayoffapi.vercel.app/api?year=2024";
 
     let publicHolidays = [];
     const fetchPublicHolidays = async () => {
