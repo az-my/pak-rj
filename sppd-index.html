@@ -206,24 +206,24 @@
     </script>
     <script>
         
-// Initialize Flatpickr for Tanggal Mulai
-flatpickr("#tanggalMulai", {
-    dateFormat: "d/m/Y", // Use DD/MM/YYYY format
-    onChange: function(selectedDates, dateStr) {
-        const tanggalSampai = document.getElementById("tanggalSampai")._flatpickr;
-        if (tanggalSampai && selectedDates[0]) {
-            const minDate = new Date(selectedDates[0]);
-            minDate.setDate(minDate.getDate() + 1); // Add 1 day to the selected date
-            tanggalSampai.set("minDate", minDate); // Set minDate for tanggalSampai
-        }
-    },
-});
+// // Initialize Flatpickr for Tanggal Mulai
+// flatpickr("#tanggalMulai", {
+//     dateFormat: "d/m/Y", // Use DD/MM/YYYY format
+//     onChange: function(selectedDates, dateStr) {
+//         const tanggalSampai = document.getElementById("tanggalSampai")._flatpickr;
+//         if (tanggalSampai && selectedDates[0]) {
+//             const minDate = new Date(selectedDates[0]);
+//             minDate.setDate(minDate.getDate() + 1); // Add 1 day to the selected date
+//             tanggalSampai.set("minDate", minDate); // Set minDate for tanggalSampai
+//         }
+//     },
+// });
 
-// Initialize Flatpickr for Tanggal Sampai
-flatpickr("#tanggalSampai", {
-    dateFormat: "d/m/Y", // Use DD/MM/YYYY format
-    minDate: "today",    // Default to today for minimum date
-});
+// // Initialize Flatpickr for Tanggal Sampai
+// flatpickr("#tanggalSampai", {
+//     dateFormat: "d/m/Y", // Use DD/MM/YYYY format
+//     minDate: "today",    // Default to today for minimum date
+// });
 
 // Form Submission
 const form = document.getElementById("sppdForm");
