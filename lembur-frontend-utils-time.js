@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const overtimeDateField = document.getElementById("overtimeDate");
     const dayStatusField = document.getElementById("dayStatus");
 
-    const apiUrl = "https://dayoffapi.vercel.app/api?year=2024";
+    const apiUrl = "https://dayoffapi.vercel.app/api";
 
     let publicHolidays = [];
     const fetchPublicHolidays = async () => {
@@ -86,13 +86,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const restrictDateSelection = () => {
         const currentDate = new Date();
-        const previousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-        const endOfPreviousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
-
-        overtimeDateField.min = previousMonth.toISOString().split("T")[0];
-        overtimeDateField.max = endOfPreviousMonth.toISOString().split("T")[0];
+        console.log("Current Month:", currentDate.getMonth() + 1);
+    
+        // Ensure consistent handling of time zones by using UTC dates
+        const previousMonthStart = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+        const previousMonthEnd = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), 0));
+    
+        // Set the min and max date for the overtimeDateField
+        overtimeDateField.min = previousMonthStart.toISOString().split("T")[0];
+        overtimeDateField.max = previousMonthEnd.toISOString().split("T")[0];
+    
+        console.log("Allowed Date Range:", {
+            min: overtimeDateField.min,
+            max: overtimeDateField.max,
+        });
     };
-
+    
     if (overtimeDateField && dayStatusField) {
         restrictDateSelection();
 
