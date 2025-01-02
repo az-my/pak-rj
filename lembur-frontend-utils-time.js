@@ -9,8 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let publicHolidays = [];
     const fetchPublicHolidays = async () => {
         try {
+            console.log("Fetching public holidays from API:", apiUrl);
             const response = await fetch(apiUrl);
             const data = await response.json();
+            console.log("API Response:", data);
             publicHolidays = data.map((holiday) => holiday.tanggal);
         } catch (error) {
             console.error("Failed to fetch public holidays:", error);
@@ -42,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const defaultOption = document.createElement("option");
         defaultOption.value = "";
         defaultOption.textContent = "Please Select";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
         startTimeField.appendChild(defaultOption);
 
         const minStartTime = dayStatus === "HK" ? 17 * 60 : 0;
@@ -61,6 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const defaultOption = document.createElement("option");
         defaultOption.value = "";
         defaultOption.textContent = "Please Select";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
         endTimeField.appendChild(defaultOption);
 
         const [startHour, startMinute] = startTime.split(":").map(Number);
@@ -78,16 +84,29 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
+    const restrictDateSelection = () => {
+        const currentDate = new Date();
+        const previousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+        const endOfPreviousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+
+        overtimeDateField.min = previousMonth.toISOString().split("T")[0];
+        overtimeDateField.max = endOfPreviousMonth.toISOString().split("T")[0];
+    };
+
     if (overtimeDateField && dayStatusField) {
+        restrictDateSelection();
+
         overtimeDateField.addEventListener("change", async (event) => {
             const selectedDate = event.target.value;
 
             if (selectedDate) {
+                console.log("Selected Date:", selectedDate);
                 if (publicHolidays.length === 0) {
                     await fetchPublicHolidays();
                 }
 
                 const status = isWeekend(selectedDate) || isPublicHoliday(selectedDate) ? "HL" : "HK";
+                console.log("Determined Day Status:", status);
                 dayStatusField.value = status;
 
                 populateStartTime(status);
@@ -95,6 +114,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const defaultOption = document.createElement("option");
                 defaultOption.value = "";
                 defaultOption.textContent = "Please Select";
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
                 endTimeField.appendChild(defaultOption);
             } else {
                 dayStatusField.value = "";
@@ -103,10 +124,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const defaultStartOption = document.createElement("option");
                 defaultStartOption.value = "";
                 defaultStartOption.textContent = "Please Select";
+                defaultStartOption.disabled = true;
+                defaultStartOption.selected = true;
                 startTimeField.appendChild(defaultStartOption);
                 const defaultEndOption = document.createElement("option");
                 defaultEndOption.value = "";
                 defaultEndOption.textContent = "Please Select";
+                defaultEndOption.disabled = true;
+                defaultEndOption.selected = true;
                 endTimeField.appendChild(defaultEndOption);
             }
         });
