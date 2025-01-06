@@ -144,7 +144,7 @@ const createSPPDEntry = async (req, res) => {
       });
     }
 
-    const existingData = await fetchExistingData(spreadsheetId, "SPPD!A1:Z1000");
+    const existingData = await fetchExistingData(spreadsheetId, "database_SPPD!A1:Z1000");
     const headerRow = existingData[0];
     if (!headerRow) {
       return res.status(500).json({
