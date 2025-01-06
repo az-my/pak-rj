@@ -13,7 +13,7 @@ const readGoogleSheetsEntries = async (req, res) => {
         // Fetch data from Google Sheets
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.SPREADSHEET_ID,
-            range: 'SPPD', // Adjust this if your range differs
+            range: 'database_SPPD', // Adjust this if your range differs
         });
 
         // Check if data exists
