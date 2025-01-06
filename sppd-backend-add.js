@@ -188,7 +188,7 @@ const createSPPDEntry = async (req, res) => {
     try {
       await sheets.spreadsheets.values.append({
         spreadsheetId,
-        range: "SPPD!A1",
+        range: "database_SPPD!A2",
         valueInputOption: "USER_ENTERED",
         resource: { values: [newEntry] },
       });
