@@ -64,17 +64,17 @@ document.addEventListener("DOMContentLoaded", () => {
         endTimeField.innerHTML = "";
         const defaultOption = document.createElement("option");
         defaultOption.value = "";
-        defaultOption.textContent = "Please Select";
+        defaultOption.textContent = "Please Selectt";
         defaultOption.disabled = true;
         defaultOption.selected = true;
         endTimeField.appendChild(defaultOption);
-
+    
         const [startHour, startMinute] = startTime.split(":").map(Number);
         const startMinutes = startHour * 60 + startMinute;
-
-        const maxRange = dayStatus === "HK" ? 4 * 60 : 12 * 60;
+    
+        const maxRange = dayStatus === "HK" ? (24 * 60 - startMinutes) : 12 * 60;
         const maxEndTime = Math.min(startMinutes + maxRange, 24 * 60);
-
+    
         const endOptions = generateTimeOptions(startMinutes + 30, maxEndTime);
         endOptions.forEach((time) => {
             const option = document.createElement("option");
@@ -83,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             endTimeField.appendChild(option);
         });
     };
+    
 
     const restrictDateSelection = () => {
         const currentDate = new Date();
