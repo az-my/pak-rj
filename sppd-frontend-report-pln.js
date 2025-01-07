@@ -71,7 +71,7 @@ const fetchData = async () => {
                 TanggaMulai: row[9],
                 TanggalSelesai: row[10],
                 PejabatPemberiTugas: row[5],
-                Tujuan: row[6], // Corrected index for NamaDriver
+                Tujuan: row[5], // Corrected index for NamaDriver
                 JumlahSPPD: parseFloat(row[17].replace(/\./g, '')), // Remove thousand separators and convert to float
                 JumlahHari: row[11],
                 Ket: '',
