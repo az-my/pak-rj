@@ -56,13 +56,13 @@ const fetchData = async () => {
             };
 
             // Process month name for the first record
-            const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(dataRows[0][8]); // Assuming TANGGAL_MULAI is at index 8
+            const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(dataRows[0][9]); // Assuming TANGGAL_MULAI is at index 8
 
             // Process the data
             const processedData = dataRows.map((row, index) => ({
                 No: index + 1,
                 NamaDriver: row[2], // Corrected index for NamaDriver
-                JumlahSPPD: row[16],
+                JumlahSPPD: row[17],
                 JumlahHari: row[2],
                 Ket: '' // Set Ket to an empty string
             }));

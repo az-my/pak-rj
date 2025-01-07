@@ -51,7 +51,7 @@ const fetchData = async () => {
             const dataRows = result.data.slice(1); // Remove the header row from the data
 
             // Extract month names only from the first record
-            const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(dataRows[0][8]);
+            const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(dataRows[0][9]);
 
             // Render BulanTransaksi and BulanMasukTagihan to UI
             const transactionMonthElements = document.querySelectorAll('#transaction-month');
@@ -68,12 +68,12 @@ const fetchData = async () => {
             const processedData = dataRows.map((row, index) => ({
                 No: index + 1,
                 NamaDriver: row[2], // Corrected index for NamaDriver
-                TanggaMulai: row[8],
-                TanggalSelesai: row[9],
+                TanggaMulai: row[9],
+                TanggalSelesai: row[10],
                 PejabatPemberiTugas: row[5],
-                Tujuan: row[6], // Corrected index for NamaDriver
-                JumlahSPPD: parseFloat(row[16].replace(/\./g, '')), // Remove thousand separators and convert to float
-                JumlahHari: row[10],
+                Tujuan: row[7], // Corrected index for NamaDriver
+                JumlahSPPD: parseFloat(row[17].replace(/\./g, '')), // Remove thousand separators and convert to float
+                JumlahHari: row[11],
                 Ket: '',
                 sd: 's/d' // Set Ket to an empty string
             }));

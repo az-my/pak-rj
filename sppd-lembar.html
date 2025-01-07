@@ -72,7 +72,7 @@
 
 
             for (const [index, row] of dataRows.entries()) {
-              const dateString = row[8]; // Replace with row[8]
+              const dateString = row[9]; // Replace with row[8]
               const { bulanTransaksi, bulanMasukTagihan } = getBulanTransaksi(dateString);
 
                 // Update the last unique values
@@ -117,7 +117,7 @@
       <div class="flex-1 border-r border-black p-2">
         Maksud Perjalanan Dinas
       </div>
-      <div class="flex-1 p-2">${row[7]}</div>
+      <div class="flex-1 p-2">${row[8]}</div>
     </div>
 
     <div class="flex border-b border-black">
@@ -125,7 +125,7 @@
       <div class="flex-1 border-r border-black p-2">
         Alat angkutan yang dipergunakan
       </div>
-      <div class="flex-1 p-2">kendaraan dinas ULTGBAC</div>
+      <div class="flex-1 p-2">${row[7]}</div>
     </div>
 
     <div class="flex border-b border-black">
@@ -148,9 +148,9 @@
         <div>c. Tanggal kembali</div>
       </div>
       <div class="flex-1 p-2">
-        <div>a. ${row[10]}</div>
-        <div>b. ${row[8]}</div>
-        <div>c. ${row[9]}</div>
+        <div>a. ${row[11]} Hari</div>
+        <div>b. ${row[9]}</div>
+        <div>c. ${row[10]}</div>
       </div>
     </div>
 
@@ -163,7 +163,7 @@
       </div>
       <div class="flex-1 p-2">
         <div>&nbsp;</div>
-        <div>Rp ${row[16]}</div>
+        <div>Rp ${row[17]}</div>
         <div>PT. PALMA NAFINDO PRATAMA</div>
       </div>
     </div>
@@ -215,20 +215,20 @@
           <div class="font-bold">2. UANG HARIAN</div>
           <div class="flex ml-4">
             <div class="flex-1">Biaya Harian</div>
-            <div class="w-24">Rp ${row[12]}</div>
+            <div class="w-24">Rp ${row[13]}</div>
             <div class="w-12">x</div>
             <div class="w-6"></div>
-            <div class="w-12">${row[10]}</div>
+            <div class="w-12">${row[11]}</div>
             <div class="w-12">hari</div>
             <div class="w-12">x</div>
             <div class="w-12">100%</div>
           </div>
           <div class="flex ml-4">
             <div class="flex-1">Biaya Penginapan</div>
-            <div class="w-24">Rp ${row[13]}</div>
+            <div class="w-24">Rp ${row[14]}</div>
             <div class="w-12">x</div>
             <div class="w-6"></div>
-            <div class="w-12">${row[10]}</div>
+            <div class="w-12">${row[11]}</div>
             <div class="w-12">hari</div>
             <div class="w-12">x</div>
             <div class="w-12">100%</div>
@@ -245,15 +245,15 @@
         <div class="w-24">-</div>
         <div class="w-24">-</div>
         <div class="w-24 mb-4">&nbsp;</div>
-        <div class="w-24">${row[14]}</div>
         <div class="w-24">${row[15]}</div>
+        <div class="w-24">${row[16]}</div>
       </div>
     </div>
     <div class="flex justify-space-between border-b border-black">
       <div class="w-10 border-r border-black">&nbsp;</div>
       <div class="flex-1 text-center font-bold">TOTAL</div>
       <div class="w-28 border-l border-black font-bold text-right pr-2">
-        ${row[16]}
+        ${row[17]}
       </div>
     </div>
 
