@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Laporan LEMBUR PLN</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" type="text/css" />->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.4/dist/full.css" rel="stylesheet" type="text/css" />
+
   <script
   src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
   integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
@@ -16,14 +17,14 @@
 <body class="bg-white-100 p-6">
   <div class="w-full p-4 bg-white">
     <button
-    id="download"
+    id="download123"
     type="button"
     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
   >
     Download PDF
   </button>
-  <div id="laporan-wrapper" class="overflow-x-auto">
-    <table id="laporan" class="w-auto mx-auto text-xs">
+  <div id="laporan-wrapper" class="overflow-x-auto ">
+    <table id="laporan" class="w-auto mx-auto text-xs block px-4">
       <!-- Table Title -->
       <thead>
         <tr>
@@ -130,11 +131,52 @@
           });
   </script>
   <script src="lembur-frontend-report-pln.js"></script>
-  <script>
-    document.getElementById('download').addEventListener('click', () => {
+  <!-- <script>
+    document.getElementById('download123').addEventListener('click', () => {
+    console.log('clicked');
       const element = document.getElementById('laporan');
       html2pdf().from(element).save('Rekap Lembur Untuk PLN.pdf');
     });
-  </script>
+  </script> -->
 </body>
 </html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+document.getElementById('download123').addEventListener('click', async () => {
+    const { jsPDF } = window.jspdf;
+    const element = document.getElementById('laporan');
+
+    // Set up html2canvas options for better scaling and resolution
+    const canvas = await html2canvas(element, {
+        scale: 2, // High resolution for better clarity
+        useCORS: true, // Ensure cross-origin support if needed
+        logging: true
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('l', 'pt', 'legal'); // 'l' for landscape, 'legal' for legal paper size
+    pdf.margin = { horiz: 15, vert: 20 };
+    const imgProps = pdf.getImageProperties(imgData);
+
+    // Adjust dimensions for legal size
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    let yPosition = 0; // Track vertical position for multi-page support
+
+    // Split content across multiple pages if needed
+    while (yPosition < imgProps.height) {
+        pdf.addImage(imgData, 'PNG', 0, yPosition * -1, pdfWidth, pdfHeight);
+        yPosition += pdf.internal.pageSize.getHeight(); // Move to next page height
+        if (yPosition < imgProps.height) {
+            pdf.addPage();
+        }
+    }
+
+    // Save the generated PDF
+    pdf.save('Rekap_Lembur_PLN.pdf');
+});
+
+
+</script>

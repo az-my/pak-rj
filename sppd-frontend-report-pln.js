@@ -3,33 +3,11 @@ const fetchData = async () => {
     const response = await fetch('https://rj.up.railway.app/api/google-sheets/sppd-read');
     const result = await response.json();
 
-    console.log('API Response:', result.data); // Log API response for debugging
+    console.log('API Response:', result.data); // Debugging
 
     const getMonthNames = (dateStr) => {
-      console.log('Date String:', dateStr); // Debug log
-
-      // Regular expression for DD/MM/YYYY format
-      const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-      if (!dateRegex.test(dateStr)) {
-        console.error('Date format is invalid:', dateStr);
-        throw new Error('Invalid date format');
-      }
-
-      // Split date string
       const [day, month, year] = dateStr.split('/').map(Number);
-
-      // Validate day, month, and year
-      if (month < 1 || month > 12 || day < 1 || day > 31) {
-        console.error('Invalid day or month values:', { day, month, year });
-        throw new Error('Invalid date values');
-      }
-
       const date = new Date(year, month - 1, day);
-      if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
-        console.error('Invalid date:', dateStr);
-        throw new Error('Invalid date');
-      }
-
       const months = [
         'Januari',
         'Februari',
@@ -44,41 +22,95 @@ const fetchData = async () => {
         'November',
         'Desember',
       ];
-
       const bulanTransaksi = `${months[month - 1]} ${year}`;
       const bulanMasukTagihan = `${months[month % 12]} ${month === 12 ? year + 1 : year}`;
-
-      return { bulanTransaksi, bulanMasukTagihan, date }; // Return date for sorting
+      return { bulanTransaksi, bulanMasukTagihan, date };
     };
 
+    // ✅ List of DRIVER-SEWA
+    const driverSewaList = ['UWIS KARNI', 'SYAHRIL', 'HENDRA', 'NUGRAHA RAMADHAN'];
+
+    // ✅ PejabatPemberiTugas Sorting Order
+    const pejabatOrder = [
+      'Manager UPT Banda Aceh',
+      'Manager ULTG Banda Aceh',
+      'Manager ULTG Meulaboh',
+      'Manager ULTG Langsa',
+    ];
+
     if (result.data && Array.isArray(result.data) && result.data.length > 1) {
-      const dataRows = result.data.slice(1); // Remove the header row from the data
+      const dataRows = result.data.slice(1); // Remove the header row
 
-      // Process the data and sort it by TanggaMulai
-      const processedData = dataRows
-        .map((row, index) => {
-          const { bulanTransaksi, bulanMasukTagihan, date } = getMonthNames(row[9]); // Parse date
+      // ✅ Process and classify data with date objects and driver classification
+      const processedData = dataRows.map((row, index) => {
+        const { bulanTransaksi, bulanMasukTagihan, date } = getMonthNames(row[9]); // Index 9 for TanggaMulai
+        const namaDriver = row[2];
+        const pejabatPemberiTugas = row[5]; // Use PejabatPemberiTugas from index 5
+        const driverType = driverSewaList.includes(namaDriver) ? 'DRIVER-SEWA' : 'DRIVER-TETAP';
 
-          return {
-            No: index + 1,
-            NamaDriver: row[2],
-            TanggaMulai: row[9],
-            TanggaMulaiDate: date, // Include the date object for sorting
-            TanggalSelesai: row[10],
-            PejabatPemberiTugas: row[5],
-            Tujuan: row[6],
-            JumlahSPPD: parseFloat(row[17].replace(/\./g, '')),
-            JumlahHari: row[11],
-            Ket: '',
-            sd: 's/d',
-          };
-        })
-        .sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate); // Sort by TanggaMulai (ascending)
+        return {
+          No: index + 1,
+          NamaDriver: namaDriver,
+          TanggaMulai: row[9],
+          TanggaMulaiDate: date,
+          TanggalSelesai: row[10],
+          PejabatPemberiTugas: pejabatPemberiTugas,
+          Tujuan: row[6],
+          JumlahSPPD: parseFloat(row[17]?.replace(/\./g, '') || 0),
+          JumlahHari: row[11],
+          Ket: '',
+          sd: 's/d',
+          DriverType: driverType,
+        };
+      });
 
-      // Extract month names from the first record after sorting
-      const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(processedData[0].TanggaMulai);
+      // ✅ Step 1: Split into DRIVER-TETAP and DRIVER-SEWA
+      let driverTetap = processedData.filter((item) => item.DriverType === 'DRIVER-TETAP');
+      const driverSewa = processedData.filter((item) => item.DriverType === 'DRIVER-SEWA');
 
-      // Render month names to the UI
+      // ✅ Step 2: Sort DRIVER-TETAP by PejabatPemberiTugas and TanggaMulai ASC
+      driverTetap = driverTetap.sort((a, b) => {
+        const pejabatIndexA = pejabatOrder.indexOf(a.PejabatPemberiTugas);
+        const pejabatIndexB = pejabatOrder.indexOf(b.PejabatPemberiTugas);
+
+        // Sort by pejabat order if both exist in the list
+        if (pejabatIndexA !== -1 && pejabatIndexB !== -1) {
+          return pejabatIndexA - pejabatIndexB || a.TanggaMulaiDate - b.TanggaMulaiDate;
+        }
+        // If one pejabat is missing from the list, prioritize listed ones first
+        if (pejabatIndexA === -1) return 1;
+        if (pejabatIndexB === -1) return -1;
+        return a.TanggaMulaiDate - b.TanggaMulaiDate;
+      });
+
+      // ✅ Step 3: Sort DRIVER-SEWA by TanggaMulai ASC
+      driverSewa.sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate);
+
+      // ✅ Step 4: Group data by NamaDriver
+      const groupByNamaDriver = (data) => {
+        return data.reduce((acc, record) => {
+          if (!acc[record.NamaDriver]) {
+            acc[record.NamaDriver] = [];
+          }
+          acc[record.NamaDriver].push(record);
+          return acc;
+        }, {});
+      };
+
+      const groupedTetap = groupByNamaDriver(driverTetap);
+      const groupedSewa = groupByNamaDriver(driverSewa);
+
+      // ✅ Step 5: Flatten grouped data and merge DRIVER-TETAP first, DRIVER-SEWA second
+      const flattenGroupedData = (groupedData) => {
+        return Object.values(groupedData).flatMap((records) => records);
+      };
+
+      const sortedData = [...flattenGroupedData(groupedTetap), ...flattenGroupedData(groupedSewa)];
+
+      // ✅ Step 6: Extract month names for the first entry after sorting
+      const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(sortedData[0].TanggaMulai);
+
+      // ✅ Step 7: Render month names to the UI
       document.querySelectorAll('#transaction-month').forEach((element) => {
         element.textContent = bulanTransaksi;
       });
@@ -86,21 +118,14 @@ const fetchData = async () => {
         element.textContent = bulanMasukTagihan;
       });
 
-      // Calculate totals
-      const totalAmount = processedData.reduce((sum, row) => sum + row.JumlahSPPD, 0);
+      // ✅ Step 8: Calculate totals
+      const totalAmount = sortedData.reduce((sum, row) => sum + row.JumlahSPPD, 0);
       const totalBiayaAdmin = totalAmount * 0.05;
       const totalInvoiceWithoutTax = totalAmount + totalBiayaAdmin;
       const totalPPN = totalInvoiceWithoutTax * 0.11;
       const totalFinalInvoice = totalInvoiceWithoutTax + totalPPN;
 
-      // Log the calculated values
-      console.log('Total Amount:', totalAmount);
-      console.log('Total Biaya Admin (5%):', totalBiayaAdmin);
-      console.log('Total Invoice Without Tax:', totalInvoiceWithoutTax);
-      console.log('Total PPN (11%):', totalPPN);
-      console.log('Total Final Invoice:', totalFinalInvoice);
-
-      // Render calculated values
+      // ✅ Step 9: Render calculated totals
       document.getElementById('total-amount').textContent = totalAmount.toLocaleString('id-ID');
       document.getElementById('total-biaya-admin').textContent = totalBiayaAdmin.toLocaleString('id-ID');
       document.getElementById('total-invoice-without-tax').textContent = totalInvoiceWithoutTax.toLocaleString('id-ID');
@@ -108,8 +133,8 @@ const fetchData = async () => {
       document.getElementById('total-final-invoice').textContent = totalFinalInvoice.toLocaleString('id-ID');
       document.getElementById('terbilang').textContent += ' ' + terbilang(totalFinalInvoice) + ' Rupiah';
 
-      // Render the processed and sorted data
-      renderTable(processedData, totalAmount);
+      // ✅ Step 10: Render the sorted and grouped data
+      renderTable(sortedData, totalAmount);
     } else {
       console.error('Invalid or empty data received from API.');
     }
