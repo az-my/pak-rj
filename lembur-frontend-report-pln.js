@@ -15,16 +15,8 @@ const fetchData = async () => {
     console.log('API Response:', result.data); // Debugging
 
     const getMonthNames = (dateStr) => {
-      console.log('Date String:', dateStr); // Debug log
-
-      const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-      if (!dateRegex.test(dateStr)) {
-        throw new Error('Invalid date format');
-      }
-
       const [day, month, year] = dateStr.split('/').map(Number);
       const date = new Date(year, month - 1, day);
-
       const months = [
         'Januari',
         'Februari',
@@ -39,10 +31,8 @@ const fetchData = async () => {
         'November',
         'Desember',
       ];
-
       const bulanTransaksi = `${months[month - 1]} ${year}`;
       const bulanMasukTagihan = `${months[month % 12]} ${month === 12 ? year + 1 : year}`;
-
       return { bulanTransaksi, bulanMasukTagihan, date };
     };
 
@@ -53,62 +43,97 @@ const fetchData = async () => {
       return parseFloat(value) || 0;
     };
 
+    // ✅ List of DRIVER-SEWA
+    const driverSewaList = ['UWIS KARNI', 'SYAHRIL', 'HENDRA', 'NUGRAHA RAMADHAN'];
+
+    // ✅ PejabatPemberiTugas Sorting Order
+    const pejabatOrder = [
+      'Manager UPT Banda Aceh',
+      'Manager ULTG Banda Aceh',
+      'Manager ULTG Meulaboh',
+      'Manager ULTG Langsa',
+    ];
+
     if (result.data && Array.isArray(result.data) && result.data.length > 1) {
       const dataRows = result.data.slice(1); // Skip the header row
       let currentMonth, nextMonth;
 
       try {
-        const firstDate = dataRows[0][5];
+        const firstDate = dataRows[0][5]; // TanggalLembur on index 5
         ({ bulanTransaksi: currentMonth, bulanMasukTagihan: nextMonth } = getMonthNames(firstDate));
       } catch (error) {
         console.error('Date validation error:', error.message);
         throw error;
       }
 
-      // Process the data and sort it by TanggalLembur
-      const processedData = dataRows
-        .map((row, index) => {
-          const { bulanTransaksi, bulanMasukTagihan, date } = getMonthNames(row[5]);
+      // ✅ Process the data and classify into DRIVER-TETAP and DRIVER-SEWA
+      const processedData = dataRows.map((row, index) => {
+        const { bulanTransaksi, bulanMasukTagihan, date } = getMonthNames(row[5]);
+        const namaDriver = row[2];
+        const pejabatPemberiTugas = row[4]; // Assuming PejabatPemberiTugas at index 4
+        const driverType = driverSewaList.includes(namaDriver) ? 'DRIVER-SEWA' : 'DRIVER-TETAP';
 
-          return {
-            No: index + 1,
-            NamaHari: row[6],
-            TanggalLembur: row[5],
-            TanggalLemburDate: date, // Added for sorting
-            NamaDriver: row[2],
-            Unit: row[3],
-            UraianPekerjaan: row[4],
-            JamMulai: row[8],
-            JamSelesei: row[9],
-            TotalJamLembur: cleanAndConvert(row[11]),
-            TotalJamBayar: cleanAndConvert(row[10]),
-            UpahPerJam: cleanAndConvert(row[12]),
-            TotalBiayaBayar: cleanAndConvert(row[13]),
-            BulanTransaksi: currentMonth,
-            BulanMasukTagihan: nextMonth,
-          };
-        })
-        .sort((a, b) => a.TanggalLemburDate - b.TanggalLemburDate); // Sorting by TanggalLembur ascending
+        return {
+          No: index + 1,
+          NamaDriver: namaDriver,
+          NamaHari: row[6],
+          TanggalLembur: row[5],
+          TanggalLemburDate: date,
+          PejabatPemberiTugas: pejabatPemberiTugas,
+          Unit: row[3],
+          UraianPekerjaan: row[4],
+          JamMulai: row[8],
+          JamSelesai: row[9],
+          TotalJamLembur: cleanAndConvert(row[11]),
+          TotalJamBayar: cleanAndConvert(row[10]),
+          UpahPerJam: cleanAndConvert(row[12]),
+          TotalBiayaBayar: cleanAndConvert(row[13]),
+          BulanTransaksi: currentMonth,
+          BulanMasukTagihan: nextMonth,
+          DriverType: driverType,
+        };
+      });
 
-      // Calculate totals
-      const totalAmount = Math.ceil(processedData.reduce((sum, row) => sum + row.TotalBiayaBayar, 0));
+      // ✅ Step 1: Split into DRIVER-TETAP and DRIVER-SEWA
+      let driverTetap = processedData.filter((item) => item.DriverType === 'DRIVER-TETAP');
+      const driverSewa = processedData.filter((item) => item.DriverType === 'DRIVER-SEWA');
+
+      // ✅ Step 2: Sort DRIVER-TETAP by PejabatPemberiTugas and TanggalLembur
+      driverTetap = driverTetap.sort((a, b) => {
+        const pejabatIndexA = pejabatOrder.indexOf(a.PejabatPemberiTugas);
+        const pejabatIndexB = pejabatOrder.indexOf(b.PejabatPemberiTugas);
+
+        // Sort by PejabatPemberiTugas order, then by TanggalLembur
+        if (pejabatIndexA !== -1 && pejabatIndexB !== -1) {
+          return pejabatIndexA - pejabatIndexB || a.TanggalLemburDate - b.TanggalLemburDate;
+        }
+        if (pejabatIndexA === -1) return 1;
+        if (pejabatIndexB === -1) return -1;
+        return a.TanggalLemburDate - b.TanggalLemburDate;
+      });
+
+      // ✅ Step 3: Sort DRIVER-SEWA by TanggalLembur
+      driverSewa.sort((a, b) => a.TanggalLemburDate - b.TanggalLemburDate);
+
+      // ✅ Step 4: Combine sorted data (DRIVER-TETAP first, DRIVER-SEWA second)
+      const sortedData = [...driverTetap, ...driverSewa];
+
+      // ✅ Step 5: Calculate totals
+      const totalAmount = Math.ceil(sortedData.reduce((sum, row) => sum + row.TotalBiayaBayar, 0));
       const totalBiayaAdmin = Math.ceil(totalAmount * 0.05);
       const totalInvoiceWithoutTax = Math.ceil(totalAmount + totalBiayaAdmin);
       const totalPPN = Math.ceil(totalInvoiceWithoutTax * 0.11);
       const totalFinalInvoice = Math.ceil(totalInvoiceWithoutTax + totalPPN);
 
-      // Render calculated values
-      document.getElementById('total-amount').textContent = formatIDR(totalAmount);
-      document.getElementById('total-biaya-admin').textContent = formatIDR(totalBiayaAdmin);
-      document.getElementById('total-invoice-without-tax').textContent = formatIDR(totalInvoiceWithoutTax);
-      document.getElementById('total-ppn').textContent = formatIDR(totalPPN);
-      document.getElementById('total-final-invoice').textContent = formatIDR(totalFinalInvoice);
+      // ✅ Step 6: Render calculated totals
+      document.getElementById('total-amount').textContent = totalAmount.toLocaleString('id-ID');
+      document.getElementById('total-biaya-admin').textContent = totalBiayaAdmin.toLocaleString('id-ID');
+      document.getElementById('total-invoice-without-tax').textContent = totalInvoiceWithoutTax.toLocaleString('id-ID');
+      document.getElementById('total-ppn').textContent = totalPPN.toLocaleString('id-ID');
+      document.getElementById('total-final-invoice').textContent = totalFinalInvoice.toLocaleString('id-ID');
+      document.getElementById('terbilang').textContent += ' ' + terbilang(totalFinalInvoice) + ' Rupiah';
 
-      // Convert to words for display
-      const roundedFinalInvoice = Math.ceil(totalFinalInvoice);
-      document.getElementById('terbilang').textContent += ' ' + terbilang(roundedFinalInvoice) + ' Rupiah';
-
-      // Render BulanTransaksi and BulanMasukTagihan
+      // ✅ Step 7: Render BulanTransaksi and BulanMasukTagihan
       document.querySelectorAll('#transaction-month').forEach((element) => {
         element.textContent = currentMonth;
       });
@@ -116,8 +141,8 @@ const fetchData = async () => {
         element.textContent = nextMonth;
       });
 
-      // Render the sorted data in the table
-      renderTable(processedData, totalAmount);
+      // ✅ Step 8: Render the sorted data in the table
+      renderTable(sortedData, totalAmount);
     } else {
       console.error('Invalid or empty data received from API.');
     }
@@ -140,7 +165,7 @@ function renderTable(data, totalAmount) {
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.Unit}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.UraianPekerjaan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.JamMulai}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.JamSelesei}</td>
+            <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.JamSelesai}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.TotalJamBayar}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.TotalJamLembur}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${formatIDR(row.UpahPerJam)}</td>
