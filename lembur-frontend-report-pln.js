@@ -122,12 +122,14 @@ const fetchData = async () => {
       const totalAmount = Math.ceil(finalSortedData.reduce((sum, row) => sum + row.TotalBiayaBayar, 0));
       const totalBiayaAdmin = Math.ceil(totalAmount * 0.05);
       const totalInvoiceWithoutTax = Math.ceil(totalAmount + totalBiayaAdmin);
+      const totalTagihanWithoutTax = totalInvoiceWithoutTax;
       const totalPPN = Math.ceil(totalInvoiceWithoutTax * 0.11);
       const totalFinalInvoice = Math.ceil(totalInvoiceWithoutTax + totalPPN);
 
       document.getElementById('total-amount').textContent = totalAmount.toLocaleString('id-ID');
       document.getElementById('total-biaya-admin').textContent = totalBiayaAdmin.toLocaleString('id-ID');
       document.getElementById('total-invoice-without-tax').textContent = totalInvoiceWithoutTax.toLocaleString('id-ID');
+      document.getElementById('total-tagihan-without-tax').textContent = totalInvoiceWithoutTax.toLocaleString('id-ID');
       document.getElementById('total-ppn').textContent = totalPPN.toLocaleString('id-ID');
       document.getElementById('total-final-invoice').textContent = totalFinalInvoice.toLocaleString('id-ID');
       document.getElementById('terbilang').textContent += ' ' + terbilang(totalFinalInvoice) + ' Rupiah';
