@@ -161,10 +161,10 @@ function renderTable(data, totalAmount) {
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.TanggalLembur}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.NamaDriver}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.Unit}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.UraianPekerjaan}</td>
+            <td class="border border-gray-500 px-2 py-1  w-auto text-center break-words">${row.UraianPekerjaan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.JamMulai}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.JamSelesai}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.TotalJamBayar}</td>
+            <td class="border border-gray-500 px-2 py-1  w-auto text-center w-auto">${row.TotalJamBayar}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.TotalJamLembur}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${formatIDR(row.UpahPerJam)}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-right">${formatIDR(row.TotalBiayaBayar)}</td>

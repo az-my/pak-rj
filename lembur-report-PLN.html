@@ -17,14 +17,14 @@
 
     <!-- Centered Table -->
     <div id="laporan-wrapper" class="overflow-x-auto w-auto text-center">
-        <table id="laporan" class="w-auto text-xs align-middle  ">
+        <table id="laporan" class="w-auto text-xs align-middle break-words ">
             <!-- Table Title -->
             <thead>
                 <tr>
-                    <th colspan="12" class="px-4 py-2 text-center">
+                    <th colspan="10" class="pl-20 text-center">
                         <div class="font-semibold text-sm mt-1">
                             <br>REKAPITULASI KERJA LEMBUR OUTSOURCING <br />
-                            UPT BANDA ACEH <br>
+                            UPT BANDA ACEH <br><span id="transaction-month"></span><br>
                         </div>
                     </th>
                 </tr>
@@ -35,14 +35,15 @@
                     <th class="border border-gray-800 px-2 py-1 text-center">Tanggal</th>
                     <th class="border border-gray-800 px-2 py-1 text-center">Nama Outsourcing</th>
                     <th class="border border-gray-800 px-2 py-1 text-center">Unit</th>
-                    <th class="border border-gray-800 px-2 py-1 text-center">Rincian Pekerjaan</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center break-words">Rincian Pekerjaan</th>
                     <th class="border border-gray-800 px-2 py-1 text-center">Jam Mulai</th>
                     <th class="border border-gray-800 px-2 py-1 text-center">Jam Selesai</th>
                     <th class="border border-gray-800 px-2 py-1 text-center">Total<br>Jam<br>Lembur</th>
-                    <th class="border border-gray-800 px-2 py-1 text-center">Total<br>Jam<br>Dibayarkan</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center w-auto">Total<br>Jam<br>Dibayarkan</th>
                     <th class="border border-gray-800 px-2 py-1 text-center">Upah<br>Per<br>Jam</th>
                     <th class="border border-gray-800 px-2 py-1 text-center">Biaya<br>Dibayarkan</th>
                 </tr>
+                <tr ><th colspan="10" class="border border-gray-800 pl-20 py-1 text-center align-middle"><span id="transaction-month"></span></th></tr>
             </thead>
             <tbody id="data-table-body">
                 <!-- Dynamic data will be rendered here -->
