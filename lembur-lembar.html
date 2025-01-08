@@ -49,7 +49,7 @@
 
       document.addEventListener('DOMContentLoaded', async function () {
         try {
-          const response = await fetch('http://localhost:8080/api/google-sheets/lembur-lembar/');
+          const response = await fetch('https://rj.up.railway.app/api/google-sheets/lembur-lembar/');
           if (!response.ok) {
             throw new Error('Failed to fetch data');
           }
