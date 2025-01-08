@@ -22,13 +22,24 @@
             <h2 class="text-xl font-bold mb-4 text-gray-700">Isi Data Mentah SPPD</h2>
             <form id="sppdForm" class="grid gap-4">
                 <!-- Row 1: Nama Driver, Unit, Pemberi Tugas -->
-                <div class="grid gap-6 mb-6 md:grid-cols-7">
+                <div class="grid gap-6 mb-6 md:grid-cols-4">
                     <div>
                         <label for="namaDriver" class="block text-gray-700 font-bold mb-2">Nama Driver: <span
                                 class="text-red-500">*</span></label>
                         <select id="namaDriver" name="namaDriver"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                             <option value="">Pilih Driver</option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <label for="unit" class="block text-gray-700 font-bold mb-2">Unit:</label>
+                        <select id="unit" name="unit"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Pilih Unit</option>
+                            <option value="ULTG BANDA ACEH">ULTG BANDA ACEH</option>
+                            <option value="ULTG LANGSA">ULTG LANGSA</option>
+                            <option value="ULTG MEULABOH">ULTG MEULABOH</option>
+                            <option value="UPT BANDA ACEH">UPT BANDA ACEH</option>
                         </select>
                     </div>
                     <div>
@@ -41,6 +52,8 @@
                         <input id="alatAngkutan" name="alatAngkutan" type="text"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
+
+                    
                     <div>
                         <label for="maksud_perjalanan" class="block text-gray-700 font-bold mb-2">Maksud Perjalanan:</label>
                         <textarea id="maksud_perjalanan" name="maksud_perjalanan" rows="3"
@@ -100,11 +113,7 @@
                                     class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
                             </div>
         
-                            <div class="">
-                                <label for="unit" class="block text-gray-700 font-bold mb-2">Unit:</label>
-                                <input id="unit" name="unit" type="text" value="" disabled
-                                    class="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
-                            </div>
+
                             <div class="">
                                 <label for="pemberiTugas" class="block text-gray-700 font-bold mb-2">Pemberi Tugas:</label>
                                 <input id="pemberiTugas" name="pemberiTugas" type="text" value="" disabled
@@ -212,6 +221,7 @@
  
 
     <script src="sppd-frontend-utils-driver.js"></script>
+    <script src="sppd-frontend-uitls-pemberitugas.js"></script>
     <script src="sppd-frontend-utils-tanggal.js"></script>
     <!-- <script src="sppd-frontend-utils-durasi.js"></script> -->
     

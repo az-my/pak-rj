@@ -5,6 +5,7 @@ const updateGoogleSheetsEntry = require('./lembur-backend-update');
 const deleteGoogleSheetsEntry = require('./lembur-backend-delete');
 const createSPPDEntry = require('./sppd-backend-add');
 const readSPPDEntry = require('./sppd-backend-read');
+const lemburLembarEntry=require('./lembur-backend-lembar');
 const router = express.Router();
 
 // Wrapper function to handle async errors
@@ -28,4 +29,6 @@ router.delete('/delete', asyncHandler(deleteGoogleSheetsEntry)); // Delete
 router.post('/sppd-add', asyncHandler(createSPPDEntry));  
 router.get('/sppd-read', asyncHandler(readSPPDEntry)); 
 
+
+router.get('/lembur-lembar', asyncHandler(lemburLembarEntry)); 
 module.exports = router;
