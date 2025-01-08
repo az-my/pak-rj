@@ -7,6 +7,30 @@ const formatIDR = (number) => {
   }).format(Math.round(number)); // Round the number
 };
 
+const formatIDRWithDecimal = (number) => {
+  return new Intl.NumberFormat('id-ID', {
+    maximumFractionDigits: 2, // No decimal places
+    minimumFractionDigits: 2,
+    useGrouping: true, // Add thousand separators
+  }).format(Math.round(number)); // Round the number
+};
+
+const formatKoma = (number) => {
+  return new Intl.NumberFormat('id-ID', {
+    maximumFractionDigits: 1, // No decimal places
+    minimumFractionDigits: 1,
+    useGrouping: true, // Add thousand separators
+  }).format(Math.round(number)); // Round the number
+};
+
+const formatKoma2 = (number) => {
+  return new Intl.NumberFormat('id-ID', {
+    maximumFractionDigits: 1, // No decimal places
+    minimumFractionDigits: 0,
+    useGrouping: true, // Add thousand separators
+  }).format(Math.round(number)); // Round the number
+};
+
 const fetchData = async () => {
   try {
     const response = await fetch('https://rj.up.railway.app/api/google-sheets/list');
@@ -87,6 +111,7 @@ const fetchData = async () => {
           BulanTransaksi: bulanTransaksi,
           BulanMasukTagihan: bulanMasukTagihan,
           DriverType: driverType,
+          statusHari: row[7],
         };
       });
 
@@ -166,11 +191,20 @@ function renderTable(data, totalAmount) {
             <td class="border border-gray-500 px-2 py-1  w-auto text-center break-words">${row.UraianPekerjaan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.JamMulai}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.JamSelesai}</td>
-            <td class="border border-gray-500   w-auto text-center w-auto">${row.TotalJamBayar}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.TotalJamLembur}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto text-center">${formatIDR(row.UpahPerJam)}</td>
+            <td class="border border-gray-500 w-auto text-center">${String(row.TotalJamBayar).replace('.', ',')}</td>
+
+            <td class="border border-gray-500 px-2 py-1  w-auto text-center">${formatKoma(row.TotalJamLembur)}</td>
+            <td class="border border-gray-500 px-2 py-1  w-auto text-center">${formatIDRWithDecimal(
+              row.UpahPerJam
+            )}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-right">${formatIDR(row.TotalBiayaBayar)}</td>
             
+            ${
+              row.statusHari === 'HL'
+                ? `<td class="border border-gray-500 px-2 py-1 w-auto text-center">${row.statusHari}</td>`
+                : '<td class="border border-gray-500 px-2 py-1 w-auto text-center"></td>'
+            }
+
             
         `;
     tableBody.appendChild(tr);

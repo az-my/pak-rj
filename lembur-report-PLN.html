@@ -42,8 +42,9 @@
                     <th class="border border-gray-800 px-2 py-1 text-center w-auto">Total<br>Jam<br>Dibayarkan</th>
                     <th class="border border-gray-800 px-2 py-1 text-center">Upah<br>Per<br>Jam</th>
                     <th class="border border-gray-800 px-2 py-1 text-center">Biaya<br>Dibayarkan</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Status<br>Hari</th>
                 </tr>
-                <tr ><th colspan="12" class="border border-gray-800 pl-40 py-1 text-center align-middle"><span id="transaction-month"></span></th></tr>
+                <tr ><th colspan="13" class="border border-gray-800 pl-20 py-1 text-center align-middle"><span id="transaction-month"></span></th></tr>
             </thead>
             <tbody id="data-table-body">
                 <!-- Dynamic data will be rendered here -->
@@ -52,35 +53,43 @@
                 <tr>
                     <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right uppercase ">Lembur <span id="transaction-month"></span></td>
                     <td class="border border-gray-800 px-2 py-1 text-right" id="total-amount"></td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-amount"></td>
                 </tr>
                 <tr>
                     <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right uppercase">Biaya Admin (5%)</td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-biaya-admin"></td>
                     <td class="border border-gray-800 px-2 py-1 text-right" id="total-biaya-admin"></td>
                 </tr>
                 <tr>
                     <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right uppercase">Total Lembur <span id="transaction-month"></span></td>
                     <td class="border border-gray-800 px-2 py-1 text-right" id="total-invoice-without-tax"></td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-invoice-without-tax"></td>
                 </tr>
                 <tr>
-                    <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right uppercase text-white">asdadasd</td>
+                    <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right uppercase text-white">a</td>
                     <td class="border border-gray-800 px-2 py-1 text-right" id=""></td>
+                    <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right uppercase text-white">a</td>
                 </tr>
                 <tr>
                     <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right uppercase">Total Tagihan Lembur <span id="transaction-month"></span></td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-tagihan-without-tax"></td>
                     <td class="border border-gray-800 px-2 py-1 text-right" id="total-tagihan-without-tax"></td>
                 </tr>
                 <tr>
                     <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right">PPN 11%</td>
                     <td class="border border-gray-800 px-2 py-1 text-right" id="total-ppn"></td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-ppn"></td>
                 </tr>
                 <tr>
                     <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right uppercase">Total Tagihan Lembur <span id="transaction-month"></span>+ PPN</td>
                     <td class="border border-gray-800 px-2 py-1 text-right" id="total-final-invoice"></td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-final-invoice"></td>
                 </tr>
                 <tr>
-                    <td colspan="12" class="italic border border-gray-800 px-2 py-1 font-semibold text-left" id="terbilang">
+                    <td colspan="13" class="italic border border-gray-800 px-2 py-1 font-semibold text-left" id="terbilang">
                         <span>Terbilang: </span>
                     </td>
+                    
                 </tr>
                 
                 <!-- Signature Section Restored -->
