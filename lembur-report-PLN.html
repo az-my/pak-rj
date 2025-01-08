@@ -1,182 +1,156 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laporan LEMBUR PLN</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.4/dist/full.css" rel="stylesheet" type="text/css" />
-
-  <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-  integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan LEMBUR PLN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
 </head>
-<body class="bg-white-100 p-6">
-  <div class="w-full p-4 bg-white">
+<body class="bg-white-100 flex flex-col justify-center items-center min-h-screen p-6">
+
+    <!-- Centered Button -->
     <button
-    id="download123"
-    type="button"
-    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-  >
-    Download PDF
-  </button>
-  <div id="laporan-wrapper" class="overflow-x-auto ">
-    <table id="laporan" class="w-auto mx-auto text-xs block px-4">
-      <!-- Table Title -->
-      <thead>
-        <tr>
-          <th colspan=12" class="border-b border-gray-800 px-4 py-2 text-center">
-          
-            <div class="font-semibold text-sm mt-1">
-              <br>REKAPITULASI KERJA LEMBUR OUTSOURCING <br />
-              UPT BANDA ACEH <br>
-            </div>
-          </th>
-        </tr>
-        <!-- Column Headers -->
-        <tr>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle break-words">No</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Hari</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Tanggal</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Nama Outsourcing</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Unit</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Rincian Pekerjaan</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Jam Mulai</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Jam Selesai</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Total Jam Lembur</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle break-word">Total Jam Yang Dibayarkan</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Upah Per Jam</th>
-          <th rowspan="2" class="border border-gray-800 px-2 py-1 text-center align-middle">Biaya Yang Dibayarkan</th>
-        
-        
-        
-        </tr>
-      
-      </thead>
-      <!-- New Row -->
-<tr>
-  <td colspan="12" class="border border-gray-800 px-4 py-2 text-center font-semibold">
-    <span id="transaction-month"></span>
-  </td>
-</tr>
-      <tbody id="data-table-body">
+        id="download123"
+        type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-6"
+    >
+        Download PDF
+    </button>
 
-      </tbody>
-      <tfoot>
-        <!-- Summary Rows -->
-        <tr>
-          <td colspan="9" class="border border-gray-800 px-2 py-1 font-semibold text-left"></td>
-          <td colspan="2" class="border border-gray-800 px-2 py-1 font-semibold text-left">Jumlah</td>
-          <td class="border border-gray-800 px-2 py-1 text-right" id="total-amount"></td>
-        </tr>
-        <tr>
-          <td colspan="9" class="border border-gray-800 px-2 py-1 font-semibold text-left"></td>
-          <td colspan="2" class="border border-gray-800 px-2 py-1 font-semibold text-left">Biaya Admin (5%)</td>
-          <td class="border border-gray-800 px-2 py-1 text-right" id="total-biaya-admin"></td>
-        </tr>
-        <tr>
-          <td colspan="9" class="border border-gray-800 px-2 py-1 font-semibold text-left"></td>
-          <td colspan="2" class="border border-gray-800 px-2 py-1 font-semibold text-left">
-            Total Tagihan SPPD <span id="transaction-month"></span>
-          </td>
-          <td class="border border-gray-800 px-2 py-1 text-right" id="total-invoice-without-tax"></td>
-        </tr>
-        <tr>
-          <td colspan="9" class="border border-gray-800 px-2 py-1 font-semibold text-left"></td>
-          <td colspan="2" class="border border-gray-800 px-2 py-1 font-semibold text-left">PPN 11%</td>
-          <td class="border border-gray-800 px-2 py-1 text-right" id="total-ppn"></td>
-        </tr>
-        <tr>
-          <td colspan="9" class="border border-gray-800 px-2 py-1 font-semibold text-left"></td>
-          <td colspan="2" class="border border-gray-800 px-2 py-1 font-semibold text-left">
-            Total Tagihan SPPD <span id="transaction-month"></span> + PPN
-          </td>
-          <td class="border border-gray-800 px-2 py-1 text-right" id="total-final-invoice"></td>
-        </tr>
-        <tr>
-          <td colspan="12" id="terbilang" class="italic border border-gray-800 px-2 py-1 font-semibold text-left">
-            <span id="terbilang-amount">terbilang:</span>
-          </td>
-        </tr>
-      
-        <!-- Signature Section -->
-        <tr>
-          <td colspan="4" class="border-t border-gray-800 px-2 py-8 text-center align-bottom">
-            DIREKSI LAPANGAN,<br> MANAGER<br><br><br><br><br><u>INDRA KURNIAWAN</u>
-          </td>
-          <td colspan="5"></td>
-          <td colspan="3" class="border-t border-gray-800 px-2 py-8 text-center align-bottom">
-            Banda Aceh, 15 <span id="bulan-masuk-tagihan"></span>
-            <br>KSO<br> PT. PALMA NAFINDO PRATAMA - PT. SANOBAR GUNAJAYA<br><br><br><br><br><u>RIZKY NAHARDI</u>
-          </td>
-        </tr>
-      </tfoot>
-      
-    </table>
-  </div>
-    <!-- Table -->
+    <!-- Centered Table -->
+    <div id="laporan-wrapper" class="overflow-x-auto w-auto text-center">
+        <table id="laporan" class="w-auto text-xs ">
+            <!-- Table Title -->
+            <thead>
+                <tr>
+                    <th colspan="12" class="border border-gray-800 px-4 py-2 text-center">
+                        <div class="font-semibold text-sm mt-1">
+                            <br>REKAPITULASI KERJA LEMBUR OUTSOURCING <br />
+                            UPT BANDA ACEH <br>
+                        </div>
+                    </th>
+                </tr>
+                <!-- Column Headers -->
+                <tr>
+                    <th class="border border-gray-800 px-2 py-1 text-center">No</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Hari</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Tanggal</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Nama Outsourcing</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Unit</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Rincian Pekerjaan</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Jam Mulai</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Jam Selesai</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Total<br>Jam<br>Lembur</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Total<br>Jam<br>Dibayarkan</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Upah<br>Per<br>Jam</th>
+                    <th class="border border-gray-800 px-2 py-1 text-center">Biaya<br>Dibayarkan</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <!-- Dynamic data will be rendered here -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right">Jumlah</td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-amount"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right">Biaya Admin (5%)</td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-biaya-admin"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right">Total Tagihan SPPD</td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-invoice-without-tax"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right">PPN 11%</td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-ppn"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="border border-gray-800 px-2 py-1 font-semibold text-right">Total Final Invoice</td>
+                    <td class="border border-gray-800 px-2 py-1 text-right" id="total-final-invoice"></td>
+                </tr>
+                <tr>
+                    <td colspan="12" class="italic border border-gray-800 px-2 py-1 font-semibold text-left" id="terbilang">
+                        <span>Terbilang: </span>
+                    </td>
+                </tr>
+                
+                <!-- Signature Section Restored -->
+                <tr>
+                    <td colspan="4" class="border-t border-gray-800 px-2 py-8 text-center align-bottom">
+                        DIREKSI LAPANGAN,<br> MANAGER<br><br><br><br><br><u>INDRA KURNIAWAN</u>
+                    </td>
+                    <td colspan="5"></td>
+                    <td colspan="3" class="border-t border-gray-800 px-2 py-8 text-center align-bottom">
+                        Banda Aceh, 15 <span id="bulan-masuk-tagihan"></span>
+                        <br>KSO<br> PT. PALMA NAFINDO PRATAMA - PT. SANOBAR GUNAJAYA<br><br><br><br><br><u>RIZKY NAHARDI</u>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-    <div id="bottom-tab-nav"></div>
-  </div>
+    <!-- External JavaScript restored -->
+    <script src="lembur-frontend-report-pln.js"></script>
 
-
-  <script>
-      fetch('bottom-tab.html')
-          .then(response => response.text())
-          .then(data => {
-              document.getElementById('bottom-tab-nav').innerHTML = data;
-          });
-  </script>
-  <script src="lembur-frontend-report-pln.js"></script>
-  <!-- <script>
-    document.getElementById('download123').addEventListener('click', () => {
-    console.log('clicked');
-      const element = document.getElementById('laporan');
-      html2pdf().from(element).save('Rekap Lembur Untuk PLN.pdf');
-    });
-  </script> -->
-</body>
-</html>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script>
+    <!-- JavaScript for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
 document.getElementById('download123').addEventListener('click', async () => {
     const { jsPDF } = window.jspdf;
     const element = document.getElementById('laporan');
 
-    // Set up html2canvas options for better scaling and resolution
+    // Capture the element using html2canvas with increased scale for clarity
     const canvas = await html2canvas(element, {
-        scale: 2, // High resolution for better clarity
-        useCORS: true, // Ensure cross-origin support if needed
-        logging: true
+        scale: 2,
+        useCORS: true
     });
 
     const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('l', 'pt', 'legal'); // 'l' for landscape, 'legal' for legal paper size
-    pdf.margin = { horiz: 15, vert: 20 };
+    const pdf = new jsPDF({
+        orientation: 'l',   // Landscape mode
+        unit: 'pt',         // Points for more precise layout control
+        format: 'legal'     // Legal paper size
+    });
+
+    const margins = {
+        top: 20,       // Top margin
+        bottom: 20,    // Bottom margin
+        left: 30,      // Left margin
+        right: 30      // Right margin
+    };
+
     const imgProps = pdf.getImageProperties(imgData);
+    const pageWidth = pdf.internal.pageSize.getWidth() - (margins.left + margins.right);
+    const pageHeight = pdf.internal.pageSize.getHeight() - (margins.top + margins.bottom);
+    const imgWidth = pageWidth;
+    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
 
-    // Adjust dimensions for legal size
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    let yPosition = margins.top;  // Start from the top margin
 
-    let yPosition = 0; // Track vertical position for multi-page support
-
-    // Split content across multiple pages if needed
     while (yPosition < imgProps.height) {
-        pdf.addImage(imgData, 'PNG', 0, yPosition * -1, pdfWidth, pdfHeight);
-        yPosition += pdf.internal.pageSize.getHeight(); // Move to next page height
+        pdf.addImage(imgData, 'PNG', margins.left, yPosition * -1 + margins.top, imgWidth, imgHeight);
+        yPosition += pageHeight;
+
         if (yPosition < imgProps.height) {
             pdf.addPage();
         }
     }
 
-    // Save the generated PDF
+    // Save the final PDF
     pdf.save('Rekap_Lembur_PLN.pdf');
 });
 
 
-</script>
+
+
+    </script>
+</body>
+</html>
