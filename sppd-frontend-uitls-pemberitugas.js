@@ -1,17 +1,43 @@
 document.getElementById('unit').addEventListener('change', function () {
   const pemberiTugasField = document.getElementById('pemberiTugas');
+  const asalBerangkatField = document.getElementById('asalBerangkat');
 
-  // Define the mapping for unit and pemberiTugas values
-  const pemberiTugasMapping = {
-    'ULTG BANDA ACEH': 'MANAGER UTLG BANDA ACEH',
-    'ULTG LANGSA': 'MANAGER UTLG LANGSA',
-    'ULTG MEULABOH': 'MANAGER UTLG MEULABOH',
-    'UPT BANDA ACEH': 'MANAGER UPT BANDA ACEH',
+  // Single array combining all data but not rendering namaPemberiTugas yet
+  const unitData = {
+    'ULTG BANDA ACEH': {
+      pemberiTugas: 'MANAGER ULTG BANDA ACEH',
+      asalBerangkat: 'BANDA ACEH',
+      namaPemberiTugas: 'MUHAMMAD ISA',
+    },
+    'ULTG LANGSA': {
+      pemberiTugas: 'MANAGER ULTG LANGSA',
+      asalBerangkat: 'LANGSA',
+      namaPemberiTugas: 'FIZKI FIRDAUS',
+    },
+    'ULTG MEULABOH': {
+      pemberiTugas: 'MANAGER ULTG MEULABOH',
+      asalBerangkat: 'MEULABOH',
+      namaPemberiTugas: 'ARIS DWI SANTOSO',
+    },
+    'UPT BANDA ACEH': {
+      pemberiTugas: 'MANAGER UPT BANDA ACEH',
+      asalBerangkat: 'BANDA ACEH',
+      namaPemberiTugas: 'INDRA KURNIAWAN',
+    },
   };
 
   // Get the selected unit
   const selectedUnit = this.value;
 
-  // Set the corresponding pemberiTugas value or clear the field if no match
-  pemberiTugasField.value = pemberiTugasMapping[selectedUnit] || '';
+  // Update the fields if the unit exists in the array, otherwise clear the fields
+  if (unitData[selectedUnit]) {
+    pemberiTugasField.value = unitData[selectedUnit].pemberiTugas;
+    asalBerangkatField.value = unitData[selectedUnit].asalBerangkat;
+
+    // The namaPemberiTugas is stored but not rendered yet.
+    console.log('Nama Pemberi Tugas:', unitData[selectedUnit].namaPemberiTugas);
+  } else {
+    pemberiTugasField.value = '';
+    asalBerangkatField.value = '';
+  }
 });

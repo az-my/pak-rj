@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   driverData.sort((a, b) => a.nama.localeCompare(b.nama));
 
   const namaDriverSelect = document.getElementById('namaDriver');
-  const asalBerangkatInput = document.getElementById('asalBerangkat');
+  const asalBerangkatInput = document.getElementById('asalBerangkat2');
   const unitInput = document.getElementById('unit2');
   const pemberiTugasInput = document.getElementById('pemberiTugas2');
 
