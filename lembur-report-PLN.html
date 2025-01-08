@@ -13,18 +13,11 @@
 </head>
 <body class="bg-white-100 flex flex-col justify-center items-center min-h-screen p-6">
 
-    <!-- Centered Button -->
-    <button
-        id="download123"
-        type="button"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-6"
-    >
-        Download PDF
-    </button>
+
 
     <!-- Centered Table -->
     <div id="laporan-wrapper" class="overflow-x-auto w-auto text-center">
-        <table id="laporan" class="w-auto text-xs ">
+        <table id="laporan" class="w-auto text-xs align-middle  ">
             <!-- Table Title -->
             <thead>
                 <tr>
@@ -99,58 +92,5 @@
     <!-- External JavaScript restored -->
     <script src="lembur-frontend-report-pln.js"></script>
 
-    <!-- JavaScript for PDF Export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script>
-document.getElementById('download123').addEventListener('click', async () => {
-    const { jsPDF } = window.jspdf;
-    const element = document.getElementById('laporan');
-
-    // Capture the element using html2canvas with increased scale for clarity
-    const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true
-    });
-
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF({
-        orientation: 'l',   // Landscape mode
-        unit: 'pt',         // Points for more precise layout control
-        format: 'legal'     // Legal paper size
-    });
-
-    const margins = {
-        top: 20,       // Top margin
-        bottom: 20,    // Bottom margin
-        left: 30,      // Left margin
-        right: 30      // Right margin
-    };
-
-    const imgProps = pdf.getImageProperties(imgData);
-    const pageWidth = pdf.internal.pageSize.getWidth() - (margins.left + margins.right);
-    const pageHeight = pdf.internal.pageSize.getHeight() - (margins.top + margins.bottom);
-    const imgWidth = pageWidth;
-    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-
-    let yPosition = margins.top;  // Start from the top margin
-
-    while (yPosition < imgProps.height) {
-        pdf.addImage(imgData, 'PNG', margins.left, yPosition * -1 + margins.top, imgWidth, imgHeight);
-        yPosition += pageHeight;
-
-        if (yPosition < imgProps.height) {
-            pdf.addPage();
-        }
-    }
-
-    // Save the final PDF
-    pdf.save('Rekap_Lembur_PLN.pdf');
-});
-
-
-
-
-    </script>
 </body>
 </html>
