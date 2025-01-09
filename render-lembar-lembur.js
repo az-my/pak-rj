@@ -176,7 +176,7 @@ function generateSignatureSection(record, formType, signatureData) {
                     <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
                     <p>Pemohon,</p>
                     <p>${signatureData.makerPosition}</p>
-                    <p class="font-semibold mt-6">${signatureData.makerName}</p>
+                    <p class="font-semibold mt-6"><br><br><br>${signatureData.makerName}</p>
                 </div>
             </div>`;
   } else if (formType === 'Form FPPT-02') {
@@ -186,8 +186,10 @@ function generateSignatureSection(record, formType, signatureData) {
                 <div class="text-right">
                     <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
                     <p>Yang Menugaskan,</p>
+                    <p>Direksi Lapangan</p>
                     <p>${signatureData.approverPosition}</p>
-                    <p class="font-semibold mt-6">${signatureData.approverName}</p>
+                    <p>UPT BANDA ACEH</p
+                    <p class="font-semibold mt-6"><br><br><br>${signatureData.approverName}</p>
                 </div>
             </div>`;
   } else if (formType === 'Form FPPT-03') {
@@ -196,13 +198,15 @@ function generateSignatureSection(record, formType, signatureData) {
                 <div class="text-left">
                     <p>Mengetahui,</p>
                     <p>${signatureData.makerPosition}</p>
-                    <p class="font-semibold mt-6">${signatureData.makerName}</p>
+                    <p class="font-semibold mt-6"><br><br><br><br>${signatureData.makerName}</p>
                 </div>
                 <div class="text-right">
                     <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
-                    <p>PT PALMA,</p>
+                    <P>Yang Menugaskan/ Memerintahkan,</p>
                     <p>DIREKTUR</p>
-                    <p class="font-semibold mt-6">RIZKY NAHARDI</p>
+                    <p>KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</p>
+                    
+                    <p class="font-semibold mt-6"><br><br><br>RIZKY NAHARDI</p>
                 </div>
             </div>`;
   }
