@@ -173,7 +173,7 @@ function generateSignatureSection(record, formType, signatureData) {
             <div class="flex justify-between  text-xs">
                 <div></div>
                 <div class="text-right">
-                    <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
+                     <p>${record.kota}, 15 ${signatureData.bulanMasukTagihan}</p>
                     <p>Pemohon,</p>
                     <p>${signatureData.makerPosition}</p>
                     <p class="font-semibold mt-6"><br><br><br>${signatureData.makerName}</p>
@@ -184,11 +184,11 @@ function generateSignatureSection(record, formType, signatureData) {
             <div class="flex justify-between text-xs">
                 <div></div>
                 <div class="text-right">
-                    <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
+                     <p>${record.kota}, 15 ${signatureData.bulanMasukTagihan}</p>
                     <p>Yang Menugaskan,</p>
                     <p>Direksi Lapangan</p>
                     <p>${signatureData.approverPosition}</p>
-                    <p>UPT BANDA ACEH</p
+                    <p>UPT BANDA</p
                     <p class="font-semibold mt-6"><br><br><br>${signatureData.approverName}</p>
                 </div>
             </div>`;
@@ -201,7 +201,8 @@ function generateSignatureSection(record, formType, signatureData) {
                     <p class="font-semibold mt-6"><br><br><br><br>${signatureData.makerName}</p>
                 </div>
                 <div class="text-right">
-                    <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
+                    <p>${record.kota}, 15 ${signatureData.bulanMasukTagihan}</p>
+                    
                     <P>Yang Menugaskan/ Memerintahkan,</p>
                     <p>DIREKTUR</p>
                     <p>KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</p>
@@ -218,6 +219,7 @@ export async function fetchAndRenderData() {
     if (!response.ok) throw new Error('Failed to fetch data');
 
     const rawData = await response.json();
+    console.log(rawData);
     const transformedData = rawData.data.slice(1).map((item, index) => ({
       namaDriver: item[2],
       unitKerja: item[3],
@@ -233,10 +235,49 @@ export async function fetchAndRenderData() {
       id: `record-${index}`,
     }));
 
+    // Extract tanggalMulai of the first record
+    const firstRecordTanggalMulai = transformedData[1].tanggalMulai; // Assuming it's in dd/mm/yyyy format
+    const [day, month, year] = firstRecordTanggalMulai.split('/'); // Split it into day, month, and year
+
+    // Define month names in Indonesian
+    const bulanNames = [
+      'Januari',
+      'Februari',
+      'Maret',
+      'April',
+      'Mei',
+      'Juni',
+      'Juli',
+      'Agustus',
+      'September',
+      'Oktober',
+      'November',
+      'Desember',
+    ];
+
+    // Define bulanTagihan
+    const bulanTagihan = `${bulanNames[parseInt(month) - 1]} ${year}`;
+
+    // Calculate bulanMasukTagihan (next month)
+    let nextMonth = parseInt(month) + 1;
+    let nextYear = year;
+    if (nextMonth > 12) {
+      nextMonth = 1;
+      nextYear = (parseInt(year) + 1).toString(); // Handle year transition
+    }
+    const bulanMasukTagihan = `${bulanNames[nextMonth - 1]} ${nextYear}`;
+
+    console.log('Bulan Tagihan:', bulanTagihan); // Example: "Januari 2024"
+    console.log('Bulan Masuk Tagihan:', bulanMasukTagihan); // Example: "Februari 2024"
+
     const cardContainer = document.getElementById('card-container'); // Directly targeting the container for cards
 
     transformedData.forEach((record) => {
       const signatureData = getSignatureData(record.unitKerja);
+
+      // Add bulanTagihan and bulanMasukTagihan to signatureData
+      signatureData.bulanTagihan = bulanTagihan;
+      signatureData.bulanMasukTagihan = bulanMasukTagihan;
 
       // Create a card component for each record with a unique ID
       const cardWrapper = document.createElement('div');
