@@ -125,12 +125,20 @@ const fetchData = async () => {
       const totalPPN = totalInvoiceWithoutTax * 0.11;
       const totalFinalInvoice = totalInvoiceWithoutTax + totalPPN;
 
+      // ✅ Function to format the currency properly using Rp symbol and Tailwind Flexbox
+      const formatRupiah2 = (value) => {
+        return `<div class="flex justify-between w-full items-center">
+              <span class="mr-2 flex-shrink-0">Rp</span>
+              <span class="text-right flex-grow">${value.toLocaleString('id-ID')}</span>
+          </div>`;
+      };
+
       // ✅ Step 9: Render calculated totals
-      document.getElementById('total-amount').textContent = totalAmount.toLocaleString('id-ID');
-      document.getElementById('total-biaya-admin').textContent = totalBiayaAdmin.toLocaleString('id-ID');
-      document.getElementById('total-invoice-without-tax').textContent = totalInvoiceWithoutTax.toLocaleString('id-ID');
-      document.getElementById('total-ppn').textContent = totalPPN.toLocaleString('id-ID');
-      document.getElementById('total-final-invoice').textContent = totalFinalInvoice.toLocaleString('id-ID');
+      document.getElementById('total-amount').innerHTML = formatRupiah2(totalAmount);
+      document.getElementById('total-biaya-admin').innerHTML = formatRupiah2(totalBiayaAdmin);
+      document.getElementById('total-invoice-without-tax').innerHTML = formatRupiah2(totalInvoiceWithoutTax);
+      document.getElementById('total-ppn').innerHTML = formatRupiah2(totalPPN);
+      document.getElementById('total-final-invoice').innerHTML = formatRupiah2(totalFinalInvoice);
       document.getElementById('terbilang').textContent += ' ' + terbilang(totalFinalInvoice) + ' Rupiah';
 
       // ✅ Step 10: Render the sorted and grouped data
@@ -155,6 +163,13 @@ function renderTable(data, totalAmount) {
     return `${formattedDay}-${months[month - 1]}-${year}`;
   };
 
+  const formatRupiah = (value) => {
+    return `<div class="flex justify-between w-full items-center">
+                <span class="mr-2 flex-shrink-0">Rp</span>
+                <span class="text-right flex-grow">${value.toLocaleString('id-ID')}</span>
+            </div>`;
+  };
+
   data.forEach((row, index) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -165,8 +180,8 @@ function renderTable(data, totalAmount) {
             <td class="border border-gray-500 px-2 py-1  w-auto">${formatDate(row.TanggalSelesai)}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.PejabatPemberiTugas}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.Tujuan}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto text-right">${row.JumlahSPPD.toLocaleString(
-              'id-ID'
+            <td class="border border-gray-500 px-2 py-1  w-auto text-right">${formatRupiah(
+              row.JumlahSPPD.toLocaleString('id-ID')
             )}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.JumlahHari} <span>hari</span</td>
         `;
