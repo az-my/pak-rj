@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modular Report to Combined PDF</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" type="text/css" />-> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  </head>
+
+  <body>
+    <div class="p-4 pt-4 flex justify-center">
+      <button
+        id="download-all"
+        type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+      >
+        Generate Lembar SPPD dari Vendor
+      </button>
+    </div>
+
+    <div id="reports-container" class="hidden"></div>
+    <div id="bottom-tab-nav"></div>
+
+    <!-- Placeholder for Bottom Tab -->
+
+    <script>
+      fetch('bottom-tab.html')
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById('bottom-tab-nav').innerHTML = data;
+        });
+    </script>
+    <script>
+      window.onload = () => {
+        // Function to calculate bulan-transaksi
+        const getBulanTransaksi = (dateString) => {
+          const [day, month, year] = dateString.split('/').map(Number); // Split dd/mm/yyyy format
+          const originalDate = new Date(year, month - 1, day); // Create a Date object
+
+          // Calculate bulanTransaksi
+          const bulanTransaksiDate = new Date(originalDate.getFullYear(), originalDate.getMonth(), 1);
+
+          // Calculate bulanMasukTagihan
+          const bulanMasukTagihanDate = new Date(
+            bulanTransaksiDate.getFullYear(),
+            bulanTransaksiDate.getMonth() + 1,
+            1
+          );
+
+          // Get the name of the month
+          const monthNames = [
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember',
+          ];
+
+          const bulanTransaksi = `${monthNames[bulanTransaksiDate.getMonth()]} ${bulanTransaksiDate.getFullYear()}`;
+          const bulanMasukTagihan = `${
+            monthNames[bulanMasukTagihanDate.getMonth()]
+          } ${bulanMasukTagihanDate.getFullYear()}`;
+
+          return { bulanTransaksi, bulanMasukTagihan }; // Return both values as an object
+        };
+        // ✅ Function to remove the decimal fraction
+const cleanRupiahValue = (value) => {
+    return value.replace(",00", ""); // Remove the ",00" part from the value
+};
+
+        const fetchData = async () => {
+          try {
+            const response = await fetch('https://rj.up.railway.app/api/google-sheets/sppd-read');
+            const result = await response.json();
+
+            if (result.data && Array.isArray(result.data) && result.data.length > 1) {
+              const dataRows = result.data.slice(1); // Skip the header row
+              const tempPDFs = []; // Array to hold individual PDFs
+              let lastBulanTransaksi = ''; // To hold the last unique Bulan Transaksi
+              let lastBulanMasukTagihan = ''; // To hold the last unique Bulan Masuk Tagihan
+
+              // ✅ List of driver sewa
+              const driverSewaList = ['UWIS KARNI', 'SYAHRIL', 'HENDRA', 'NUGRAHA RAMADHAN'];
+
+              // ✅ Date Transformation Function (DD MMMM YYYY)
+              const formatDate = (dateStr) => {
+                const [day, month, year] = dateStr.split('/').map(Number);
+                const months = [
+                  'Januari',
+                  'Februari',
+                  'Maret',
+                  'April',
+                  'Mei',
+                  'Juni',
+                  'Juli',
+                  'Agustus',
+                  'September',
+                  'Oktober',
+                  'November',
+                  'Desember',
+                ];
+                const formattedDay = day < 10 ? `0${day}` : day;
+                return `${formattedDay} ${months[month - 1]} ${year}`;
+              };
+
+              for (const [index, row] of dataRows.entries()) {
+                // ✅ Catch and check Nama Driver (row index 2)
+                const namaDriver = row[2];
+
+                                // ✅ Clean the decimal fraction for rows 13 and 14
+                                const biayaHarian = cleanRupiahValue(row[13]); 
+                const biayaPenginapan = cleanRupiahValue(row[14]); 
+
+                // ✅ Determine jabatanDriver based on the condition
+                const jabatanDriver = driverSewaList.includes(namaDriver) ? 'Driver Sewa' : 'Driver';
+
+                const dateString = row[9]; // Replace with row[8]
+                // ✅ Transform the dates before rendering
+                const transformedTanggalBerangkat = formatDate(row[9]);
+                const transformedTanggalKembali = formatDate(row[10]);
+                const { bulanTransaksi, bulanMasukTagihan } = getBulanTransaksi(dateString);
+
+                // Update the last unique values
+                if (bulanTransaksi !== lastBulanTransaksi) {
+                  lastBulanTransaksi = bulanTransaksi;
+                }
+
+                if (bulanMasukTagihan !== lastBulanMasukTagihan) {
+                  lastBulanMasukTagihan = bulanMasukTagihan;
+                }
+                // Log both bulanTransaksi and bulanMasukTagihan
+                console.log(`Row ${index + 1}:`);
+                console.log('Bulan Transaksi:', bulanTransaksi);
+                console.log('Bulan Masuk Tagihan:', bulanMasukTagihan);
+
+                const reportHTML = `
+        <table class="w-full border-2 border-black bg-white rounded-lg shadow-lg p-4 mb-4 text-xs border-collapse">
+            <!-- Header Section -->
+            <tr>
+                <td colspan="5" class="border-b border-black pb-2 mb-2 w-full">
+                    <div class="flex justify-between items-start w-full">
+                        <div>
+                            <p class="text-xs font-medium">PT PLN (PERSERO)</p>
+                            <p class="text-xs text-gray-500">UPT Banda Aceh</p>
+                        </div>
+                        <div class="text-xs font-medium border border-black px-2 py-1">${formTitle}</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-sm font-bold text-center mb-4 w-full">${formTitle}</td>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-xs mb-1 leading-tight w-full">
+                    <p>Kepada Yth.</p>
+                    <p class="italic">${recipients[formIndex]}</p>
+                    <p>${openingTexts[formIndex]}</p>
+                </td>
+            </tr>
+
+            <!-- Nested Table for Data Rows -->
+            <tr>
+                <td colspan="5">
+                    <table class="w-auto border-collapse border border-white">
+                        <tr>
+                            <td class="px-2 py-1 w-auto">1</td>
+                            <td class="px-2 py-1 w-auto">Hari, Tanggal Mulai</td>
+                            <td class="px-2 py-1 w-auto">:</td>
+                            <td class="px-2 py-1 w-auto">${record.hariMulai}, ${record.tanggalMulai}</td>
+                            <td class="px-2 py-1 w-auto"></td>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-1 w-auto">2</td>
+                            <td class="px-2 py-1 w-auto">s/d Hari, Tanggal Akhir</td>
+                            <td class="px-2 py-1 w-auto">:</td>
+                            <td class="px-2 py-1 w-auto">${record.hariSelesai}, ${record.tanggalSelesai}</td>
+                            <td class="px-2 py-1 w-auto"></td>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-1 w-auto">3</td>
+                            <td class="px-2 py-1 w-auto">Waktu</td>
+                            <td class="px-2 py-1 w-auto">:</td>
+                            <td class="px-2 py-1 w-auto">${record.jamMulai} s/d ${record.jamSelesai}</td>
+                            <td class="px-2 py-1 w-auto"></td>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-1 w-auto">4</td>
+                            <td class="px-2 py-1 w-auto">Durasi</td>
+                            <td class="px-2 py-1 w-auto">:</td>
+                            <td class="px-2 py-1 w-auto">${record.durasiLembur} Jam</td>
+                            <td class="px-2 py-1 w-auto"></td>
+                        </tr>
+                        <tr>
+                            <td class="px-2 py-1 w-auto">5</td>
+                            <td class="px-2 py-1 w-auto">Kegiatan</td>
+                            <td class="px-2 py-1 w-auto">:</td>
+                            <td class="px-2 py-1 w-auto">${record.kegiatanLembur}</td>
+                            <td class="px-2 py-1 w-auto"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <!-- Closing Text -->
+            <tr>
+                <td colspan="5" class="text-sm mt-6 text-left p-2 w-full">
+                    Demikian dan terima kasih atas kerjasamanya.
+                </td>
+            </tr>
+
+            <!-- Signature Section in Main Table -->
+<tfoot>
+${
+    formIndex < 2
+        ? `
+        <tr>
+            <td colspan="5" class="border px-2 py-4">
+                <div class="grid grid-cols-4 w-full">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="text-center">${record.kota}, ${record.bulanLembur} 2024<br>Pemohon,<br>${record.JabatanForm1}<br><br><br>${record.namaForm1}</div>
+                </div>
+            </td>
+        </tr>`
+        : `
+        <tr>
+            <td colspan="5" class="border px-2 py-4">
+                <div class="grid grid-cols-4 w-full">
+                    <div class="text-center">Pemohon,<br><br>${record.JabatanForm1}<br><br><br>${record.namaForm1}</div>
+                    <div></div>
+                    <div></div>
+                    <div class="text-center">${signatories[formIndex][1]}</div>
+                </div>
+            </td>
+        </tr>`
+}
+</tfoot>
+
+        </table>`;
+
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = reportHTML;
+                document.body.appendChild(tempDiv);
+
+                // Delay for first page rendering
+                if (index === 0) {
+                  await new Promise((resolve) => setTimeout(resolve, 500));
+                }
+
+                try {
+                  console.log(`Generating PDF for row ${index + 1}`);
+                  const pdfBlob = await html2pdf().from(tempDiv).toPdf().outputPdf('blob');
+                  tempPDFs.push(pdfBlob);
+                } catch (pdfError) {
+                  console.error(`Error generating PDF for row ${index + 1}:`, pdfError);
+                }
+
+                document.body.removeChild(tempDiv);
+                await new Promise((resolve) => setTimeout(resolve, 100)); // Ensure rendering is complete
+              }
+
+              // Combine all PDFs
+              const mergedPDF = await combinePDFs(tempPDFs);
+
+              // Trigger download
+              const downloadLink = document.createElement('a');
+              downloadLink.href = URL.createObjectURL(mergedPDF);
+              downloadLink.download = `${lastBulanTransaksi} Lembar SPPD.pdf`;
+              downloadLink.click();
+            } else {
+              console.error('Invalid or empty data received from API.');
+            }
+          } catch (error) {
+            console.error('Error fetching data:', error.message);
+          }
+        };
+
+        const combinePDFs = async (pdfBlobs) => {
+          const pdfLib = PDFLib.PDFDocument;
+          const mergedPdf = await pdfLib.create();
+
+          for (const pdfBlob of pdfBlobs) {
+            const pdf = await pdfLib.load(await pdfBlob.arrayBuffer());
+            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+            copiedPages.forEach((page) => mergedPdf.addPage(page));
+          }
+
+          const mergedPdfBytes = await mergedPdf.save();
+          return new Blob([mergedPdfBytes], { type: 'application/pdf' });
+        };
+
+        document.getElementById('download-all').addEventListener('click', fetchData);
+      };
+    </script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {},
+        },
+        plugins: [],
+        corePlugins: {
+          preflight: false, // Disable advanced resets
+        },
+        experimental: {
+          optimizeUniversalDefaults: true, // Prevent experimental features
+        },
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </body>
+</html>
