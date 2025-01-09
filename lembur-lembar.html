@@ -10,11 +10,13 @@
     <!-- Import Required Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 
 <body class="bg-gray-100 min-h-screen flex justify-center items-start p-8">
 
-    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
+    <div class="w-full bg-white shadow-lg rounded-lg p-6">
         <h1 class="text-2xl font-bold mb-6 text-center text-blue-600">Lembar Lembur Management</h1>
 
         <!-- PDF Generation Button -->
@@ -23,7 +25,7 @@
         </button>
 
         <!-- Data Container -->
-        <div id="form-container" class="space-y-6 bg-gray-50 p-4 rounded-lg text-sm leading-relaxed border border-gray-300">
+        <div id="form-container" class="w-full space-y-6 bg-gray-50 p-4 rounded-lg text-sm leading-relaxed border border-gray-300">
             <!-- Content will be rendered here -->
         </div>
     </div>

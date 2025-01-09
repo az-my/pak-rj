@@ -1,62 +1,45 @@
-// handle-lembar-lembur.js
-
 export async function generatePDF() {
   const container = document.getElementById('form-container');
-  const recordWrappers = container.querySelectorAll('.record-wrapper');
+  const recordCards = container.querySelectorAll('[id^="card-"]'); // Target each card component for PDF generation
   const tempPDFs = []; // Store PDFs before merging
 
-  for (let index = 0; index < recordWrappers.length; index++) {
-    const element = recordWrappers[index];
+  // Create a progress bar and add it to the container
+  const progressWrapper = document.createElement('div');
+  progressWrapper.classList.add('w-full', 'bg-gray-200', 'rounded-full', 'h-4', 'my-4');
+  container.appendChild(progressWrapper);
 
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = element.outerHTML;
-    document.body.appendChild(tempDiv);
+  const progressBar = document.createElement('div');
+  progressBar.classList.add('bg-blue-500', 'h-4', 'rounded-full');
+  progressWrapper.appendChild(progressBar);
 
-    if (index === 0) {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-    }
+  // Set the initial progress to 0%
+  progressBar.style.width = '0%';
 
-    try {
-      console.log(`Generating PDF for record ${index + 1}`);
-      const pdfBlob = await html2pdf()
-        .from(tempDiv)
-        .set({
-          margin: [10, 10, 10, 10],
-          filename: `record-${index + 1}.pdf`,
-          image: { type: 'jpeg', quality: 1.0 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'mm', format: 'legal', orientation: 'portrait' },
-        })
-        .toPdf()
-        .outputPdf('blob');
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF(); // Create a new jsPDF instance
 
-      tempPDFs.push(pdfBlob);
-    } catch (pdfError) {
-      console.error(`Error generating PDF for record ${index + 1}:`, pdfError);
-    }
+  // Start processing each record card
+  for (let index = 0; index < recordCards.length; index++) {
+    const cardElement = recordCards[index];
 
-    document.body.removeChild(tempDiv);
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    // Extract text content from the card
+    const cardText = cardElement.innerText || cardElement.textContent;
+
+    // Add the extracted text to the PDF
+    pdf.text(cardText, 10, 10 + index * 20); // Position the text in the PDF
+
+    // Update the progress bar
+    const progress = ((index + 1) / recordCards.length) * 100;
+    progressBar.style.width = `${progress}%`; // Update the progress bar width
   }
 
-  const mergedPDF = await combinePDFs(tempPDFs);
+  // Save the generated PDF to a Blob
+  const pdfBlob = pdf.output('blob');
 
+  // Create a download link for the combined PDF
   const downloadLink = document.createElement('a');
-  downloadLink.href = URL.createObjectURL(mergedPDF);
+  const pdfURL = URL.createObjectURL(pdfBlob);
+  downloadLink.href = pdfURL;
   downloadLink.download = 'combined-records.pdf';
   downloadLink.click();
-}
-
-export async function combinePDFs(pdfBlobs) {
-  const pdfLib = PDFLib.PDFDocument;
-  const mergedPdf = await pdfLib.create();
-
-  for (const pdfBlob of pdfBlobs) {
-    const pdf = await pdfLib.load(await pdfBlob.arrayBuffer());
-    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-    copiedPages.forEach((page) => mergedPdf.addPage(page));
-  }
-
-  const mergedPdfBytes = await mergedPdf.save();
-  return new Blob([mergedPdfBytes], { type: 'application/pdf' });
 }

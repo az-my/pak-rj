@@ -86,43 +86,41 @@ function formatDate(dateString) {
 
 function generateHeader(formType) {
   return `
-        <div class="flex justify-between items-start mb-8">
-            <div>
-                <p class="font-bold">PT PLN (PERSERO)</p>
-                <p>UPT Banda Aceh</p>
-            </div>
-            <div class="border px-4 py-2 text-red-600 font-bold">
-                ${formType}
-            </div>
-        </div>
-    `;
+          <div class="flex justify-between items-start text-xs mb-0">
+              <div>
+                  <p class="font-bold">PT PLN (PERSERO)</p>
+                  <p>UPT Banda Aceh</p>
+              </div>
+              <div class="border px-4 py-2 text-red-600 font-bold text-xs">
+                  ${formType}
+              </div>
+          </div>
+      `;
 }
 
 function generateContentSection(record, formType) {
   return `
-        <h2 class="text-lg font-semibold text-center mb-4">${formConfig[formType].title}</h2>
-        <p>${formConfig[formType].openingText}</p>
-        <div style="display: grid; grid-template-columns: auto 1fr; gap: 0.5rem;">
-            <p><strong>1. Perusahaan</strong></p> <p>: KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</p>
-            <p><strong>2. Hari, Tgl. Mulai</strong></p> <p>: ${formatDate(record.tanggalMulai)}, ${formatDate(
+        <h2 class="text-xs font-semibold text-center mb-0">${formConfig[formType].title}</h2>
+        <p class="text-xs mb-0">${formConfig[formType].openingText}</p>
+        <div style="display: grid; grid-template-columns: auto 1fr; gap: 0; font-size: 0.7rem; padding: 0;">
+          <div><strong>1. Perusahaan</strong></div> <div>: KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</div>
+          <div><strong>2. Hari, Tgl. Mulai</strong></div> <div>: ${formatDate(record.tanggalMulai)}, ${formatDate(
     record.tanggalMulai
-  )}</p>
-            <p><strong>   s/d Hari, Tgl. Akhir</strong></p> <p>: ${formatDate(record.tanggalMulai)}, ${formatDate(
-    record.tanggalMulai
-  )}
-            <p><strong>3. Waktu Mulai s/d</strong></p> <p>: ${formatDate(record.tanggalMulai)} s/d ${formatDate(
-    record.tanggalMulai
-  )}</p>
-            <p><strong>4. Durasi</strong></p> <p>: ${record.durasiLembur} Jam</p>
-            <p><strong>5. Untuk Kegiatan</strong></p> <p>: ${record.kegiatanLembur}</p>
+  )}</div>
+          <div><strong>3. s/d Hari, Tgl. Akhir</strong></div> <div>: ${formatDate(record.tanggalSelesai)}, ${formatDate(
+    record.tanggalSelesai
+  )}</div>
+          <div><strong>4. Waktu Mulai s/d</strong></div> <div>: ${record.jamMulai} s/d ${record.jamSelesai}</div>
+          <div><strong>5. Durasi</strong></div> <div>: ${record.durasiLembur} Jam</div>
+          <div><strong>6. Untuk Kegiatan</strong></div> <div>: ${record.kegiatanLembur}</div>
         </div>
-    `;
+      `;
 }
 
 function generateSignatureSection(record, formType, signatureData) {
   if (formType === 'Form FPPT-01') {
     return `
-            <div class="flex justify-between mt-8">
+            <div class="flex justify-between  text-xs">
                 <div></div>
                 <div class="text-right">
                     <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
@@ -133,7 +131,7 @@ function generateSignatureSection(record, formType, signatureData) {
             </div>`;
   } else if (formType === 'Form FPPT-02') {
     return `
-            <div class="flex justify-between mt-8">
+            <div class="flex justify-between text-xs">
                 <div></div>
                 <div class="text-right">
                     <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
@@ -144,7 +142,7 @@ function generateSignatureSection(record, formType, signatureData) {
             </div>`;
   } else if (formType === 'Form FPPT-03') {
     return `
-            <div class="flex justify-between mt-8">
+            <div class="flex justify-between  text-xs">
                 <div class="text-left">
                     <p>Mengetahui,</p>
                     <p>${signatureData.makerPosition}</p>
@@ -152,9 +150,9 @@ function generateSignatureSection(record, formType, signatureData) {
                 </div>
                 <div class="text-right">
                     <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
-                    <p>Yang Menugaskan,</p>
-                    <p>${signatureData.approverPosition}</p>
-                    <p class="font-semibold mt-6">${signatureData.approverName}</p>
+                    <p>PT PALMA,</p>
+                    <p>DIREKTUR</p>
+                    <p class="font-semibold mt-6">RIZKY NAHARDI</p>
                 </div>
             </div>`;
   }
@@ -166,28 +164,54 @@ export async function fetchAndRenderData() {
     if (!response.ok) throw new Error('Failed to fetch data');
 
     const rawData = await response.json();
-    const transformedData = rawData.data.slice(1).map((item) => ({
+    const transformedData = rawData.data.slice(1).map((item, index) => ({
       namaDriver: item[2],
       unitKerja: item[3],
       tanggalMulai: item[5],
+      hariMulai: item[6],
+      jamMulai: item[10],
+      tanggalSelesai: item[7],
+      hariSelesai: item[8],
+      jamSelesai: item[11],
       durasiLembur: item[12],
       kegiatanLembur: item[4],
       kota: 'Banda Aceh',
+      id: `record-${index}`,
     }));
 
     const container = document.getElementById('form-container');
-    container.innerHTML = '';
+    container.innerHTML = ''; // Clear the container before rendering
 
     transformedData.forEach((record) => {
       const signatureData = getSignatureData(record.unitKerja);
-      ['Form FPPT-01', 'Form FPPT-02', 'Form FPPT-03'].forEach((formType) => {
-        container.innerHTML += `
-                    <div class="p-8 mb-8 border border-gray-300 rounded-lg">
+
+      // Create a card component for each record with a unique ID
+      const cardWrapper = document.createElement('div');
+      cardWrapper.id = `card-${record.id}`;
+      cardWrapper.className = 'p-8 mb-8 border border-gray-300 rounded-lg shadow-lg bg-white';
+
+      // Add the forms inside the card component
+      const cardContent = ['Form FPPT-01', 'Form FPPT-02', 'Form FPPT-03']
+        .map((formType) => {
+          return `
+                    <div id="${record.id}-${formType
+            .replace(/\s+/g, '-')
+            .toLowerCase()}" class="mb-6 border border-gray-300 rounded-lg p-4">
                         ${generateHeader(formType)}
                         ${generateContentSection(record, formType)}
                         ${generateSignatureSection(record, formType, signatureData)}
                     </div>`;
-      });
+        })
+        .join('');
+
+      // Append the generated forms to the card component
+      cardWrapper.innerHTML = `
+                <h3 class="text-xl font-bold mb-4">Record ID: ${record.id}</h3>
+                ${cardContent}
+            `;
+
+      // Append the card to the main container
+      container.appendChild(cardWrapper);
     });
   } catch (error) {
     console.error('Error fetching or rendering data:', error);
