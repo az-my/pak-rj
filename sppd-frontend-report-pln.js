@@ -147,14 +147,22 @@ function renderTable(data, totalAmount) {
   const tableBody = document.getElementById('data-table-body');
   tableBody.innerHTML = ''; // Clear existing data
 
+  // Function to transform date to DD-MMM-YYYY with leading zero and Indonesian month names
+  const formatDate = (dateStr) => {
+    const [day, month, year] = dateStr.split('/').map(Number);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    const formattedDay = day < 10 ? `0${day}` : day;
+    return `${formattedDay}-${months[month - 1]}-${year}`;
+  };
+
   data.forEach((row, index) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
             <td class="border border-gray-500 px-2 py-1  w-auto">${index + 1}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.NamaDriver}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto">${row.TanggaMulai}</td>
+            <td class="border border-gray-500 px-2 py-1 w-auto text-center">${formatDate(row.TanggaMulai)}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.sd}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto">${row.TanggalSelesai}</td>
+            <td class="border border-gray-500 px-2 py-1  w-auto">${formatDate(row.TanggalSelesai)}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.PejabatPemberiTugas}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.Tujuan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-right">${row.JumlahSPPD.toLocaleString(
