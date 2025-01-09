@@ -1,6 +1,7 @@
 const formConfig = {
   'Form FPPT-01': {
     title: 'FORMULIR PERMOHONAN PEKERJAAN TAMBAH',
+    penerima: 'Direksi Lapangan',
     openingText:
       'Sehubungan dengan rencana kegiatan yang akan dilaksanakan diluar jam kerja, maka diharapkan kerjasamanya dapat menugaskan perusahaan dibawah ini :',
     signatureRules: {
@@ -9,14 +10,18 @@ const formConfig = {
   },
   'Form FPPT-02': {
     title: 'FORMULIR PENUGASAN PEKERJAAN TAMBAH',
-    openingText: 'Formulir ini berisi penugasan pekerjaan tambah dengan rincian sebagai berikut:',
+    penerima: 'Pimpinan/ Koordinator/ Penanggungjawab KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA',
+    openingText:
+      'Menunjuk Perjanjian Nomor : 0001.PJ/DAN.02.07/UPTBAC/2020 dan sehubungan dengan rencana kegiatan yang akan dilaksanakan diluar jam kerja, maka diharapkan kerjasamanya untuk menyediakan layanan untuk kegiatan dimaksud pada:																							',
     signatureRules: {
       rightSide: ['approver'],
     },
   },
   'Form FPPT-03': {
     title: 'FORMULIR KONFIRMASI PEKERJAAN TAMBAH',
-    openingText: 'Konfirmasi atas pekerjaan tambah yang telah diselesaikan dengan detail sebagai berikut:',
+    penerima: (record) => record.namaDriver, // Access the correct property, not using index
+    openingText:
+      'Menunjuk Perjanjian Nomor : 0001.PJ/DAN.02.07/UPTBAC/2020 dan sehubungan dengan rencana kegiatan yang akan dilaksanakan diluar jam kerja, maka Saudara ditugaskan untuk melakukan kegiatan/ pekerjaan dimaksud pada:',
     signatureRules: {
       leftSide: ['maker'],
       rightSide: ['vendorCompany'],
@@ -70,10 +75,17 @@ function getSignatureData(unitKerja) {
 
 function formatDate(dateString) {
   try {
-    const date = new Date(dateString);
+    // Split the date string by "/"
+    const [day, month, year] = dateString.split('/');
+
+    // Create a new date object with the correct format (mm/dd/yyyy)
+    const date = new Date(`${month}/${day}/${year}`);
+
     if (isNaN(date.getTime())) {
       return 'Invalid Date';
     }
+
+    // Format the date in 'id-ID' locale (Indonesia format)
     return date.toLocaleDateString('id-ID', {
       day: '2-digit',
       month: 'long',
@@ -91,7 +103,7 @@ function generateHeader(formType) {
                   <p class="font-bold">PT PLN (PERSERO)</p>
                   <p>UPT Banda Aceh</p>
               </div>
-              <div class="border px-4 py-2 text-red-600 font-bold text-xs">
+              <div class="border border-black px-4 py-2 text-black font-bold text-xs">
                   ${formType}
               </div>
           </div>
@@ -99,20 +111,29 @@ function generateHeader(formType) {
 }
 
 function generateContentSection(record, formType) {
+  // Get the recipient dynamically based on formType
+  const recipient =
+    typeof formConfig[formType].penerima === 'function'
+      ? formConfig[formType].penerima(record)
+      : formConfig[formType].penerima;
   return `
         <h2 class="text-xs font-semibold text-center mb-0">${formConfig[formType].title}</h2>
-        <p class="text-xs mb-0">${formConfig[formType].openingText}</p>
+        <!-- Display the recipient's name above the opening text -->
+ <p class="text-xs font-bold text-left mb-2">Kepada Yth<br><span class="text-red-600">${recipient}</span></p>
+      <p class="text-xs mb-0">${formConfig[formType].openingText}</p>
+        
         <div style="display: grid; grid-template-columns: auto 1fr; gap: 0; font-size: 0.7rem; padding: 0;">
           <div><strong>1. Perusahaan</strong></div> <div>: KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</div>
-          <div><strong>2. Hari, Tgl. Mulai</strong></div> <div>: ${formatDate(record.tanggalMulai)}, ${formatDate(
+          <div><strong>2. Hari, Tgl. Mulai</strong></div> <div>: ${record.hariMulai}, ${formatDate(
     record.tanggalMulai
   )}</div>
-          <div><strong>3. s/d Hari, Tgl. Akhir</strong></div> <div>: ${formatDate(record.tanggalSelesai)}, ${formatDate(
+          <div><strong>3. s/d Hari, Tgl. Akhir</strong></div> <div>: ${record.hariSelesai}, ${formatDate(
     record.tanggalSelesai
   )}</div>
           <div><strong>4. Waktu Mulai s/d</strong></div> <div>: ${record.jamMulai} s/d ${record.jamSelesai}</div>
           <div><strong>5. Durasi</strong></div> <div>: ${record.durasiLembur} Jam</div>
           <div><strong>6. Untuk Kegiatan</strong></div> <div>: ${record.kegiatanLembur}</div>
+          <div>Demikian dan terima kasih atas kerjasamanya.</div>
         </div>
       `;
 }
@@ -179,8 +200,7 @@ export async function fetchAndRenderData() {
       id: `record-${index}`,
     }));
 
-    const container = document.getElementById('form-container');
-    container.innerHTML = ''; // Clear the container before rendering
+    const cardContainer = document.getElementById('card-container'); // Directly targeting the container for cards
 
     transformedData.forEach((record) => {
       const signatureData = getSignatureData(record.unitKerja);
@@ -188,30 +208,28 @@ export async function fetchAndRenderData() {
       // Create a card component for each record with a unique ID
       const cardWrapper = document.createElement('div');
       cardWrapper.id = `card-${record.id}`;
-      cardWrapper.className = 'p-8 mb-8 border border-gray-300 rounded-lg shadow-lg bg-white';
+      cardWrapper.className = 'w-full p-2 mb-2 border border-white rounded-lg bg-white'; // Set the size for each card
 
       // Add the forms inside the card component
       const cardContent = ['Form FPPT-01', 'Form FPPT-02', 'Form FPPT-03']
         .map((formType) => {
-          return `
-                    <div id="${record.id}-${formType
+          return `  
+                      <div id="${record.id}-${formType
             .replace(/\s+/g, '-')
-            .toLowerCase()}" class="mb-6 border border-gray-300 rounded-lg p-4">
-                        ${generateHeader(formType)}
-                        ${generateContentSection(record, formType)}
-                        ${generateSignatureSection(record, formType, signatureData)}
-                    </div>`;
+            .toLowerCase()}" class="mb-6 border border-black rounded-lg p-4">
+                          ${generateHeader(formType)}
+                          ${generateContentSection(record, formType)}
+                          ${generateSignatureSection(record, formType, signatureData)}
+                      </div>`;
         })
         .join('');
 
-      // Append the generated forms to the card component
       cardWrapper.innerHTML = `
-                <h3 class="text-xl font-bold mb-4">Record ID: ${record.id}</h3>
-                ${cardContent}
-            `;
+                  ${cardContent}
+              `;
 
-      // Append the card to the main container
-      container.appendChild(cardWrapper);
+      // Append the card directly to the body container
+      cardContainer.appendChild(cardWrapper);
     });
   } catch (error) {
     console.error('Error fetching or rendering data:', error);
