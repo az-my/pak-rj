@@ -134,10 +134,10 @@ function generateContentSection(record, formType) {
   return `
         <h2 class="text-xs font-semibold text-center mb-0">${formConfig[formType].title}</h2>
         <!-- Display the recipient's name above the opening text -->
-        <p class="text-xs font-bold text-left mb-2">Kepada Yth<br><span class="text-red-600">${recipient}</span></p>
+        <p class="text-xs font-bold text-left mb-2">Kepada Yth<br><span class="text-black">${recipient}</span></p>
         <p class="text-xs mb-0">${formConfig[formType].openingText}</p>
             
-        <table style="width: 100%; font-size: 0.7rem; border-collapse: collapse;">
+        <table style="font-size: 0.7rem; border-collapse: collapse; table-layout: fixed;">
           ${firstRow}
           <tr>
             <td style="font-weight: bold;">${rowNumber}. Hari, Tgl. Mulai</td>
