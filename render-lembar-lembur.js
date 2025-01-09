@@ -19,7 +19,7 @@ const formConfig = {
   },
   'Form FPPT-03': {
     title: 'FORMULIR KONFIRMASI PEKERJAAN TAMBAH',
-    penerima: (record) => record.namaDriver, // Access the correct property, not using index
+    penerima: (record) => `Sdr. ${record.namaDriver}`, // Add the Access the correct property, not using index
     openingText:
       'Menunjuk Perjanjian Nomor : 0001.PJ/DAN.02.07/UPTBAC/2020 dan sehubungan dengan rencana kegiatan yang akan dilaksanakan diluar jam kerja, maka Saudara ditugaskan untuk melakukan kegiatan/ pekerjaan dimaksud pada:',
     signatureRules: {
@@ -116,25 +116,54 @@ function generateContentSection(record, formType) {
     typeof formConfig[formType].penerima === 'function'
       ? formConfig[formType].penerima(record)
       : formConfig[formType].penerima;
+
+  // Conditionally render the first row of the table based on formType
+  const firstRow =
+    formType !== 'Form FPPT-01'
+      ? ''
+      : `
+        <tr>
+          <td style="font-weight: bold;">1. Perusahaan</td>
+          <td>: KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</td>
+        </tr>
+      `;
+
+  // Dynamically handle the numbering
+  let rowNumber = formType !== 'Form FPPT-01' ? 1 : 2;
+
   return `
         <h2 class="text-xs font-semibold text-center mb-0">${formConfig[formType].title}</h2>
         <!-- Display the recipient's name above the opening text -->
- <p class="text-xs font-bold text-left mb-2">Kepada Yth<br><span class="text-red-600">${recipient}</span></p>
-      <p class="text-xs mb-0">${formConfig[formType].openingText}</p>
-        
-        <div style="display: grid; grid-template-columns: auto 1fr; gap: 0; font-size: 0.7rem; padding: 0;">
-          <div><strong>1. Perusahaan</strong></div> <div>: KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</div>
-          <div><strong>2. Hari, Tgl. Mulai</strong></div> <div>: ${record.hariMulai}, ${formatDate(
-    record.tanggalMulai
-  )}</div>
-          <div><strong>3. s/d Hari, Tgl. Akhir</strong></div> <div>: ${record.hariSelesai}, ${formatDate(
-    record.tanggalSelesai
-  )}</div>
-          <div><strong>4. Waktu Mulai s/d</strong></div> <div>: ${record.jamMulai} s/d ${record.jamSelesai}</div>
-          <div><strong>5. Durasi</strong></div> <div>: ${record.durasiLembur} Jam</div>
-          <div><strong>6. Untuk Kegiatan</strong></div> <div>: ${record.kegiatanLembur}</div>
-          <div>Demikian dan terima kasih atas kerjasamanya.</div>
-        </div>
+        <p class="text-xs font-bold text-left mb-2">Kepada Yth<br><span class="text-red-600">${recipient}</span></p>
+        <p class="text-xs mb-0">${formConfig[formType].openingText}</p>
+            
+        <table style="width: 100%; font-size: 0.7rem; border-collapse: collapse;">
+          ${firstRow}
+          <tr>
+            <td style="font-weight: bold;">${rowNumber}. Hari, Tgl. Mulai</td>
+            <td>: ${record.hariMulai}, ${formatDate(record.tanggalMulai)}</td>
+          </tr>
+          <!-- "s/d Hari, Tgl. Akhir" row without numbering -->
+          <tr>
+            <td style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;s/d Hari, Tgl. Akhir</td>
+            <td>: ${record.hariSelesai}, ${formatDate(record.tanggalSelesai)}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">${rowNumber + 2}. Waktu Mulai s/d</td>
+            <td>: ${record.jamMulai} s/d ${record.jamSelesai}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">${rowNumber + 3}. Durasi</td>
+            <td>: ${record.durasiLembur} Jam</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;">${rowNumber + 4}. Untuk Kegiatan</td>
+            <td>: ${record.kegiatanLembur}</td>
+          </tr>
+          <tr>
+            <td colspan="2">Demikian dan terima kasih atas kerjasamanya.</td>
+          </tr>
+        </table>
       `;
 }
 
