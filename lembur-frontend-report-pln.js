@@ -68,12 +68,7 @@ const fetchData = async () => {
     };
 
     const driverSewaList = ['UWIS KARNI', 'SYAHRIL', 'HENDRA', 'NUGRAHA RAMADHAN'];
-    const pejabatOrder = [
-      'Manager UPT Banda Aceh',
-      'Manager ULTG Banda Aceh',
-      'Manager ULTG Meulaboh',
-      'Manager ULTG Langsa',
-    ];
+    const pejabatOrder = ['UPT BANDA ACEH', 'ULTG BANDA ACEH', 'ULTG MEULABOH', 'ULTG LANGSA'];
 
     if (result.data && Array.isArray(result.data) && result.data.length > 1) {
       const dataRows = result.data.slice(1);
@@ -90,7 +85,8 @@ const fetchData = async () => {
       const processedData = dataRows.map((row, index) => {
         const { bulanTransaksi, bulanMasukTagihan, date } = getMonthNames(row[5]);
         const namaDriver = row[2];
-        const pejabatPemberiTugas = row[4];
+        const pejabatPemberiTugas = row[3];
+        console.log(pejabatPemberiTugas);
         const driverType = driverSewaList.includes(namaDriver) ? 'DRIVER-SEWA' : 'DRIVER-TETAP';
 
         return {
@@ -115,24 +111,40 @@ const fetchData = async () => {
         };
       });
 
-      // ✅ Sort by TanggalLembur (Ascending)
-      processedData.sort((a, b) => a.TanggalLemburDate - b.TanggalLemburDate);
-
-      // ✅ Group by NamaDriver and sort within the groups
-      const groupedData = processedData.reduce((acc, item) => {
-        acc[item.NamaDriver] = acc[item.NamaDriver] || [];
-        acc[item.NamaDriver].push(item);
-        return acc;
-      }, {});
-
-      // Convert grouped data back to array and sort by PejabatPemberiTugas within groups
-      const sortedData = Object.values(groupedData).flatMap((group) => {
-        return group.sort((a, b) => {
+      // First, group by PejabatPemberiTugas and sort within that group
+      const groupedByPejabat = processedData
+        .sort((a, b) => {
           const pejabatIndexA = pejabatOrder.indexOf(a.PejabatPemberiTugas);
           const pejabatIndexB = pejabatOrder.indexOf(b.PejabatPemberiTugas);
           return pejabatIndexA - pejabatIndexB;
-        });
+        })
+        .reduce((acc, item) => {
+          acc[item.PejabatPemberiTugas] = acc[item.PejabatPemberiTugas] || [];
+          acc[item.PejabatPemberiTugas].push(item);
+          return acc;
+        }, {});
+
+      // Now, within each group of PejabatPemberiTugas, group by NamaDriver and sort by TanggalLembur
+      const groupedData = Object.values(groupedByPejabat).map((group) => {
+        return group.reduce((acc, item) => {
+          acc[item.NamaDriver] = acc[item.NamaDriver] || [];
+          acc[item.NamaDriver].push(item);
+          return acc;
+        }, {});
       });
+
+      // Convert grouped data back to array and sort by TanggalLembur within each group of NamaDriver
+      const sortedData = groupedData
+        .flatMap((driverGroup) => {
+          return Object.values(driverGroup).map((driverItems) => {
+            return driverItems.sort((a, b) => {
+              return new Date(a.TanggalLemburDate) - new Date(b.TanggalLemburDate);
+            });
+          });
+        })
+        .flat();
+
+      console.log(sortedData);
 
       // ✅ Separate DRIVER-TETAP and DRIVER-SEWA and sort by their order
       const driverTetap = sortedData.filter((item) => item.DriverType === 'DRIVER-TETAP');

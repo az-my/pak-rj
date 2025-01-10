@@ -1,135 +1,139 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const startTimeField = document.getElementById("startTime");
-    const endTimeField = document.getElementById("endTime");
-    const overtimeDateField = document.getElementById("overtimeDate");
-    const dayStatusField = document.getElementById("dayStatus");
+document.addEventListener('DOMContentLoaded', () => {
+  // DOM Elements
+  const startTimeField = document.getElementById('startTime');
+  const endTimeField = document.getElementById('endTime');
+  const overtimeDateField = document.getElementById('overtimeDate');
+  const dayStatusField = document.getElementById('dayStatus');
+  const endDateField = document.getElementById('overtimeEndDate'); // "Tanggal Selesai Lembur"
 
-    const apiUrl = "https://dayoffapi.vercel.app/api?year=2024";
+  // API URL and public holidays data
+  const apiUrl = 'https://dayoffapi.vercel.app/api?year=2024';
+  let publicHolidays = [];
 
-    let publicHolidays = [];
-    const fetchPublicHolidays = async () => {
-        try {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            publicHolidays = data.map((holiday) => holiday.tanggal);
-        } catch (error) {
-            console.error("Failed to fetch public holidays:", error);
-        }
-    };
+  // Fetch public holidays from API
+  const fetchPublicHolidays = async () => {
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      publicHolidays = data.map((holiday) => holiday.tanggal);
+    } catch (error) {
+      console.error('Failed to fetch public holidays:', error);
+    }
+  };
 
-    const isWeekend = (dateString) => {
-        const date = new Date(dateString);
-        const day = date.getDay();
-        return day === 0 || day === 6;
-    };
+  // Check if the date is a weekend
+  const isWeekend = (dateString) => {
+    const date = new Date(dateString);
+    return date.getDay() === 0 || date.getDay() === 6;
+  };
 
-    const isPublicHoliday = (dateString) => {
-        return publicHolidays.includes(dateString);
-    };
+  // Check if the date is a public holiday
+  const isPublicHoliday = (dateString) => publicHolidays.includes(dateString);
 
-    const generateTimeOptions = (start, end) => {
-        const options = [];
-        for (let minutes = start; minutes <= end; minutes += 30) {
-            const hours = Math.floor(minutes / 60);
-            const mins = minutes % 60;
-            options.push(`${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`);
-        }
-        return options;
-    };
+  // Format date as dd/mm/yyyy
+  const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    return `${day}/${month}/${date.getFullYear()}`;
+  };
 
-    const populateStartTime = (dayStatus) => {
-        startTimeField.innerHTML = "";
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "Please Select";
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        startTimeField.appendChild(defaultOption);
+  // Generate time options in the format hh:mm for a given range
+  const generateTimeOptions = (start, end, step = 30) => {
+    const options = [];
+    for (let minutes = start; minutes <= end; minutes += step) {
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      options.push(`${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`);
+    }
+    return options;
+  };
 
-        const minStartTime = dayStatus === "HK" ? 17 * 60 : 0;
-        const maxStartTime = 24 * 60;
+  // Set start time options based on day status (HK or HL)
+  const setStartTimeOptions = (dayStatus) => {
+    if (!startTimeField) return;
 
-        const startOptions = generateTimeOptions(minStartTime, maxStartTime);
-        startOptions.forEach((time) => {
-            const option = document.createElement("option");
-            option.value = time;
-            option.textContent = time;
-            startTimeField.appendChild(option);
-        });
-    };
+    const minStartTime = dayStatus === 'HK' ? 17 * 60 : 0;
+    const maxStartTime = 24 * 60;
+    const startOptions = generateTimeOptions(minStartTime, maxStartTime);
 
-    const populateEndTime = (startTime, dayStatus) => {
-        endTimeField.innerHTML = "";
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "Please Select";
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        endTimeField.appendChild(defaultOption);
-    
-        const [startHour, startMinute] = startTime.split(":").map(Number);
-        const startMinutes = startHour * 60 + startMinute;
-    
-        let maxRange;
-        if (dayStatus === "HK") {
-            maxRange = Math.min(4 * 60, 24 * 60 - startMinutes);
-        } else if (dayStatus === "HL") {
-            maxRange = Math.min(12 * 60, 24 * 60 - startMinutes);
-        } else {
-            maxRange = 12 * 60;
-        }
-    
-        const maxEndTime = Math.min(startMinutes + maxRange, 24 * 60);
-    
-        const endOptions = generateTimeOptions(startMinutes + 30, maxEndTime);
-        endOptions.forEach((time) => {
-            const option = document.createElement("option");
-            option.value = time;
-            option.textContent = time;
-            endTimeField.appendChild(option);
-        });
-    };
+    startTimeField.innerHTML = ''; // Clear previous options
+    startOptions.forEach((time) => {
+      const option = document.createElement('option');
+      option.value = time;
+      option.textContent = time;
+      startTimeField.appendChild(option);
+    });
+  };
 
-    const restrictDateSelection = () => {
-        const currentDate = new Date();
-        const previousMonthStart = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-        const previousMonthEnd = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), 0));
-        
-        overtimeDateField.min = previousMonthStart.toISOString().split("T")[0];
-        overtimeDateField.max = previousMonthEnd.toISOString().split("T")[0];
-    };
+  // Set end time options based on start time and day status
+  const setEndTimeOptions = (startTime, dayStatus) => {
+    if (!endTimeField) return;
 
-    if (overtimeDateField && dayStatusField) {
-        restrictDateSelection();
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const startMinutes = startHour * 60 + startMinute;
 
-        overtimeDateField.addEventListener("change", async (event) => {
-            const selectedDate = event.target.value;
-            if (selectedDate) {
-                if (publicHolidays.length === 0) {
-                    await fetchPublicHolidays();
-                }
-
-                const status = isWeekend(selectedDate) || isPublicHoliday(selectedDate) ? "HL" : "HK";
-                dayStatusField.value = status;
-                populateStartTime(status);
-            } else {
-                dayStatusField.value = "";
-                startTimeField.innerHTML = "";
-                endTimeField.innerHTML = "";
-            }
-        });
+    let maxRange;
+    if (dayStatus === 'HK') {
+      maxRange = Math.min(4 * 60, 24 * 60 - startMinutes);
+    } else if (dayStatus === 'HL') {
+      maxRange = Math.min(12 * 60, 24 * 60 - startMinutes);
+    } else {
+      maxRange = 12 * 60;
     }
 
-    if (startTimeField && endTimeField) {
-        startTimeField.addEventListener("change", (event) => {
-            const selectedStartTime = event.target.value;
-            const dayStatus = dayStatusField.value;
+    const maxEndTime = Math.min(startMinutes + maxRange, 24 * 60);
+    const endOptions = generateTimeOptions(startMinutes + 30, maxEndTime);
 
-            if (selectedStartTime && dayStatus) {
-                populateEndTime(selectedStartTime, dayStatus);
-            }
-        });
+    endTimeField.innerHTML = ''; // Clear previous options
+    endOptions.forEach((time) => {
+      const option = document.createElement('option');
+      option.value = time;
+      option.textContent = time;
+      endTimeField.appendChild(option);
+    });
+  };
+
+  // Determine the day status (HL or HK) based on selected date
+  const handleDayStatus = (selectedDate) => {
+    const dayStatus = isWeekend(selectedDate) || isPublicHoliday(selectedDate) ? 'HL' : 'HK';
+    if (dayStatusField) {
+      dayStatusField.value = dayStatus;
     }
+    return dayStatus;
+  };
 
-    fetchPublicHolidays();
+  // Event listener for "Tanggal Mulai Lembur" (Start Date)
+  if (overtimeDateField && dayStatusField) {
+    overtimeDateField.addEventListener('change', async (event) => {
+      const selectedDate = event.target.value;
+
+      if (selectedDate) {
+        if (publicHolidays.length === 0) {
+          await fetchPublicHolidays();
+        }
+
+        const dayStatus = handleDayStatus(selectedDate); // Set the day status
+        setStartTimeOptions(dayStatus); // Set start time options based on day status
+      } else {
+        if (dayStatusField) dayStatusField.value = '';
+        if (startTimeField) startTimeField.innerHTML = '';
+        if (endTimeField) endTimeField.innerHTML = '';
+      }
+    });
+  }
+
+  // Event listener for start time change
+  if (startTimeField && endTimeField) {
+    startTimeField.addEventListener('change', (event) => {
+      const selectedStartTime = event.target.value;
+      const dayStatus = dayStatusField.value;
+
+      if (selectedStartTime && dayStatus) {
+        setEndTimeOptions(selectedStartTime, dayStatus); // Set end time options based on start time and day status
+      }
+    });
+  }
+
+  // Fetch public holidays initially
+  fetchPublicHolidays();
 });

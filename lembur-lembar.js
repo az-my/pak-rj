@@ -49,30 +49,30 @@ document.addEventListener('DOMContentLoaded', async function () {
                     <div class="grid grid-cols-[1fr_auto_2fr] gap-x-1">
                         <p class="font-medium">1. Perusahaan</p>
                         <p class="text-center">:</p>
-                        <p class="font-semibold italic">KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</p>
+                        <p class="italic">KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</p>
                     </div>
                     <div class="grid grid-cols-[1fr_auto_2fr] gap-x-1">
-                        <p class="font-medium">2. Hari, Tgl. Mulai</p>
+                        <p class="">2. Hari, Tgl. Mulai</p>
                         <p class="text-center">:</p>
                         <p>${record.hariMulai}, ${record.tanggalMulai}</p>
                     </div>
                     <div class="grid grid-cols-[1fr_auto_2fr] gap-x-1">
-                        <p class="font-medium">&nbsp;&nbsp;&nbsp;s/d Hari, Tgl. Akhir</p>
+                        <p class="">&nbsp;&nbsp;&nbsp;s/d Hari, Tgl. Akhir</p>
                         <p class="text-center">:</p>
                         <p>${record.hariSelesai}, ${record.tanggalSelesai}</p>
                     </div>
                     <div class="grid grid-cols-[1fr_auto_2fr] gap-x-1">
-                        <p class="font-medium">3. Waktu mulai s/d</p>
+                        <p class="">3. Waktu mulai s/d</p>
                         <p class="text-center">:</p>
                         <p>${record.jamMulai} s/d ${record.jamSelesai}</p>
                     </div>
                     <div class="grid grid-cols-[1fr_auto_2fr] gap-x-1">
-                        <p class="font-medium">4. Durasi</p>
+                        <p class="">4. Durasi</p>
                         <p class="text-center">:</p>
                         <p>${record.durasiLembur} Jam</p>
                     </div>
                     <div class="grid grid-cols-[1fr_auto_2fr] gap-x-1">
-                        <p class="font-medium">5. Untuk Kegiatan</p>
+                        <p class="">5. Untuk Kegiatan</p>
                         <p class="text-center">:</p>
                         <p>${record.kegiatanLembur}</p>
                     </div>

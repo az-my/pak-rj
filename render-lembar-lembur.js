@@ -123,7 +123,7 @@ function generateContentSection(record, formType) {
       ? ''
       : `
         <tr>
-          <td style="font-weight: bold;">1. Perusahaan</td>
+          <td>1. Perusahaan</td>
           <td>: KSO PT PALMA NAFINDO PRATAMA - PT SANOBAR GUNAJAYA</td>
         </tr>
       `;
@@ -140,24 +140,24 @@ function generateContentSection(record, formType) {
         <table style="font-size: 0.7rem; border-collapse: collapse; table-layout: fixed;">
           ${firstRow}
           <tr>
-            <td style="font-weight: bold;">${rowNumber}. Hari, Tgl. Mulai</td>
+            <td>${rowNumber}. Hari, Tgl. Mulai</td>
             <td>: ${record.hariMulai}, ${formatDate(record.tanggalMulai)}</td>
           </tr>
           <!-- "s/d Hari, Tgl. Akhir" row without numbering -->
           <tr>
-            <td style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;s/d Hari, Tgl. Akhir</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;s/d Hari, Tgl. Akhir</td>
             <td>: ${record.hariSelesai}, ${formatDate(record.tanggalSelesai)}</td>
           </tr>
           <tr>
-            <td style="font-weight: bold;">${rowNumber + 2}. Waktu Mulai s/d</td>
+            <td>${rowNumber + 2}. Waktu Mulai s/d</td>
             <td>: ${record.jamMulai} s/d ${record.jamSelesai}</td>
           </tr>
           <tr>
-            <td style="font-weight: bold;">${rowNumber + 3}. Durasi</td>
+            <td>${rowNumber + 3}. Durasi</td>
             <td>: ${record.durasiLembur} Jam</td>
           </tr>
           <tr>
-            <td style="font-weight: bold;">${rowNumber + 4}. Untuk Kegiatan</td>
+            <td>${rowNumber + 4}. Untuk Kegiatan</td>
             <td>: ${record.kegiatanLembur}</td>
           </tr>
           <tr>
@@ -201,7 +201,7 @@ function generateSignatureSection(record, formType, signatureData) {
                     <p class="font-semibold mt-6"><br><br><br><br>${signatureData.makerName}</p>
                 </div>
                 <div class="text-right">
-                    <p>${record.kota}, 15 ${signatureData.bulanMasukTagihan}</p>
+                    <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
                     
                     <P>Yang Menugaskan/ Memerintahkan,</p>
                     <p>DIREKTUR</p>
@@ -294,7 +294,7 @@ export async function fetchAndRenderData() {
                           ${generateHeader(formType)}
                           ${generateContentSection(record, formType)}
                           ${generateSignatureSection(record, formType, signatureData)}
-                      </div>`;
+                      </div><hr class"bg-red">`;
         })
         .join('');
 
