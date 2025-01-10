@@ -24,17 +24,21 @@ function onEndTimeChange() {
 
       // Check if end time is larger than start time (same day) or not (next day)
       let dayType = '';
+      let formattedEndDate = '';
+
       if (endDateTime.isAfter(startDateTime)) {
         dayType = 'Same Day';
-        overtimeEndDateInput.value = startDate; // Same day, set end date same as start date
+        formattedEndDate = startDateTime.format('DD/MM/YYYY'); // Same day, format start date as DD/MM/YYYY
+        overtimeEndDateInput.value = startDate; // Set the default input date format
       } else {
         dayType = 'Next Day';
         const nextDay = startDateTime.add(1, 'day'); // Add 1 day for next day
-        overtimeEndDateInput.value = nextDay.format('YYYY-MM-DD'); // Format the next day to YYYY-MM-DD
+        formattedEndDate = nextDay.format('DD/MM/YYYY'); // Format next day as DD/MM/YYYY
+        overtimeEndDateInput.value = nextDay.format('YYYY-MM-DD'); // Set to the default input format
       }
 
       console.log('Day Type:', dayType);
-      console.log('Overtime End Date:', overtimeEndDateInput.value);
+      console.log('Overtime End Date:', formattedEndDate); // Log in Indonesian format
     } catch (error) {
       console.error('Invalid time format:', error);
       overtimeEndDateInput.value = ''; // Clear the end date input on error
