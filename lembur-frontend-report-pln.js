@@ -89,7 +89,14 @@ const fetchData = async () => {
         console.log(pejabatPemberiTugas);
         const driverType = driverSewaList.includes(namaDriver) ? 'DRIVER-SEWA' : 'DRIVER-TETAP';
 
-        return {
+        // Extract the overtime end date (index 14) and format it in Indonesian format
+        const overtimeEndDate = row[14];
+        // const formattedOvertimeEndDate = dayjs(overtimeEndDate, 'YYYY-MM-DD').format('DD/MM/YYYY'); // Format the overtime end date
+
+        // Check if the Tanggal Lembur and Overtime End Date are different
+        const isPastMidnight = row[5] !== overtimeEndDate;
+
+        const record = {
           No: index + 1,
           NamaDriver: namaDriver,
           NamaHari: row[6],
@@ -108,11 +115,47 @@ const fetchData = async () => {
           BulanMasukTagihan: bulanMasukTagihan,
           DriverType: driverType,
           statusHari: row[7],
+          OvertimeEndDate: overtimeEndDate, // Add formatted overtime end date
+          PastMidnight: isPastMidnight, // Mark as Past Midnight if the dates are different
         };
+
+        // If it passed midnight, split into two records
+        if (isPastMidnight) {
+          // First record: Use Tanggal Lembur as Tanggal Transaksi and set Jam Selesai to 24:00
+          const firstRecord = {
+            ...record,
+            TanggalLembur: row[5], // Same as Tanggal Lembur
+            JamMulai: row[8], // Same as Jam Mulai
+            JamSelesai: '24:00', // Set to the last hour of the day
+          };
+
+          // Second record: Use Overtime End Date as Tanggal Transaksi and set Jam Mulai to 00:00
+          const secondRecord = {
+            ...record,
+            TanggalLembur: overtimeEndDate, // Use Overtime End Date
+            JamMulai: '00:00', // Set Jam Mulai to 00:00
+            JamSelesai: row[9], // Same as Jam Selesai from the API
+          };
+
+          // Log both records for now
+          console.log('First Record (Past Midnight):', firstRecord);
+          console.log('Second Record (Past Midnight):', secondRecord);
+
+          return [firstRecord, secondRecord]; // Return both records
+        }
+
+        // If no past midnight, just return the original record
+        console.log('Original Record (No Past Midnight):', record);
+        return [record]; // Return the single record
       });
 
+      // Flatten the array to combine all records
+      const finalData = processedData.flat();
+
+      console.log('Processed Data (including split records):', finalData);
+
       // First, group by PejabatPemberiTugas and sort within that group
-      const groupedByPejabat = processedData
+      const groupedByPejabat = finalData
         .sort((a, b) => {
           const pejabatIndexA = pejabatOrder.indexOf(a.PejabatPemberiTugas);
           const pejabatIndexB = pejabatOrder.indexOf(b.PejabatPemberiTugas);
@@ -144,7 +187,7 @@ const fetchData = async () => {
         })
         .flat();
 
-      console.log(sortedData);
+      console.log('Sorted Data:', sortedData);
 
       // ✅ Separate DRIVER-TETAP and DRIVER-SEWA and sort by their order
       const driverTetap = sortedData.filter((item) => item.DriverType === 'DRIVER-TETAP');
