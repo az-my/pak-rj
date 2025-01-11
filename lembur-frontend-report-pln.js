@@ -70,6 +70,16 @@ const fetchData = async () => {
     const driverSewaList = ['UWIS KARNI', 'SYAHRIL', 'HENDRA', 'NUGRAHA RAMADHAN'];
     const pejabatOrder = ['UPT BANDA ACEH', 'ULTG BANDA ACEH', 'ULTG MEULABOH', 'ULTG LANGSA'];
 
+    const publicHolidays = ['25/12/2024', '26/12/2024']; // Public holidays list
+    const weekendDays = ['Saturday', 'Sunday']; // Weekend days
+
+    const getDayOfWeek = (dateStr) => {
+      const [day, month, year] = dateStr.split('/').map(Number);
+      const date = new Date(year, month - 1, day);
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[date.getDay()]; // Return day name (e.g., "Monday")
+    };
+
     if (result.data && Array.isArray(result.data) && result.data.length > 1) {
       const dataRows = result.data.slice(1);
       let currentMonth, nextMonth;
@@ -107,8 +117,8 @@ const fetchData = async () => {
           UraianPekerjaan: row[4],
           JamMulai: row[8],
           JamSelesai: row[9],
-          TotalJamLembur: cleanAndConvert(row[11]),
-          TotalJamBayar: cleanAndConvert(row[10]),
+          TotalJamLembur: cleanAndConvert(row[10]),
+          TotalJamBayar: cleanAndConvert(row[11]),
           UpahPerJam: cleanAndConvert(row[12]),
           TotalBiayaBayar: cleanAndConvert(row[13]),
           BulanTransaksi: bulanTransaksi,
@@ -119,15 +129,31 @@ const fetchData = async () => {
           PastMidnight: isPastMidnight, // Mark as Past Midnight if the dates are different
         };
 
-        // If it passed midnight, split into two records
+        // If it passed midnight, split into two records and determine day type (HK or HL)
         if (isPastMidnight) {
+          // Determine if Tanggal Lembur is a public holiday or weekend
+          const dayOfWeek = getDayOfWeek(row[5]);
+          const isPublicHoliday = publicHolidays.includes(row[5]);
+          const dayStatus = isPublicHoliday || weekendDays.includes(dayOfWeek) ? 'HL' : 'HK';
+
           // First record: Use Tanggal Lembur as Tanggal Transaksi and set Jam Selesai to 24:00
           const firstRecord = {
             ...record,
             TanggalLembur: row[5], // Same as Tanggal Lembur
             JamMulai: row[8], // Same as Jam Mulai
             JamSelesai: '24:00', // Set to the last hour of the day
+            DayStatus: dayStatus, // Set the day status for the first record
           };
+
+          // Calculate duration for the first record (from JamMulai to 24:00)
+          const firstDuration = calculateDuration(firstRecord.JamMulai, '24:00');
+          firstRecord.TotalJamLembur = firstDuration;
+
+          // Update TotalJamBayar for the first record based on the day status and duration
+          firstRecord.TotalJamBayar = calculateTotalJamBayar(firstDuration, dayStatus);
+
+          // Update TotalBiayaBayar for the first record (TotalJamBayar * UpahPerJam)
+          firstRecord.TotalBiayaBayar = firstRecord.TotalJamBayar * firstRecord.UpahPerJam;
 
           // Second record: Use Overtime End Date as Tanggal Transaksi and set Jam Mulai to 00:00
           const secondRecord = {
@@ -135,8 +161,17 @@ const fetchData = async () => {
             TanggalLembur: overtimeEndDate, // Use Overtime End Date
             JamMulai: '00:00', // Set Jam Mulai to 00:00
             JamSelesai: row[9], // Same as Jam Selesai from the API
+            DayStatus: dayStatus, // Set the day status for the second record
           };
 
+          // Calculate duration for the second record (from 00:00 to JamSelesai)
+          const secondDuration = calculateDuration('00:00', secondRecord.JamSelesai);
+          secondRecord.TotalJamLembur = secondDuration;
+
+          // Update TotalJamBayar for the second record based on the day status and duration
+          secondRecord.TotalJamBayar = calculateTotalJamBayar(secondDuration, dayStatus);
+          // Update TotalBiayaBayar for the second record (TotalJamBayar * UpahPerJam)
+          secondRecord.TotalBiayaBayar = secondRecord.TotalJamBayar * secondRecord.UpahPerJam;
           // Log both records for now
           console.log('First Record (Past Midnight):', firstRecord);
           console.log('Second Record (Past Midnight):', secondRecord);
@@ -231,6 +266,45 @@ const fetchData = async () => {
   }
 };
 
+// Helper function to calculate the duration between two times
+const calculateDuration = (startTime, endTime) => {
+  const [startHour, startMinute] = startTime.split(':').map(Number);
+  const [endHour, endMinute] = endTime.split(':').map(Number);
+
+  const startDate = new Date(1970, 0, 1, startHour, startMinute);
+  const endDate = new Date(1970, 0, 1, endHour, endMinute);
+
+  const durationInMilliseconds = endDate - startDate;
+
+  // Return the duration in hours (including minutes as a decimal)
+  return durationInMilliseconds / (1000 * 60 * 60);
+};
+
+// Helper function to calculate total jam bayar
+const calculateTotalJamBayar = (totalDuration, dayStatus) => {
+  let totalHours = 0;
+
+  if (dayStatus === 'HL') {
+    // Holiday Calculation
+    if (totalDuration <= 8) {
+      totalHours = totalDuration * 2;
+    } else if (totalDuration <= 9) {
+      totalHours = 8 * 2 + (totalDuration - 8) * 3;
+    } else {
+      totalHours = 8 * 2 + 1 * 3 + (totalDuration - 9) * 4;
+    }
+  } else if (dayStatus === 'HK') {
+    // Working Day Calculation
+    if (totalDuration <= 1) {
+      totalHours = totalDuration * 1.5;
+    } else {
+      totalHours = 1 * 1.5 + (totalDuration - 1) * 2;
+    }
+  }
+
+  return totalHours;
+};
+
 function renderTable(data, totalAmount) {
   const tableBody = document.getElementById('data-table-body');
   tableBody.innerHTML = ''; // Clear existing data
@@ -246,9 +320,10 @@ function renderTable(data, totalAmount) {
             <td class="border border-gray-500 px-2 py-1  w-auto text-center break-words">${row.UraianPekerjaan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.JamMulai}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${row.JamSelesai}</td>
-            <td class="border border-gray-500 w-auto text-center">${String(row.TotalJamBayar).replace('.', ',')}</td>
+           
 
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${formatKoma(row.TotalJamLembur)}</td>
+             <td class="border border-gray-500 w-auto text-center">${String(row.TotalJamBayar).replace('.', ',')}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-center">${formatIDRWithDecimal(
               row.UpahPerJam
             )}</td>
