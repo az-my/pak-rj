@@ -62,6 +62,22 @@ const companySignature = {
   position: 'DIREKTUR',
 };
 
+const getIndonesianDayName = (dateStr) => {
+  const daysInIndonesian = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+  // Split the dd/mm/yyyy format into day, month, and year
+  const [day, month, year] = dateStr.split('/').map(Number);
+
+  // Create a Date object from the provided date
+  const date = new Date(year, month - 1, day);
+
+  // Get the day of the week (0 - Sunday, 6 - Saturday)
+  const dayOfWeek = date.getDay();
+
+  // Return the Indonesian name of the day
+  return daysInIndonesian[dayOfWeek];
+};
+
 function getSignatureData(unitKerja) {
   return (
     unitKerjaConfig[unitKerja] || {
@@ -173,7 +189,7 @@ function generateSignatureSection(record, formType, signatureData) {
             <div class="flex justify-between  text-xs">
                 <div></div>
                 <div class="text-right">
-                     <p>${record.kota}, 15 ${signatureData.bulanMasukTagihan}</p>
+                     <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
                     <p>Pemohon,</p>
                     <p>${signatureData.makerPosition}</p>
                     <p class="font-semibold mt-6"><br><br><br>${signatureData.makerName}</p>
@@ -184,7 +200,7 @@ function generateSignatureSection(record, formType, signatureData) {
             <div class="flex justify-between text-xs">
                 <div></div>
                 <div class="text-right">
-                     <p>${record.kota}, 15 ${signatureData.bulanMasukTagihan}</p>
+                     <p>${record.kota}, ${formatDate(record.tanggalMulai)}</p>
                     <p>Yang Menugaskan,</p>
                     <p>Direksi Lapangan</p>
                     <p>${signatureData.approverPosition}</p>
@@ -221,15 +237,18 @@ export async function fetchAndRenderData() {
     const rawData = await response.json();
     console.log(rawData);
     const transformedData = rawData.data.slice(1).map((item, index) => ({
+      // Extract day name in Indonesian from Tanggal Selesai
+      // Assuming item[14] contains the date in dd/mm/yyyy format
+
       namaDriver: item[2],
       unitKerja: item[3],
       tanggalMulai: item[5],
       hariMulai: item[6],
-      jamMulai: item[10],
-      tanggalSelesai: item[7],
-      hariSelesai: item[8],
-      jamSelesai: item[11],
-      durasiLembur: item[12],
+      jamMulai: item[8],
+      tanggalSelesai: item[14],
+      hariSelesai: getIndonesianDayName(item[14]),
+      jamSelesai: item[9],
+      durasiLembur: item[10],
       kegiatanLembur: item[4],
       kota: 'Banda Aceh',
       id: `record-${index}`,
