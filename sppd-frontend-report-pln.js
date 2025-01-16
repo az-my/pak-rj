@@ -55,8 +55,7 @@ const fetchData = async () => {
           TanggaMulai: row[9],
           TanggaMulaiDate: date,
           TanggalSelesai: row[10],
-          PenandaTangan: row[1],
-          UnitKerja: row[4],
+          PenandaTangan: row[5],
           PejabatPemberiTugas: pejabatPemberiTugas,
           Tujuan: row[6],
           JumlahSPPD: parseFloat(row[17]?.replace(/\./g, '') || 0),
@@ -66,57 +65,49 @@ const fetchData = async () => {
           DriverType: driverType,
         };
       });
-// ✅ Step 1: Split into DRIVER-TETAP and DRIVER-SEWA
-let driverTetap = processedData.filter((item) => item.DriverType === 'DRIVER-TETAP');
-const driverSewa = processedData.filter((item) => item.DriverType === 'DRIVER-SEWA');
 
-// ✅ Step 2: Sort DRIVER-TETAP by PejabatPemberiTugas and TanggaMulai ASC
-driverTetap = driverTetap.sort((a, b) => {
-  const pejabatIndexA = pejabatOrder.indexOf(a.PejabatPemberiTugas);
-  const pejabatIndexB = pejabatOrder.indexOf(b.PejabatPemberiTugas);
+      // ✅ Step 1: Split into DRIVER-TETAP and DRIVER-SEWA
+      let driverTetap = processedData.filter((item) => item.DriverType === 'DRIVER-TETAP');
+      const driverSewa = processedData.filter((item) => item.DriverType === 'DRIVER-SEWA');
 
-  // Sort by pejabat order if both exist in the list
-  if (pejabatIndexA !== -1 && pejabatIndexB !== -1) {
-    return pejabatIndexA - pejabatIndexB || a.TanggaMulaiDate - b.TanggaMulaiDate;
-  }
-  // If one pejabat is missing from the list, prioritize listed ones first
-  if (pejabatIndexA === -1) return 1;
-  if (pejabatIndexB === -1) return -1;
-  return a.TanggaMulaiDate - b.TanggaMulaiDate;
-});
+      // ✅ Step 2: Sort DRIVER-TETAP by PejabatPemberiTugas and TanggaMulai ASC
+      driverTetap = driverTetap.sort((a, b) => {
+        const pejabatIndexA = pejabatOrder.indexOf(a.PejabatPemberiTugas);
+        const pejabatIndexB = pejabatOrder.indexOf(b.PejabatPemberiTugas);
 
-// ✅ Step 3: Sort DRIVER-SEWA by TanggaMulai ASC
-driverSewa.sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate);
+        // Sort by pejabat order if both exist in the list
+        if (pejabatIndexA !== -1 && pejabatIndexB !== -1) {
+          return pejabatIndexA - pejabatIndexB || a.TanggaMulaiDate - b.TanggaMulaiDate;
+        }
+        // If one pejabat is missing from the list, prioritize listed ones first
+        if (pejabatIndexA === -1) return 1;
+        if (pejabatIndexB === -1) return -1;
+        return a.TanggaMulaiDate - b.TanggaMulaiDate;
+      });
 
-// ✅ Step 4: Group data by NamaDriver while preserving the original API order
-const groupByNamaDriverWithOrder = (data, originalOrder) => {
-  const grouped = originalOrder.reduce((acc, driver) => {
-    acc[driver.NamaDriver] = [];
-    return acc;
-  }, {});
-  
-  data.forEach((record) => {
-    if (grouped[record.NamaDriver]) {
-      grouped[record.NamaDriver].push(record);
-    }
-  });
+      // ✅ Step 3: Sort DRIVER-SEWA by TanggaMulai ASC
+      driverSewa.sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate);
 
-  return grouped;
-};
+      // ✅ Step 4: Group data by NamaDriver
+      const groupByNamaDriver = (data) => {
+        return data.reduce((acc, record) => {
+          if (!acc[record.NamaDriver]) {
+            acc[record.NamaDriver] = [];
+          }
+          acc[record.NamaDriver].push(record);
+          return acc;
+        }, {});
+      };
 
-const groupedTetap = groupByNamaDriverWithOrder(driverTetap, processedData);
-const groupedSewa = groupByNamaDriverWithOrder(driverSewa, processedData);
+      const groupedTetap = groupByNamaDriver(driverTetap);
+      const groupedSewa = groupByNamaDriver(driverSewa);
 
-// ✅ Step 5: Flatten grouped data and merge DRIVER-TETAP first, DRIVER-SEWA second
-const flattenGroupedDataWithOrder = (groupedData) => {
-  return Object.values(groupedData).flatMap((records) => records);
-};
+      // ✅ Step 5: Flatten grouped data and merge DRIVER-TETAP first, DRIVER-SEWA second
+      const flattenGroupedData = (groupedData) => {
+        return Object.values(groupedData).flatMap((records) => records);
+      };
 
-const sortedData = [
-  ...flattenGroupedDataWithOrder(groupedTetap),
-  ...flattenGroupedDataWithOrder(groupedSewa)
-];
-
+      const sortedData = [...flattenGroupedData(groupedTetap), ...flattenGroupedData(groupedSewa)];
 
       // ✅ Step 6: Extract month names for the first entry after sorting
       const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(sortedData[0].TanggaMulai);
@@ -189,7 +180,7 @@ function renderTable(data, totalAmount) {
             <td class="border border-gray-500 px-2 py-1 w-auto text-center">${formatDate(row.TanggaMulai)}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.sd}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${formatDate(row.TanggalSelesai)}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto">${row.pejabatPemberiTugas}</td>
+            <td class="border border-gray-500 px-2 py-1  w-auto">${row.PenandaTangan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.Tujuan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-right">${formatRupiah(
               row.JumlahSPPD.toLocaleString('id-ID')
