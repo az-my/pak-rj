@@ -3,7 +3,14 @@ const fetchData = async () => {
     const response = await fetch('https://rj.up.railway.app/api/google-sheets/sppd-read');
     const result = await response.json();
 
-    console.log('API Response:', result.data); // Debugging
+     // Sort the raw data by the timestamp (index 1) from oldest to newest
+     const sortedRawData = result.data.sort((a, b) => {
+      const dateA = new Date(a[1].split('/').reverse().join('-'));
+      const dateB = new Date(b[1].split('/').reverse().join('-'));
+      return dateA - dateB;
+    });
+
+    console.log(sortedRawData); // Log sorted raw data for debugging
 
     const getMonthNames = (dateStr) => {
       const [day, month, year] = dateStr.split('/').map(Number);
@@ -46,9 +53,7 @@ const fetchData = async () => {
         const { bulanTransaksi, bulanMasukTagihan, date } = getMonthNames(row[9]); // Index 9 for TanggaMulai
         const namaDriver = row[2];
         const pejabatPemberiTugas = row[5]; // Use PejabatPemberiTugas from index 5
-        const unitKerja = row[4]; // Use Unit Kerja from index 4
         const driverType = driverSewaList.includes(namaDriver) ? 'DRIVER-SEWA' : 'DRIVER-TETAP';
-        const tanggalInput = row[1]; // Use Tanggal Input from index 1
 
         return {
           No: index + 1,
@@ -57,14 +62,12 @@ const fetchData = async () => {
           TanggaMulaiDate: date,
           TanggalSelesai: row[10],
           PejabatPemberiTugas: pejabatPemberiTugas,
-          UnitKerja: unitKerja,
           Tujuan: row[6],
           JumlahSPPD: parseFloat(row[17]?.replace(/\./g, '') || 0),
           JumlahHari: row[11],
           Ket: '',
           sd: 's/d',
           DriverType: driverType,
-          TanggalInput: tanggalInput, // Add Tanggal Input to the returned object
         };
       });
 
@@ -72,11 +75,23 @@ const fetchData = async () => {
       let driverTetap = processedData.filter((item) => item.DriverType === 'DRIVER-TETAP');
       const driverSewa = processedData.filter((item) => item.DriverType === 'DRIVER-SEWA');
 
-      // ✅ Step 2: Sort DRIVER-TETAP by TanggaMulai ASC
-      // driverTetap = driverTetap.sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate);
+      // ✅ Step 2: Sort DRIVER-TETAP by PejabatPemberiTugas and TanggaMulai ASC
+      driverTetap = driverTetap.sort((a, b) => {
+        const pejabatIndexA = pejabatOrder.indexOf(a.PejabatPemberiTugas);
+        const pejabatIndexB = pejabatOrder.indexOf(b.PejabatPemberiTugas);
+
+        // Sort by pejabat order if both exist in the list
+        if (pejabatIndexA !== -1 && pejabatIndexB !== -1) {
+          return pejabatIndexA - pejabatIndexB || a.TanggaMulaiDate - b.TanggaMulaiDate;
+        }
+        // If one pejabat is missing from the list, prioritize listed ones first
+        if (pejabatIndexA === -1) return 1;
+        if (pejabatIndexB === -1) return -1;
+        return a.TanggaMulaiDate - b.TanggaMulaiDate;
+      });
 
       // ✅ Step 3: Sort DRIVER-SEWA by TanggaMulai ASC
-      // driverSewa.sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate);
+      driverSewa.sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate);
 
       // ✅ Step 4: Group data by NamaDriver
       const groupByNamaDriver = (data) => {
@@ -92,90 +107,23 @@ const fetchData = async () => {
       const groupedTetap = groupByNamaDriver(driverTetap);
       const groupedSewa = groupByNamaDriver(driverSewa);
 
-      // Log the result of Step 4
-console.log('Grouped DRIVER-TETAP:', groupedTetap);
-console.log('Grouped DRIVER-SEWA:', groupedSewa);
+      // ✅ Step 5: Flatten grouped data and merge DRIVER-TETAP first, DRIVER-SEWA second
+      const flattenGroupedData = (groupedData) => {
+        return Object.values(groupedData).flatMap((records) => records);
+      };
 
-// ✅ Step 5: Sort grouped data by UnitKerja
-const unitKerjaOrder = [
-  'UPT Banda Aceh',
-  'ULTG Banda Aceh',
-  'ULTG Meulaboh',
-  'ULTG Langsa',
-];
+      const sortedData = [...flattenGroupedData(groupedTetap), ...flattenGroupedData(groupedSewa)];
 
-const sortByUnitKerja = (groupedData) => {
-  return Object.keys(groupedData)
-    .sort((a, b) => {
-      const unitA = groupedData[a][0].UnitKerja;
-      const unitB = groupedData[b][0].UnitKerja;
-      return unitKerjaOrder.indexOf(unitA) - unitKerjaOrder.indexOf(unitB);
-    })
-    .reduce((acc, key) => {
-      acc[key] = groupedData[key];
-      return acc;
-    }, {});
-};
+      // ✅ Step 6: Extract month names for the first entry after sorting
+      const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(sortedData[0].TanggaMulai);
 
-const sortedGroupedTetap = sortByUnitKerja(groupedTetap);
-const sortedGroupedSewa = sortByUnitKerja(groupedSewa);
-
-// Log the result of Step 5
-console.log('Sorted Grouped DRIVER-TETAP by UnitKerja:', sortedGroupedTetap);
-console.log('Sorted Grouped DRIVER-SEWA by UnitKerja:', sortedGroupedSewa);
-
-    // ✅ Step 6: Sort each group by TanggaMulai ASC
-    const sortByTanggaMulai = (groupedData) => {
-      Object.keys(groupedData).forEach((key) => {
-        groupedData[key].sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate);
+      // ✅ Step 7: Render month names to the UI
+      document.querySelectorAll('#transaction-month').forEach((element) => {
+        element.textContent = bulanTransaksi;
       });
-      return groupedData;
-    };
-
-    const sortedByTanggalGroupedTetap = sortByTanggaMulai(sortedGroupedTetap);
-    const sortedByTanggalGroupedSewa = sortByTanggaMulai(sortedGroupedSewa);
-
-    // Log the result of Step 6
-    console.log('Sorted Grouped DRIVER-TETAP by TanggaMulai:', sortedByTanggalGroupedTetap);
-    console.log('Sorted Grouped DRIVER-SEWA by TanggaMulai:', sortedByTanggalGroupedSewa);
-
-    // ✅ Step 7: Compare groups by TanggalInput if TanggaMulai and UnitKerja are the same
-    const compareGroupsByTanggalInput = (groupA, groupB) => {
-      const firstRecordA = groupA[0];
-      const firstRecordB = groupB[0];
-
-      if (firstRecordA.TanggaMulaiDate.getTime() === firstRecordB.TanggaMulaiDate.getTime() && firstRecordA.UnitKerja === firstRecordB.UnitKerja) {
-        const dateA = new Date(firstRecordA.TanggalInput.split(' ')[0].split('/').reverse().join('-') + 'T' + firstRecordA.TanggalInput.split(' ')[1]);
-        const dateB = new Date(firstRecordB.TanggalInput.split(' ')[0].split('/').reverse().join('-') + 'T' + firstRecordB.TanggalInput.split(' ')[1]);
-        return dateA - dateB;
-      }
-      return 0;
-    };
-
-    const sortedByTanggalInputGroupedTetap = Object.values(sortedByTanggalGroupedTetap).sort(compareGroupsByTanggalInput);
-    const sortedByTanggalInputGroupedSewa = Object.values(sortedByTanggalGroupedSewa).sort(compareGroupsByTanggalInput);
-
-    // Log the result of Step 7
-    console.log('Sorted Grouped DRIVER-TETAP by TanggalInput:', sortedByTanggalInputGroupedTetap);
-    console.log('Sorted Grouped DRIVER-SEWA by TanggalInput:', sortedByTanggalInputGroupedSewa);
-
-    // ✅ Step 8: Flatten grouped data and merge DRIVER-TETAP first, DRIVER-SEWA second
-    const flattenGroupedData = (groupedData) => {
-      return groupedData.flatMap((records) => records);
-    };
-
-    const sortedData = [...flattenGroupedData(sortedByTanggalInputGroupedTetap), ...flattenGroupedData(sortedByTanggalInputGroupedSewa)];
-
-// ✅ Step 9: Extract month names for the first entry after sorting
-const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(sortedData[0].TanggaMulai);
-
-// ✅ Step 10: Render month names to the UI
-document.querySelectorAll('#transaction-month').forEach((element) => {
-  element.textContent = bulanTransaksi;
-});
-document.querySelectorAll('#bulan-masuk-tagihan').forEach((element) => {
-  element.textContent = bulanMasukTagihan;
-});
+      document.querySelectorAll('#bulan-masuk-tagihan').forEach((element) => {
+        element.textContent = bulanMasukTagihan;
+      });
 
       // ✅ Step 8: Calculate totals
       const totalAmount = sortedData.reduce((sum, row) => sum + row.JumlahSPPD, 0);
@@ -233,13 +181,11 @@ function renderTable(data, totalAmount) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
             <td class="border border-gray-500 px-2 py-1  w-auto">${index + 1}</td>
-            
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.NamaDriver}</td>
             <td class="border border-gray-500 px-2 py-1 w-auto text-center">${formatDate(row.TanggaMulai)}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.sd}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${formatDate(row.TanggalSelesai)}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.PejabatPemberiTugas}</td>
-            
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.Tujuan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-right">${formatRupiah(
               row.JumlahSPPD.toLocaleString('id-ID')
