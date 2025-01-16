@@ -32,10 +32,10 @@ const fetchData = async () => {
 
     // ✅ PejabatPemberiTugas Sorting Order
     const pejabatOrder = [
-      'UPT Banda Aceh',
-      'ULTG Banda Aceh',
-      'ULTG Meulaboh',
-      'ULTG Langsa',
+      'Manager UPT Banda Aceh',
+      'Manager ULTG Banda Aceh',
+      'Manager ULTG Meulaboh',
+      'Manager ULTG Langsa',
      
     ];
 
@@ -46,7 +46,7 @@ const fetchData = async () => {
       const processedData = dataRows.map((row, index) => {
         const { bulanTransaksi, bulanMasukTagihan, date } = getMonthNames(row[9]); // Index 9 for TanggaMulai
         const namaDriver = row[2];
-        const pejabatPemberiTugas = row[4]; // Use PejabatPemberiTugas from index 5
+        const pejabatPemberiTugas = row[5]; // Use PejabatPemberiTugas from index 5
         const driverType = driverSewaList.includes(namaDriver) ? 'DRIVER-SEWA' : 'DRIVER-TETAP';
 
         return {
