@@ -52,7 +52,7 @@ function calculateTotalBiaya() {
     console.log(`Total Biaya: ${totalBiaya}`);
 
     // Render the total hours and total biaya to the input fields
-    totalHoursInput.value = totalHours.toFixed(0); // Render total hours without decimal
+    totalHoursInput.value = totalHours.toFixed(1); // Render total hours without decimal
     totalCostInput.value = Math.round(totalBiaya); // Render total biaya as a whole number (rounded)
 
     return totalBiaya;
