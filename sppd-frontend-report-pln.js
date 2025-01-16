@@ -65,49 +65,57 @@ const fetchData = async () => {
           DriverType: driverType,
         };
       });
+// ✅ Step 1: Split into DRIVER-TETAP and DRIVER-SEWA
+let driverTetap = processedData.filter((item) => item.DriverType === 'DRIVER-TETAP');
+const driverSewa = processedData.filter((item) => item.DriverType === 'DRIVER-SEWA');
 
-      // ✅ Step 1: Split into DRIVER-TETAP and DRIVER-SEWA
-      let driverTetap = processedData.filter((item) => item.DriverType === 'DRIVER-TETAP');
-      const driverSewa = processedData.filter((item) => item.DriverType === 'DRIVER-SEWA');
+// ✅ Step 2: Sort DRIVER-TETAP by PejabatPemberiTugas and TanggaMulai ASC
+driverTetap = driverTetap.sort((a, b) => {
+  const pejabatIndexA = pejabatOrder.indexOf(a.PejabatPemberiTugas);
+  const pejabatIndexB = pejabatOrder.indexOf(b.PejabatPemberiTugas);
 
-      // ✅ Step 2: Sort DRIVER-TETAP by PejabatPemberiTugas and TanggaMulai ASC
-      driverTetap = driverTetap.sort((a, b) => {
-        const pejabatIndexA = pejabatOrder.indexOf(a.PejabatPemberiTugas);
-        const pejabatIndexB = pejabatOrder.indexOf(b.PejabatPemberiTugas);
+  // Sort by pejabat order if both exist in the list
+  if (pejabatIndexA !== -1 && pejabatIndexB !== -1) {
+    return pejabatIndexA - pejabatIndexB || a.TanggaMulaiDate - b.TanggaMulaiDate;
+  }
+  // If one pejabat is missing from the list, prioritize listed ones first
+  if (pejabatIndexA === -1) return 1;
+  if (pejabatIndexB === -1) return -1;
+  return a.TanggaMulaiDate - b.TanggaMulaiDate;
+});
 
-        // Sort by pejabat order if both exist in the list
-        if (pejabatIndexA !== -1 && pejabatIndexB !== -1) {
-          return pejabatIndexA - pejabatIndexB || a.TanggaMulaiDate - b.TanggaMulaiDate;
-        }
-        // If one pejabat is missing from the list, prioritize listed ones first
-        if (pejabatIndexA === -1) return 1;
-        if (pejabatIndexB === -1) return -1;
-        return a.TanggaMulaiDate - b.TanggaMulaiDate;
-      });
+// ✅ Step 3: Sort DRIVER-SEWA by TanggaMulai ASC
+driverSewa.sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate);
 
-      // ✅ Step 3: Sort DRIVER-SEWA by TanggaMulai ASC
-      driverSewa.sort((a, b) => a.TanggaMulaiDate - b.TanggaMulaiDate);
+// ✅ Step 4: Group data by NamaDriver while preserving the original API order
+const groupByNamaDriverWithOrder = (data, originalOrder) => {
+  const grouped = originalOrder.reduce((acc, driver) => {
+    acc[driver.NamaDriver] = [];
+    return acc;
+  }, {});
+  
+  data.forEach((record) => {
+    if (grouped[record.NamaDriver]) {
+      grouped[record.NamaDriver].push(record);
+    }
+  });
 
-      // ✅ Step 4: Group data by NamaDriver
-      const groupByNamaDriver = (data) => {
-        return data.reduce((acc, record) => {
-          if (!acc[record.NamaDriver]) {
-            acc[record.NamaDriver] = [];
-          }
-          acc[record.NamaDriver].push(record);
-          return acc;
-        }, {});
-      };
+  return grouped;
+};
 
-      const groupedTetap = groupByNamaDriver(driverTetap);
-      const groupedSewa = groupByNamaDriver(driverSewa);
+const groupedTetap = groupByNamaDriverWithOrder(driverTetap, processedData);
+const groupedSewa = groupByNamaDriverWithOrder(driverSewa, processedData);
 
-      // ✅ Step 5: Flatten grouped data and merge DRIVER-TETAP first, DRIVER-SEWA second
-      const flattenGroupedData = (groupedData) => {
-        return Object.values(groupedData).flatMap((records) => records);
-      };
+// ✅ Step 5: Flatten grouped data and merge DRIVER-TETAP first, DRIVER-SEWA second
+const flattenGroupedDataWithOrder = (groupedData) => {
+  return Object.values(groupedData).flatMap((records) => records);
+};
 
-      const sortedData = [...flattenGroupedData(groupedTetap), ...flattenGroupedData(groupedSewa)];
+const sortedData = [
+  ...flattenGroupedDataWithOrder(groupedTetap),
+  ...flattenGroupedDataWithOrder(groupedSewa)
+];
+
 
       // ✅ Step 6: Extract month names for the first entry after sorting
       const { bulanTransaksi, bulanMasukTagihan } = getMonthNames(sortedData[0].TanggaMulai);
