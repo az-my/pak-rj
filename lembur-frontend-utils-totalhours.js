@@ -40,7 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        return formatIndonesianNumber(totalHours); // Format total hours in Indonesian locale
+        // return formatIndonesianNumber(totalHours); // Format total hours in Indonesian locale
+        return totalHours; // Return raw total hours as a number
     };
 
     // Function to validate and update Total Hours
