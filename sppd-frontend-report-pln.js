@@ -55,6 +55,7 @@ const fetchData = async () => {
           TanggaMulai: row[9],
           TanggaMulaiDate: date,
           TanggalSelesai: row[10],
+          PenandaTangan: row[5],
           PejabatPemberiTugas: pejabatPemberiTugas,
           Tujuan: row[6],
           JumlahSPPD: parseFloat(row[17]?.replace(/\./g, '') || 0),
@@ -179,7 +180,7 @@ function renderTable(data, totalAmount) {
             <td class="border border-gray-500 px-2 py-1 w-auto text-center">${formatDate(row.TanggaMulai)}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.sd}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${formatDate(row.TanggalSelesai)}</td>
-            <td class="border border-gray-500 px-2 py-1  w-auto">${row.PejabatPemberiTugas}</td>
+            <td class="border border-gray-500 px-2 py-1  w-auto">${row.PenandaTangan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto">${row.Tujuan}</td>
             <td class="border border-gray-500 px-2 py-1  w-auto text-right">${formatRupiah(
               row.JumlahSPPD.toLocaleString('id-ID')
