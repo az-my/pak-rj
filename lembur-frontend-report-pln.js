@@ -233,13 +233,21 @@ const fetchData = async () => {
 
       const finalSortedData = [...driverTetap, ...driverSewa];
 
+      // // ✅ Calculate Totals
+      // const totalAmount = Math.ceil(finalSortedData.reduce((sum, row) => sum + row.TotalBiayaBayar, 0));
+      // const totalBiayaAdmin = Math.ceil(totalAmount * 0.05);
+      // const totalInvoiceWithoutTax = Math.ceil(totalAmount + totalBiayaAdmin);
+      // const totalTagihanWithoutTax = totalInvoiceWithoutTax;
+      // const totalPPN = Math.ceil(totalInvoiceWithoutTax * 0.11);
+      // const totalFinalInvoice = Math.ceil(totalInvoiceWithoutTax + totalPPN);
+
       // ✅ Calculate Totals
-      const totalAmount = Math.ceil(finalSortedData.reduce((sum, row) => sum + row.TotalBiayaBayar, 0));
-      const totalBiayaAdmin = Math.ceil(totalAmount * 0.05);
-      const totalInvoiceWithoutTax = Math.ceil(totalAmount + totalBiayaAdmin);
-      const totalTagihanWithoutTax = totalInvoiceWithoutTax;
-      const totalPPN = Math.ceil(totalInvoiceWithoutTax * 0.11);
-      const totalFinalInvoice = Math.ceil(totalInvoiceWithoutTax + totalPPN);
+const totalAmount = Math.trunc(finalSortedData.reduce((sum, row) => sum + row.TotalBiayaBayar, 0));
+const totalBiayaAdmin = Math.trunc(totalAmount * 0.05);
+const totalInvoiceWithoutTax = Math.trunc(totalAmount + totalBiayaAdmin);
+const totalTagihanWithoutTax = totalInvoiceWithoutTax;
+const totalPPN = Math.trunc(totalInvoiceWithoutTax * 0.11);
+const totalFinalInvoice = Math.trunc(totalInvoiceWithoutTax + totalPPN);
 
       document.getElementById('total-amount').textContent = totalAmount.toLocaleString('id-ID');
       document.getElementById('total-biaya-admin').textContent = totalBiayaAdmin.toLocaleString('id-ID');
