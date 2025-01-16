@@ -56,6 +56,7 @@ const fetchData = async () => {
           TanggaMulaiDate: date,
           TanggalSelesai: row[10],
           PenandaTangan: row[1],
+          UnitKerja: row[4],
           PejabatPemberiTugas: pejabatPemberiTugas,
           Tujuan: row[6],
           JumlahSPPD: parseFloat(row[17]?.replace(/\./g, '') || 0),
