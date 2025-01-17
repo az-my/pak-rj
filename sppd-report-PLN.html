@@ -12,6 +12,14 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/@develoka/angka-terbilang-js@1.4.2/index.min.js
+"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/id.min.js"></script>
+
+
+
   </head>
   <body class="bg-white-100">
     <div class="w-full bg-white">
@@ -52,31 +60,56 @@
             <!-- Summary Rows -->
             <tr>
               <td colspan="7" class="border border-gray-800 pl-80 py-1 font-semibold">Jumlah</td>
-              <td class="border border-gray-800 px-2 py-1 text-right" id="total-amount"></td>
+              <td class="border border-gray-800 px-2 py-1 text-right" >
+                <div class="flex justify-between w-full">
+                  <span class="text-left">Rp</span>
+                  <span class="text-right" id="total-amount"></span>
+              </div>
+              </td>
               <td class="border border-gray-800 px-2 py-1"></td>
             </tr>
             <tr>
               <td colspan="7" class="border border-gray-800 pl-80 py-1 font-semibold">Biaya Admin (5%)</td>
-              <td class="border border-gray-800 px-2 py-1 text-right" id="total-biaya-admin"></td>
+              <td class="border border-gray-800 px-2 py-1 text-right" >
+                <div class="flex justify-between w-full">
+                  <span class="text-left">Rp</span>
+                  <span class="text-right" id="total-biaya-admin"></span>
+              </div>
+              </td>
               <td class="border border-gray-800 px-2 py-1"></td>
             </tr>
             <tr>
               <td colspan="7" class="border border-gray-800 pl-80 py-1 font-semibold">
                 Total Tagihan SPPD <span id="transaction-month"></span>
               </td>
-              <td class="border border-gray-800 px-2 py-1 text-right" id="total-invoice-without-tax"></td>
+              <td class="border border-gray-800 px-2 py-1 text-right" >
+                <div class="flex justify-between w-full">
+                  <span class="text-left">Rp</span>
+                  <span class="text-right" id="total-invoice-without-tax"></span>
+              </div>
+              </td>
               <td class="border border-gray-800 px-2 py-1"></td>
             </tr>
             <tr>
               <td colspan="7" class="border border-gray-800 pl-80 py-1 font-semibold">PPN (11%)</td>
-              <td class="border border-gray-800 px-2 py-1 text-right" id="total-ppn"></td>
+              <td class="border border-gray-800 px-2 py-1 text-right" >
+                <div class="flex justify-between w-full">
+                  <span class="text-left">Rp</span>
+                  <span class="text-right" id="total-ppn"></span>
+              </div>
+              </td>
               <td class="border border-gray-800 px-2 py-1"></td>
             </tr>
             <tr>
               <td colspan="7" class="border border-gray-800 pl-80 py-1 font-semibold">
                 Total Tagihan SPPD <span id="transaction-month"></span> + PPN
               </td>
-              <td class="border border-gray-800 px-2 py-1 text-right" id="total-final-invoice"></td>
+              <td class="border border-gray-800 px-2 py-1 text-right" >
+                <div class="flex justify-between w-full">
+                  <span class="text-left">Rp</span>
+                  <span class="text-right" id="total-final-invoice"></span>
+              </div>
+              </td>
               <td class="border border-gray-800 px-2 py-1"></td>
             </tr>
             <tr>
@@ -92,7 +125,7 @@
               </td>
               <td colspan="3"></td>
               <td colspan="3" class="border-t border-gray-800 px-2 py-8 text-center align-bottom">
-                Banda Aceh, 15 <span id="bulan-masuk-tagihan"></span><br />
+                Banda Aceh, <span id="bulan-masuk-tagihan"></span><br />
                 KSO PT. PALMA NAFINDO PRATAMA <br>- PT. SANOBAR GUNAJAYA<br /><br><br><br><br><br><br><br><u>RIZKY NAHARDI</u>
               </td>
             </tr>
