@@ -1,80 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
-
+<html lang="en">
 <head>
-  
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" type="text/css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oops, Gone!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="min-h-screen w-full bg-white flex items-center justify-center p-6">
+    <div class="max-w-2xl w-full space-y-6 text-center">
+        <div class="text-7xl md:text-8xl animate-bounce">🚀✨</div>
 
-<body>
-  <div class="container mx-auto py-8 space-y-8">
-    <!-- Section 1: SPPD -->
-    <div>
-      <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4">SPPD</h2>
-      <!-- ✅ 2 columns on small devices, 4 columns on medium and larger -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <a href="sppd-index.html" class="card shadow-lg hover:bg-blue-500 hover:text-white p-2">
-          <div class="card-body items-center text-center">
-            <span class="text-2xl sm:text-3xl">🔍</span>
-            <h2 class="card-title text-sm sm:text-md">SPPD MENTAH</h2>
-          </div>
-        </a>
-        <a href="sppd-report-kantor.html" class="card shadow-lg hover:bg-blue-500 hover:text-white p-2">
-          <div class="card-body items-center text-center">
-            <span class="text-2xl sm:text-3xl">🏠</span>
-            <h2 class="card-title text-sm sm:text-md">SPPD KANTOR</h2>
-          </div>
-        </a>
-        <a href="sppd-report-PLN.html" class="card shadow-lg hover:bg-blue-500 hover:text-white p-2">
-          <div class="card-body items-center text-center">
-            <span class="text-2xl sm:text-3xl">🔔</span>
-            <h2 class="card-title text-sm sm:text-md">SPPD PLN</h2>
-          </div>
-        </a>
-        <a href="sppd-lembar.html" class="card shadow-lg hover:bg-blue-500 hover:text-white p-2">
-          <div class="card-body items-center text-center">
-            <span class="text-2xl sm:text-3xl">🔔</span>
-            <h2 class="card-title text-sm sm:text-md">LEMBAR SPPD</h2>
-          </div>
-        </a>
-      </div>
+        <div class="space-y-2">
+            <h1 class="text-5xl font-extrabold text-gray-900 uppercase">
+                Well, That’s Awkward
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-600 italic">Page dipped. We moved. Go find us.</p>
+        </div>
+
+        <div class="relative max-w-sm mx-auto p-4 bg-white border border-gray-300 rounded-xl shadow-md">
+            <p class="text-md font-mono text-gray-800 break-all font-semibold" id="newDomain"></p>
+            <div class="absolute -top-2 -right-2">
+                <span class="px-3 py-1 text-sm font-medium bg-gray-200 text-gray-800 rounded-full">New Spot</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="https://az-my.github.io/backend-sppd/" id="takeMeThere" 
+               class="bg-gray-900 hover:bg-gray-700 text-white font-bold px-6 py-3 rounded-xl flex items-center justify-center shadow-md transform hover:scale-105 transition-all">
+                Fine, Take Me 🚀
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </a>
+
+            <a href="/" class="border border-gray-500 text-gray-900 font-semibold px-6 py-3 rounded-xl flex items-center justify-center shadow-md transform hover:scale-105 transition-all">
+                Nope, I’m Out
+            </a>
+        </div>
     </div>
 
-    <!-- Section 2: Lembur -->
-    <div>
-      <h2 class="text-lg sm:text-xl md:text-2xl font-bold mb-4">Lembur</h2>
-      <!-- ✅ 2 columns on small devices, 4 columns on medium and larger -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <a href="lembur-index.html" class="card shadow-lg hover:bg-red-500 hover:text-white p-2">
-          <div class="card-body items-center text-center">
-            <span class="text-2xl sm:text-3xl">🔍</span>
-            <h2 class="card-title text-sm sm:text-md">LEMBUR MENTAH</h2>
-          </div>
-        </a>
-        <a href="lembur-report-kantor.html" class="card shadow-lg hover:bg-red-500 hover:text-white p-2">
-          <div class="card-body items-center text-center">
-            <span class="text-2xl sm:text-3xl">🏠</span>
-            <h2 class="card-title text-sm sm:text-md">LEMBUR KANTOR</h2>
-          </div>
-        </a>
-        <a href="lembur-report-PLN.html" class="card shadow-lg hover:bg-red-500 hover:text-white p-2">
-          <div class="card-body items-center text-center">
-            <span class="text-2xl sm:text-3xl">🔔</span>
-            <h2 class="card-title text-sm sm:text-md">LEMBUR PLN</h2>
-          </div>
-        </a>
-        <a href="lembur-lembar.html" class="card shadow-lg hover:bg-red-500 hover:text-white p-2">
-          <div class="card-body items-center text-center">
-            <span class="text-2xl sm:text-3xl">🔔</span>
-            <h2 class="card-title text-sm sm:text-md">LEMBAR LEMBUR</h2>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
+    <script>
+        window.onload = function () {
+            const newDomain = "https://az-my.github.io/backend-sppd/";
+            const takeMeThereButton = document.getElementById("takeMeThere");
+            const newDomainText = document.getElementById("newDomain");
+
+            if (takeMeThereButton && newDomainText) {
+                takeMeThereButton.href = newDomain;
+                newDomainText.textContent = newDomain;
+            }
+        };
+    </script>
 </body>
 </html>
