@@ -1,108 +1,67 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="synthwave">
+<html lang="en" data-theme="corporate">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yeet! We Moved</title>
+    <title>We Moved, Pick Your Poison</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.2/dist/full.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.2/dist/full.css" rel="stylesheet>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 flex items-center justify-center p-6">
-    <div class="max-w-2xl w-full space-y-6 text-center">
-        <!-- Emoji Animation -->
-        <div class="flex justify-center gap-4">
-            <div class="text-7xl animate-bounce">🚀</div>
-            <div class="text-7xl animate-pulse">👾</div>
-            <div class="text-7xl animate-bounce">💫</div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="space-y-4">
-            <h1 class="text-5xl font-black text-white uppercase neon-text">
-                Yeet! We Moved... Again 🙄
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-6">
+    <div class="max-w-md w-full space-y-6 text-center">
+        <!-- Header -->
+        <div class="space-y-2">
+            <div class="text-5xl animate-bounce">🤷</div>
+            <h1 class="text-3xl font-bold text-gray-800">
+                Page? Never heard of her
             </h1>
-            <p class="text-xl text-white/80 italic">
-                Our devs got bored. Choose your vibe:
-            </p>
+            <p class="text-gray-500">Try these instead:</p>
         </div>
 
         <!-- Version Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- V1 Card -->
-            <div class="card bg-base-100 shadow-xl transform hover:scale-105 transition-all">
-                <div class="card-body">
-                    <div class="badge badge-primary badge-lg absolute right-2 top-2">OG Version</div>
+        <div class="space-y-3">
+            <!-- Version 1 -->
+            <div class="card bg-white shadow-sm hover:shadow-md transition-shadow">
+                <div class="card-body py-3">
                     <div class="text-left">
-                        <p class="font-mono text-sm opacity-70">github.io</p>
-                        <p class="text-lg font-bold break-all">az-my.github.io/backend-sppd/</p>
+                        <div class="badge badge-outline badge-sm text-primary">Version 1</div>
+                        <p class="mt-1 font-mono text-sm text-gray-600 break-all">
+                            az-my.github.io/backend-sppd/
+                        </p>
                     </div>
                     <div class="card-actions justify-end">
-                        <button class="btn btn-sm btn-primary gap-2" onclick="copyToClipboard('https://az-my.github.io/backend-sppd/')">
-                            Copy 📋
-                        </button>
-                        <a href="https://az-my.github.io/backend-sppd/" class="btn btn-sm btn-secondary gap-2">
-                            Go 🌟
+                        <a href="https://az-my.github.io/backend-sppd/" 
+                           class="btn btn-xs btn-primary text-white gap-1">
+                            Let's Go Old School
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- V2 Card -->
-            <div class="card bg-base-100 shadow-xl transform hover:scale-105 transition-all">
-                <div class="card-body">
-                    <div class="badge badge-secondary badge-lg absolute right-2 top-2">New Flex</div>
+            <!-- Version 2 -->
+            <div class="card bg-white shadow-sm hover:shadow-md transition-shadow">
+                <div class="card-body py-3">
                     <div class="text-left">
-                        <p class="font-mono text-sm opacity-70">vercel.app</p>
-                        <p class="text-lg font-bold break-all">az-my.vercel.app</p>
+                        <div class="badge badge-outline badge-sm text-secondary">Version 2</div>
+                        <p class="mt-1 font-mono text-sm text-gray-600 break-all">
+                            az-my.vercel.app
+                        </p>
                     </div>
                     <div class="card-actions justify-end">
-                        <button class="btn btn-sm btn-primary gap-2" onclick="copyToClipboard('https://az-my.vercel.app/')">
-                            Copy 📋
-                        </button>
-                        <a href="https://az-my.vercel.app/" class="btn btn-sm btn-secondary gap-2">
-                            Go 🚀
+                        <a href="https://az-my.vercel.app/" 
+                           class="btn btn-xs btn-secondary text-white gap-1">
+                            Fancy New Hotness
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="/" class="btn btn-wide bg-white text-black hover:bg-gray-200 gap-2 shadow-lg">
-                Nope, I'm Out ✌️
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </a>
-        </div>
-
-        <!-- Easter Egg -->
-        <p class="text-sm text-white/50 mt-8">
-            Pssst... 404 means "Page Not Found". But like, we all feel a little lost sometimes 💅
+        <!-- Exit -->
+        <p class="text-sm text-gray-400 mt-4">
+            Still here? That's commitment. Or you're lost.
+            <a href="/" class="text-primary underline">Take me back</a>
         </p>
     </div>
-
-    <script>
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text);
-            alert('Copied to clipboard! Go flex that URL 💅');
-        }
-    </script>
-
-    <style>
-        .neon-text {
-            text-shadow: 0 0 10px #ee00ff,
-                         0 0 20px #ee00ff,
-                         0 0 30px #ee00ff;
-        }
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-    </style>
 </body>
 </html>
