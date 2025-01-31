@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="description" content="Pick your vibe—choose V1 or V2. Minimal design, fast loading." />
-  <meta name="keywords" content="vibe picker, minimal UI, V1, V2" />
+  <meta name="description" content="Pick your vibe—choose V1 or V2. Minimal design, fast loading. Learn about RBAC vs. non-RBAC implementations." />
+  <meta name="keywords" content="vibe picker, minimal UI, V1, V2, RBAC" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pick Your Vibe ✨</title>
 
@@ -13,7 +13,7 @@
   <style>
     /* Card hover effect */
     .card:hover {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
       transform: translateY(-2px);
       transition: all 0.2s ease-in-out;
     }
@@ -31,12 +31,12 @@
   <section class="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
     
     <!-- V1 Card -->
-    <div class="card bg-gray-50 rounded-xl w-full md:w-80 p-6 text-center border border-gray-200">
-      <span class="inline-block bg-gray-200 text-gray-600 text-sm px-2 py-1 rounded-full mb-2">
+    <div class="card w-full md:w-80 p-6 text-center rounded-xl border-2 border-blue-400 bg-blue-50">
+      <span class="inline-block bg-blue-200 text-blue-800 text-sm px-2 py-1 rounded-full mb-2">
         V1
       </span>
       <h2 class="text-2xl font-bold text-gray-800 mb-2">Old-School Vibe</h2>
-      <p class="text-gray-600 mb-5">Reliable, nostalgic, just works.</p>
+      <p class="text-gray-700 mb-5">No RBAC—straightforward usage.</p>
       <a
         href="https://az-my.github.io/backend-sppd/"
         class="inline-flex items-center justify-center bg-gray-900 text-white px-5 py-2 rounded-full hover:bg-gray-700 transition-colors"
@@ -47,12 +47,12 @@
     </div>
     
     <!-- V2 Card -->
-    <div class="card bg-gray-50 rounded-xl w-full md:w-80 p-6 text-center border border-gray-200">
-      <span class="inline-block bg-gray-200 text-gray-600 text-sm px-2 py-1 rounded-full mb-2">
+    <div class="card w-full md:w-80 p-6 text-center rounded-xl border-2 border-pink-400 bg-pink-50">
+      <span class="inline-block bg-pink-200 text-pink-800 text-sm px-2 py-1 rounded-full mb-2">
         V2
       </span>
       <h2 class="text-2xl font-bold text-gray-800 mb-2">Next-Gen Vibe</h2>
-      <p class="text-gray-600 mb-5">Sleek, powerful, cutting-edge.</p>
+      <p class="text-gray-700 mb-5">Supports RBAC—flexible, secure control.</p>
       <a
         href="https://az-my.vercel.app/"
         class="inline-flex items-center justify-center bg-pink-600 text-white px-5 py-2 rounded-full hover:bg-pink-500 transition-colors"
@@ -66,12 +66,8 @@
 
   <!-- Footer / Info -->
   <footer class="mt-12 text-center">
-    <p class="text-gray-500 text-sm mb-1">
-      Active Users: 69,420
-    </p>
-    <p class="text-gray-400 text-xs">
-      © 2024 Your Brand | Stay Amazing ✨
-    </p>
+    <p class="text-gray-500 text-sm mb-1">Active Users: 69,420</p>
+    <p class="text-gray-400 text-xs">© 2024 Your Brand | Stay Amazing ✨</p>
   </footer>
 </body>
 </html>
