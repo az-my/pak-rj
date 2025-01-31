@@ -3,52 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Your Adventure (Or Don't, Whatever)</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <title>Pick Your Vibe 🌈✨</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Rubik+Glitch&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f3f4f6;
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffe66d);
+            animation: gradientDance 15s ease infinite;
+        }
+        .glitch-text {
+            font-family: 'Rubik Glitch', cursive;
+            text-shadow: 3px 3px #ff00ff;
+        }
+        @keyframes gradientDance {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .neon-card {
+            background: rgba(255,255,255,0.9) !important;
+            backdrop-filter: blur(10px);
+            border: 2px solid #fff !important;
+            box-shadow: 0 0 15px #4ecdc4 !important;
         }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-8 space-y-6 text-center">
-        <h1 class="text-3xl font-bold text-gray-900">
-           So, You're Back? (We Guess?)
+    <div class="max-w-2xl mx-auto p-8 space-y-6 text-center">
+        <h1 class="glitch-text text-5xl mb-4 animate-bounce">
+            COMEBACK ALERT! <span class="text-4xl">🤯</span>
         </h1>
-        <p class="text-gray-700 text-lg">
-            Alright, alright, we get it. You can't make up your mind. Pick your poison (we mean, version).
+        
+        <p class="text-2xl font-bold text-gray-800 mb-8">
+            "Didn't see you sliding back... but we're vibing!" 👀
         </p>
-         <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-             <div class="card card-bordered w-full sm:w-1/2 bg-gray-800 text-white shadow-xl transform hover:scale-105 transition-transform duration-300">
-                  <div class="card-body">
-                    <h2 class="card-title text-xl ">Version 1.0 (The OG)</h2>
-                    <p class="text-gray-300">
-                      The Classic. If you're into that whole "retro" thing (but like, not really).
+
+        <div class="grid gap-6 md:grid-cols-2">
+            <!-- Legacy Card -->
+            <div class="neon-card rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-xl hover:shadow-pink-500/30">
+                <div class="space-y-4">
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        V1: LEGACY VIBE 📼
+                    </h2>
+                    <p class="text-gray-600 text-lg">
+                        For the "I still low-key stan flip phones" crew 📟✨<br>
+                        <span class="text-sm opacity-75">Tetra? More like *Tired*...</span>
                     </p>
-                    <div class="card-actions justify-center mt-4">
-                      <a href="https://az-my.github.io/backend-sppd/" class="btn btn-primary btn-sm">Go Classic, I Guess</a>
-                    </div>
+                    <a href="#" class="btn btn-block bg-pink-500 text-white hover:bg-pink-600 border-0 transform hover:skew-x-12 transition-all">
+                        Throwback Mode 🕹️
+                    </a>
                 </div>
             </div>
-            <div class="card card-bordered w-full sm:w-1/2 bg-gray-800 text-white shadow-xl transform hover:scale-105 transition-transform duration-300">
-                <div class="card-body">
-                      <h2 class="card-title text-xl">Version 2.0 (The "Improved")</h2>
-                      <p class="text-gray-300">
-                        Our New Shiny Thing. Because we're all about that update life. (Maybe.)
-                      </p>
-                    <div class="card-actions justify-center mt-4">
-                       <a href="https://az-my.vercel.app/" class="btn btn-primary btn-sm">Try the "New Hotness"</a>
-                    </div>
+
+            <!-- Glow Up Card -->
+            <div class="neon-card rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/30">
+                <div class="space-y-4">
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+                        V2: GLOW-UP EDITION 💅
+                    </h2>
+                    <p class="text-gray-600 text-lg">
+                        If your personality is "✨aesthetic✨"<br>
+                        <span class="text-sm opacity-75">We fixed the cringe. Probably. No cap.</span>
+                    </p>
+                    <a href="#" class="btn btn-block bg-blue-500 text-white hover:bg-blue-600 border-0 transform hover:-skew-x-12 transition-all">
+                        Glow Up Zone ✨
+                    </a>
                 </div>
             </div>
-         </div>
-         <footer class="mt-8 text-gray-500 text-sm">
-            <p>This is literally the only choice you have right now. Just pick something. © 2024, Your Name/Company</p>
-        </footer>
+        </div>
+
+        <div class="mt-8 space-y-4">
+            <p class="text-sm text-gray-500 animate-pulse">
+                🔥 Real-time vibe counter: 69,420/420 🌈
+            </p>
+            <div class="group relative cursor-pointer">
+                <p class="text-xs text-gray-400 transition-opacity group-hover:opacity-0">
+                    💅 Your Brand 2024 | Stay Chaos ✌️
+                </p>
+                <p class="absolute inset-0 text-xs text-transparent transition-opacity group-hover:text-gray-400">
+                    Why are you reading this? Go touch grass. 🌱
+                </p>
+            </div>
+        </div>
+
+        <!-- Hidden Easter Egg -->
+        <div class="opacity-10 hover:opacity-100 transition-opacity text-xs mt-12">
+            <p>🚨 Secret third option: Scream into the void 🕳️ (its cheaper)</p>
+        </div>
     </div>
 </body>
 </html>
