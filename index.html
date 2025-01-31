@@ -2,105 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="description" content="Pick your vibe with a clean, modern design. Minimalistic yet engaging, perfect for showcasing your brand’s best side.">
-  <meta name="keywords" content="minimal design, modern web design, simplified layout, vibe picker">
+  <meta name="description" content="Pick your vibe—choose between the Legacy Experience or Next Generation. Minimal design, simple layout, fast loading." />
+  <meta name="keywords" content="vibe picker, modern design, legacy, next generation, minimal UI" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pick Your Vibe — Simplified</title>
-
-  <!-- DaisyUI and Tailwind CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
-    rel="stylesheet"
-  />
+  <title>Pick Your Vibe ✨</title>
+  <!-- Tailwind CSS (via CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Rubik+Glitch&display=swap"
-    rel="stylesheet"
-  />
-
   <style>
-    /* Background gradient (toned down) */
+    /* Soft pastel gradient */
     body {
-      font-family: 'Comic Neue', cursive;
-      background: linear-gradient(90deg, #f9fafb 0%, #e5e7eb 100%);
-      min-height: 100vh;
-      color: #374151; /* Neutral text color */
+      background: linear-gradient(135deg, #fce7f3 0%, #ede9fe 100%);
     }
-
-    /* Soft container shadow */
-    .card {
-      background-color: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    /* Subtle hover scale */
-    .hover-scale:hover {
-      transform: scale(1.02);
-      transition: transform 0.2s ease-in-out;
+    /* Card hover effect */
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+      transition: all 0.2s ease-in-out;
     }
   </style>
 </head>
+<body class="min-h-screen flex flex-col items-center justify-center px-4 py-8">
 
-<body class="flex items-center justify-center p-4">
-  <div class="max-w-2xl w-full p-6 space-y-8 text-center">
-    <!-- Heading -->
-    <h1 class="text-4xl md:text-5xl font-bold mt-6">
-      Comeback Alert <span class="text-2xl">🚀</span>
-    </h1>
-    <p class="text-lg md:text-xl font-semibold">
-      “Didn’t see you sliding back, huh? But the vibes are still real!”
+  <!-- Heading -->
+  <header class="text-center mb-12">
+    <h1 class="text-4xl md:text-5xl font-semibold mb-2 text-gray-800">Pick Your Vibe</h1>
+    <p class="text-gray-600 text-lg md:text-xl">Welcome back! Time to choose your adventure...</p>
+  </header>
+
+  <!-- Cards Container -->
+  <section class="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
+    
+    <!-- Legacy Experience Card -->
+    <div class="card bg-white rounded-xl w-full md:w-80 p-6 text-center border border-gray-100">
+      <!-- Sub-label -->
+      <span class="inline-block bg-gray-100 text-gray-500 text-sm px-2 py-1 rounded-full mb-2">
+        Classic
+      </span>
+      <!-- Title -->
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Legacy Experience</h2>
+      <!-- Description -->
+      <p class="text-gray-600 mb-5">
+        For those who appreciate the classics.<br />
+        Simple, reliable, and nostalgic.
+      </p>
+      <!-- Link Button -->
+      <a
+        href="https://az-my.github.io/backend-sppd/"
+        class="inline-flex items-center justify-center bg-gray-900 text-white px-5 py-2 rounded-full hover:bg-gray-700 transition-colors"
+        >
+        Choose Legacy
+        <span class="ml-2">→</span>
+      </a>
+    </div>
+    
+    <!-- Next Generation Card -->
+    <div class="card bg-white rounded-xl w-full md:w-80 p-6 text-center border border-gray-100">
+      <!-- Sub-label -->
+      <span class="inline-block bg-gray-100 text-gray-500 text-sm px-2 py-1 rounded-full mb-2">
+        Modern
+      </span>
+      <!-- Title -->
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Next Generation</h2>
+      <!-- Description -->
+      <p class="text-gray-600 mb-5">
+        Experience the future today.<br />
+        Sleek, powerful, and cutting-edge features.
+      </p>
+      <!-- Link Button -->
+      <a
+        href="https://az-my.vercel.app/"
+        class="inline-flex items-center justify-center bg-pink-600 text-white px-5 py-2 rounded-full hover:bg-pink-500 transition-colors"
+        >
+        Choose Modern
+        <span class="ml-2">→</span>
+      </a>
+    </div>
+
+  </section>
+
+  <!-- Footer / Info -->
+  <footer class="mt-12 text-center">
+    <p class="text-gray-500 text-sm mb-1">
+      Active Users: 69,420
     </p>
-    
-    <!-- Cards Container -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-      
-      <!-- Legacy Card -->
-      <div class="card rounded-xl p-6 hover-scale transition-transform">
-        <h2 class="text-2xl font-bold mb-2">V1: Legacy Vibe 📼</h2>
-        <p class="text-sm mb-4">
-          For the “I still low-key stan flip phones” crowd. Keep it retro!
-        </p>
-        <a
-          href="#"
-          class="btn w-full bg-pink-500 border-0 text-white hover:bg-pink-600"
-        >
-          Throwback Mode
-        </a>
-      </div>
-
-      <!-- Glow-Up Card -->
-      <div class="card rounded-xl p-6 hover-scale transition-transform">
-        <h2 class="text-2xl font-bold mb-2">V2: Glow-Up Edition 💅</h2>
-        <p class="text-sm mb-4">
-          If your personality screams “✨aesthetic✨,” this mode is all you.
-        </p>
-        <a
-          href="#"
-          class="btn w-full bg-blue-500 border-0 text-white hover:bg-blue-600"
-        >
-          Glow Up Zone
-        </a>
-      </div>
-    </div>
-
-    <!-- Footer Info -->
-    <div class="space-y-2">
-      <p class="text-sm text-gray-500">
-        Real-time vibe counter: 69,420/420 🌈
-      </p>
-      <p class="text-xs text-gray-400">
-        © Your Brand 2025 | Stay Authentically You
-      </p>
-    </div>
-    
-    <!-- Hidden Easter Egg -->
-    <div class="opacity-10 hover:opacity-100 transition-opacity text-xs mt-8">
-      <p>Secret third option: Scream into the void. It’s free therapy. 🕳️</p>
-    </div>
-  </div>
+    <p class="text-gray-400 text-xs">
+      © 2024 Your Brand | Stay Amazing ✨
+    </p>
+  </footer>
 </body>
 </html>
