@@ -2,78 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="description" content="Pick your vibe—choose between the Legacy Experience or Next Generation. Minimal design, simple layout, fast loading." />
-  <meta name="keywords" content="vibe picker, modern design, legacy, next generation, minimal UI" />
+  <meta name="description" content="Pick your vibe—choose V1 or V2. Minimal design, fast loading." />
+  <meta name="keywords" content="vibe picker, minimal UI, V1, V2" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pick Your Vibe ✨</title>
+
   <!-- Tailwind CSS (via CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    /* Soft pastel gradient */
-    body {
-      background: linear-gradient(135deg, #fce7f3 0%, #ede9fe 100%);
-    }
     /* Card hover effect */
     .card:hover {
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
       transform: translateY(-2px);
       transition: all 0.2s ease-in-out;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center px-4 py-8">
-
+<body class="bg-white min-h-screen flex flex-col items-center justify-center px-4 py-8">
+  
   <!-- Heading -->
   <header class="text-center mb-12">
     <h1 class="text-4xl md:text-5xl font-semibold mb-2 text-gray-800">Pick Your Vibe</h1>
-    <p class="text-gray-600 text-lg md:text-xl">Welcome back! Time to choose your adventure...</p>
+    <p class="text-gray-600 text-lg md:text-xl">Welcome back! Choose your path...</p>
   </header>
 
   <!-- Cards Container -->
   <section class="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
     
-    <!-- Legacy Experience Card -->
+    <!-- V1 Card -->
     <div class="card bg-white rounded-xl w-full md:w-80 p-6 text-center border border-gray-100">
-      <!-- Sub-label -->
       <span class="inline-block bg-gray-100 text-gray-500 text-sm px-2 py-1 rounded-full mb-2">
-        Classic
+        V1
       </span>
-      <!-- Title -->
-      <h2 class="text-2xl font-bold text-gray-800 mb-2">Legacy Experience</h2>
-      <!-- Description -->
-      <p class="text-gray-600 mb-5">
-        For those who appreciate the classics.<br />
-        Simple, reliable, and nostalgic.
-      </p>
-      <!-- Link Button -->
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Old-School Vibe</h2>
+      <p class="text-gray-600 mb-5">Reliable, nostalgic, just works.</p>
       <a
         href="https://az-my.github.io/backend-sppd/"
         class="inline-flex items-center justify-center bg-gray-900 text-white px-5 py-2 rounded-full hover:bg-gray-700 transition-colors"
-        >
-        Choose Legacy
+      >
+        Go V1
         <span class="ml-2">→</span>
       </a>
     </div>
     
-    <!-- Next Generation Card -->
+    <!-- V2 Card -->
     <div class="card bg-white rounded-xl w-full md:w-80 p-6 text-center border border-gray-100">
-      <!-- Sub-label -->
       <span class="inline-block bg-gray-100 text-gray-500 text-sm px-2 py-1 rounded-full mb-2">
-        Modern
+        V2
       </span>
-      <!-- Title -->
-      <h2 class="text-2xl font-bold text-gray-800 mb-2">Next Generation</h2>
-      <!-- Description -->
-      <p class="text-gray-600 mb-5">
-        Experience the future today.<br />
-        Sleek, powerful, and cutting-edge features.
-      </p>
-      <!-- Link Button -->
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Next-Gen Vibe</h2>
+      <p class="text-gray-600 mb-5">Sleek, powerful, cutting-edge.</p>
       <a
         href="https://az-my.vercel.app/"
         class="inline-flex items-center justify-center bg-pink-600 text-white px-5 py-2 rounded-full hover:bg-pink-500 transition-colors"
-        >
-        Choose Modern
+      >
+        Go V2
         <span class="ml-2">→</span>
       </a>
     </div>
