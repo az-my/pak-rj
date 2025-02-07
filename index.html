@@ -1,103 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="description"
-    content="Pick your vibe—choose V1 or V2. Minimal design, fast loading. Learn about RBAC vs. non-RBAC implementations." />
-  <meta name="keywords" content="vibe picker, minimal UI, V1, V2, RBAC" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pick Your Vibe ✨</title>
+  <title>Beda Bos Beda Server 🤡</title>
 
-  <!-- Tailwind CSS (via CDN) -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    /* Card hover effect */
     .card:hover {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-      transform: translateY(-2px);
-      transition: all 0.2s ease-in-out;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      transform: translateY(-4px);
+      transition: all 0.3s ease-in-out;
     }
   </style>
 </head>
 
 <body class="bg-white min-h-screen flex flex-col items-center justify-center px-4 py-8">
 
-  <!-- Heading -->
+  <!-- Header -->
   <header class="text-center mb-12">
-    <h1 class="text-3xl  font-semibold mb-2 text-gray-800">Beda Bos Beda Gaji, Salah Bos Kerja Bakti</h1>
-    <h2 class="text-2xl">#AsalBapakSenang</h2>
+    <h1 class="text-3xl font-semibold text-gray-800">Beda Bos Beda Gaji, Salah Bos Kerja Bakti 🤡</h1>
+    <h2 class="text-2xl">btw, kapan resign?</h2>
   </header>
 
-  <!-- Cards Container -->
-  <section class="flex flex-col md:flex-row gap-6 md:gap-8 items-center">
+  <!-- Apps Section -->
+  <section class="flex flex-wrap justify-center gap-6">
 
-    <!-- V1 Card -->
-    <div class="card w-full md:w-80 p-6 text-center rounded-xl border-2 border-blue-400 bg-blue-50">
-      <span class="inline-block bg-blue-200 text-blue-800 text-sm px-2 py-1 rounded-full mb-2">
-        V1
-      </span>
-      <h2 class="text-2xl font-bold text-gray-800 mb-2">APP SPPD-Lembur</h2>
-      <p class="text-gray-700 mb-5">No Login.</p>
-      <a href="https://v1-sppd-lembur.vercel.app/"
-        class="inline-flex items-center justify-center bg-blue-900 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition-colors">
-        Go V1
-        <span class="ml-2">→</span>
-      </a>
-    </div>
+    <script>
+      const apps = [
+        {
+          title: "SPPD-Lembur",
+          description: "No Login.",
+          link: "https://v1-sppd-lembur.vercel.app/",
+          status: "Live",
+          color: "green",
+          bugFixes: [
+            { date: "02-07-2025", fix: "Banyak Bug, Pake V2" },
+          ]
+        },
+        {
+          title: "SPPD-Lembur V2",
+          description: "Bisa login.",
+          link: "https://v2-sppd-lembur.vercel.app/",
+          status: "Live",
+          color: "green",
+          bugFixes: [
+            { date: "02-07-2025", fix: "Background Lamp. Lembur" },
+            { date: "02-07-2025", fix: "TTD Lamp. Lembur " }
+          ]
+        },
+        {
+          title: "Om-Broto",
+          description: "Reimburse Maintenance Kendaraan.",
+          link: "https://om-broto.vercel.app/",
+          status: "Live",
+          color: "green",
+          bugFixes: [
+            { date: "02-07-2025", fix: "Upload to Drive" },
+            { date: "02-07-2025", fix: "Save to Sheets " }
+          ]
+        },
+        {
+          title: "Monitoring Ini-Itu",
+          description: "SBU, Serkom, IUJTPL, Akta.",
+          link: "#",
+          status: "upcoming",
+          color: "red",
+          bugFixes: [
+            { date: "N/A", fix: "Masih diutak-atik, sabar bos" }
+          ]
+        }
+      ];
 
-    <!-- V2 Card -->
-    <div class="card w-full md:w-80 p-6 text-center rounded-xl border-2 border-green-400 bg-green-50">
-      <span class="inline-block bg-green-200 text-green-800 text-sm px-2 py-1 rounded-full mb-2">
-        V2
-      </span>
-      <h2 class="text-2xl font-bold text-gray-800 mb-2">APP SPPD-Lembur</h2>
-      <p class="text-gray-700 mb-5">Supports Login.</p>
-      <a href="https://v2-sppd-lembur.vercel.app/"
-        class="inline-flex items-center justify-center bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-500 transition-colors">
-        Go V2
-        <span class="ml-2">→</span>
-      </a>
-    </div>
+      function formatDate(dateStr) {
+        if (dateStr === "N/A") return "N/A";
+        const options = { day: "2-digit", month: "short", year: "numeric" };
+        return new Date(dateStr).toLocaleDateString("id-ID", options);
+      }
 
-    <!-- V2 Card -->
-    <div class="card w-full md:w-80 p-6 text-center rounded-xl border-2 border-yellow-400 bg-yellow-50">
-      <span class="inline-block bg-yellow-200 text-yellow-800 text-sm px-2 py-1 rounded-full mb-2">
-        On Progress
-      </span>
-      <h2 class="text-2xl font-bold text-yellow-800 mb-2">Monitoring Ini-Itu</h2>
-      <p class="text-yellow-700 mb-5">SBU, Serkom, IUJTPL, Akta</p>
-      <a href="#"
-        class="inline-flex items-center justify-center bg-yellow-600 text-white px-5 py-2 rounded-full hover:bg-yellow-500 transition-colors">
-        Go
-        <span class="ml-2">→</span>
-      </a>
-    </div>
-    <!-- V2 Card -->
-    <div class="card w-full md:w-80 p-6 text-center rounded-xl border-2 border-amber-400 bg-amber-50">
-      <span class="inline-block bg-amber-200 text-amber-800 text-sm px-2 py-1 rounded-full mb-2">
-        on Progress
-      </span>
-      <h2 class="text-2xl font-bold text-amber-800 mb-2">Database Gerai Daya</h2>
-      <p class="text-gray-700 mb-5">Pricelist, Transaksi, Marketing</p>
-      <a href="#"
-        class="inline-flex items-center justify-center bg-amber-600 text-white px-5 py-2 rounded-full hover:bg-amber-500 transition-colors">
-        Go
-        <span class="ml-2">→</span>
-      </a>
-    </div>
+      function isRecentFix(date) {
+        const fixDate = new Date(date);
+        const today = new Date();
+        const diffDays = (today - fixDate) / (1000 * 60 * 60 * 24);
+        return diffDays <= 7; // 🔥 kalau dalam 7 hari terakhir
+      }
 
+      function groupByDate(bugFixes) {
+        return bugFixes.reduce((acc, fix) => {
+          if (!acc[fix.date]) acc[fix.date] = [];
+          acc[fix.date].push(fix);
+          return acc;
+        }, {});
+      }
 
+      function renderAppCard(app) {
+        const groupedFixes = groupByDate(app.bugFixes);
+        return `
+          <div class="card w-full md:w-96 p-6 text-center rounded-xl border-2 border-${app.color}-400 bg-${app.color}-50">
+            <span class="inline-block bg-${app.color}-200 text-${app.color}-800 text-sm px-2 py-1 rounded-full mb-2">
+              ${app.status === "Live" ? "🟢 Bisa Dipake, Tapi Jangan Ngeluh!" : "🔴 Belum Jadi"}
+            </span>
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">${app.title}</h2>
+            <p class="text-gray-600 text-sm mb-3">${app.description}</p>
+            <a href="${app.link}" class="inline-flex items-center justify-center bg-${app.color}-600 text-white px-5 py-2 rounded-full hover:bg-${app.color}-500 transition-colors">
+              Go ->
+            </a>
+            <div class="mt-4 text-left">
+              <h3 class="text-sm font-bold text-${app.color}-800">🚀 Bug:</h3>
+              <div class="border-l-2 border-gray-300 pl-4 mt-2">
+                ${Object.keys(groupedFixes)
+                  .map(date => `
+                    <div class="mb-3">
+                      <h4 class="text-xs font-semibold text-gray-600">${formatDate(date)}</h4>
+                      <ul class="text-xs text-gray-700 list-disc list-inside">
+                        ${groupedFixes[date]
+                          .map(fix => `
+                            <li><s>${fix.fix}</s> ✅ ${isRecentFix(fix.date) ? '<span class="text-red-500 text-xs">' : ''}</li>
+                          `)
+                          .join("")}
+                      </ul>
+                    </div>
+                  `)
+                  .join("")}
+              </div>
+            </div>
+          </div>
+        `;
+      }
 
+      document.write(apps.map(renderAppCard).join(""));
+    </script>
 
   </section>
 
-  <!-- Footer / Info -->
+  <!-- Footer -->
   <footer class="mt-12 text-center">
-    <p class="text-gray-500 text-sm mb-1">Active Users: 69,420</p>
-    <p class="text-gray-400 text-xs">© 2024 Your Brand | Stay Amazing ✨</p>
+    <p class="text-gray-700 text-sm">© 2024| Dibuat Dengan Kopi dan Air Mata ☕😭</p>
   </footer>
+
 </body>
 
 </html>
